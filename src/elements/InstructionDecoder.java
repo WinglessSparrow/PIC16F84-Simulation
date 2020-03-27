@@ -4,17 +4,23 @@ import Helpers.Element;
 
 public class InstructionDecoder extends Element {
 
-    public InstructionDecoder(int busConnections) {
-        super(busConnections);
+    int decodedCommand;
+
+    public InstructionDecoder(Bus[] busesIn) {
+        super(null, busesIn);
+    }
+
+    private int decode(int command) {
+        return command;
+    }
+
+    public int getDecodedCommand() {
+        return decodedCommand;
     }
 
     @Override
     public void step() {
-
-    }
-
-    @Override
-    public void update() {
-
+        int command = getFromBus(1);
+        decodedCommand = decode(command);
     }
 }

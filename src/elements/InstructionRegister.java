@@ -1,21 +1,19 @@
 package elements;
 
 import Helpers.Element;
-import Interfaces.Stepable;
 
 public class InstructionRegister extends Element {
 
-    public InstructionRegister(int busConnetions) {
-        super(busConnetions);
+    private int command;
+    private static final int BUS_PROGRAM_MEM = 0;
+
+    public InstructionRegister(Bus busOut, Bus[] busesIn) {
+        super(busOut, busesIn);
     }
 
     @Override
     public void step() {
-
-    }
-
-    @Override
-    public void update() {
-
+        putOnBus(command);
+        command = getFromBus(BUS_PROGRAM_MEM);
     }
 }

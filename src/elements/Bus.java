@@ -3,10 +3,8 @@ package elements;
 public class Bus {
 
     private int heldValue;
-    private int bitWidth;
 
-    public Bus(int bitWidth) {
-        this.bitWidth = bitWidth;
+    public Bus() {
     }
 
     public int getHeldValue() {

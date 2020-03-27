@@ -1,15 +1,30 @@
 package Helpers;
 
-import Interfaces.Stepable;
-import Interfaces.Updateable;
 import elements.Bus;
 
-public abstract class Element implements Updateable, Stepable {
+public abstract class Element {
 
     protected boolean active;
-    protected Bus[] busses;
+    protected Bus[] busesIn;
+    protected Bus busOut;
 
-    public Element(int busConceptions) {
-        busses = new Bus[busConceptions];
+    public Element(Bus busOut, Bus[] busesIn) {
+        active = false;
+        this.busOut = busOut;
+        this.busesIn = busesIn;
     }
+
+    protected void putOnBus(int value) {
+        if (busOut == null) throw new NullPointerException("No output buses");
+        busOut.setHeldValue(value);
+    }
+
+    protected int getFromBus(int busIdx) {
+        if (busesIn[busIdx] == null) throw new NullPointerException("No Input buses");
+        return busesIn[busIdx].getHeldValue();
+    }
+
+
+    //in step use putOnBus and getFromBus, because the methods throw exceptions if something happens
+    public abstract void step();
 }
