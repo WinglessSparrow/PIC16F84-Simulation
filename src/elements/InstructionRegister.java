@@ -1,11 +1,11 @@
 package elements;
 
 import Helpers.Element;
+import SimulationMain.Simulation;
 
 public class InstructionRegister extends Element {
 
     private int command;
-    private static final int BUS_PROGRAM_MEM = 0;
 
     public InstructionRegister(Bus busOut, Bus[] busesIn) {
         super(busOut, busesIn);
@@ -14,6 +14,6 @@ public class InstructionRegister extends Element {
     @Override
     public void step() {
         putOnBus(command);
-        command = getFromBus(BUS_PROGRAM_MEM);
+        command = getFromBus(Simulation.BUS_MEM);
     }
 }

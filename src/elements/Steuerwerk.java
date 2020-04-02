@@ -2,7 +2,7 @@ package elements;
 
 import Helpers.Element;
 
-public class Steuerwerk extends Element {
+public class Steuerwerk<T> extends Element {
 
     private static final int BUS_DECODER = 0;
 

@@ -1,3 +1,5 @@
+package SimulationMain;
+
 import Helpers.Element;
 import elements.*;
 
@@ -8,20 +10,23 @@ import java.io.InputStreamReader;
 public class Simulation implements Runnable {
 
     //here idxes off all buses
-    public final static int BUS_XY = 0;
+    public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIC_ADDR = 3, BUS_ADDR_STACK = 4, BUS_PCLATCH = 5, BUS_MEM = 6;
 
     private boolean isRunning;
-    private int ammBuses = 2;
-    private int ammElements = 5;
 
     private Element[] elements;
-    private Bus[] buses;
 
     public Simulation() {
         //this true, to make it run forever
         isRunning = true;
 
-        buses = new Bus[ammBuses];
+        //how many buses are there
+        int ammBuses = 7;
+        Bus[] buses = new Bus[ammBuses];
+
+        //how many elements are there
+        int ammElements = 5;
+        //yhis array must be field by hand
         elements = new Element[ammElements];
 
         for (int i = 0; i < buses.length; i++) {
@@ -29,16 +34,15 @@ public class Simulation implements Runnable {
         }
 
         //create a bunch of dummy data
-        int[] dummyData = {1, 2, 3, 4, 5, 6};
+        int[] dummyData = {1, 17, 3, 4, 10, 20};
 
         //creating and connecting all the components
-        //TODO must make final variables for clarity in the future
-        //TODO splice bus arrays into better chunks
-        //TODO make it not retarded
-        elements[1] = new InstructionRegister(buses[1], buses);
+        // TODO make final Elements idx
+        // TODO make it not retarded
+        elements[1] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[2] = new InstructionDecoder(buses);
         elements[3] = new ProgramCounter(buses, 0);
-        elements[0] = new ProgramMem(buses[0], dummyData, (ProgramCounter) elements[3]);
+        elements[0] = new ProgramMem(buses[Simulation.BUS_MEM], dummyData, (ProgramCounter) elements[3]);
         elements[4] = new Steuerwerk(elements);
 
         System.out.println("Done creating");

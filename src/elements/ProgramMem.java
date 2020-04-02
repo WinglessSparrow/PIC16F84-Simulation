@@ -13,6 +13,7 @@ public class ProgramMem extends Element {
         super(busOut, null);
         this.data = data;
         this.counter = counter;
+        active = true;
     }
 
 
@@ -23,6 +24,10 @@ public class ProgramMem extends Element {
     @Override
     public void step() {
         idx = counter.getCountedValue();
-        putOnBus(data[idx]);
+        try {
+            putOnBus(data[idx]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Out of bound! with counter for: " + (data.length - idx));
+        }
     }
 }

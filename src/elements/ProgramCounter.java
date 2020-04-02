@@ -11,8 +11,9 @@ public class ProgramCounter extends Element implements Observable {
     public ProgramCounter(Bus[] busesIn, int countedValue) {
         super(null, busesIn);
         this.countedValue = countedValue;
+        active = true;
     }
-
+    
     public void inc() {
         countedValue++;
     }
