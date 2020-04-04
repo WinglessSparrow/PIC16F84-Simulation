@@ -1,7 +1,7 @@
 package SimulationMain;
 
+import Elements.*;
 import Helpers.Element;
-import elements.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +11,7 @@ public class Simulation implements Runnable {
 
     //here idxes off all buses
     public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIC_ADDR = 3, BUS_ADDR_STACK = 4, BUS_PCLATCH = 5, BUS_MEM = 6;
+    public static final int I_REG = 0, I_DEC = 1, PC = 2, PROM = 3;
 
     private boolean isRunning;
 
@@ -25,7 +26,7 @@ public class Simulation implements Runnable {
         Bus[] buses = new Bus[ammBuses];
 
         //how many elements are there
-        int ammElements = 5;
+        int ammElements = 9;
         //yhis array must be field by hand
         elements = new Element[ammElements];
 
@@ -43,7 +44,12 @@ public class Simulation implements Runnable {
         elements[2] = new InstructionDecoder(buses);
         elements[3] = new ProgramCounter(buses, 0);
         elements[0] = new ProgramMem(buses[Simulation.BUS_MEM], dummyData, (ProgramCounter) elements[3]);
-        elements[4] = new Steuerwerk(elements);
+        elements[4] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
+        elements[5] = new WRegister(buses[BUS_INTERN_FILE], buses);
+        elements[6] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
+        elements[7] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[5], (Multiplexer) elements[6]);
+//must be the last element in the array
+        elements[8] = new Steuerwerk(elements);
 
         System.out.println("Done creating");
     }
@@ -52,11 +58,15 @@ public class Simulation implements Runnable {
         // here the program first steps the PMemory, IReg, ID, and Steuerwerk
         //then the gates from IReg bus
 
+        //fetch
         for (Element element : elements) {
-            element.step();
+            if (element.isActive()) {
+                element.step();
+            }
         }
 
-        //or we might run this function multiple times << idk
+        //execute
+
     }
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

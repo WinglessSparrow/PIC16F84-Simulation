@@ -1,6 +1,6 @@
 package Helpers;
 
-import elements.Bus;
+import Elements.Bus;
 
 public abstract class Element {
 
@@ -14,6 +14,14 @@ public abstract class Element {
         this.busesIn = busesIn;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     protected void putOnBus(int value) {
         if (busOut == null) throw new NullPointerException("No output buses");
         busOut.setHeldValue(value);
@@ -24,7 +32,9 @@ public abstract class Element {
         return busesIn[busIdx].getHeldValue();
     }
 
-
-    //in step use putOnBus and getFromBus, because the methods throw exceptions if something happens
+    //executeLogic
     public abstract void step();
+
+    //clean up the state after execution
+    public abstract void cleanUp();
 }

@@ -1,4 +1,4 @@
-package elements;
+package Elements;
 
 import Helpers.Element;
 import SimulationMain.Simulation;
@@ -25,4 +25,9 @@ public class InstructionDecoder extends Element {
         int command = getFromBus(Simulation.BUS_I_REG);
         decodedCommand = decode(command);
     }
+
+    @Override
+    public void cleanUp() {
+    }
+
 }

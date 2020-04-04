@@ -1,4 +1,4 @@
-package elements;
+package Elements;
 
 import Helpers.Element;
 
@@ -29,5 +29,10 @@ public class ProgramMem extends Element {
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Out of bound! with counter for: " + (data.length - idx));
         }
+    }
+
+    @Override
+    public void cleanUp() {
+
     }
 }

@@ -1,4 +1,4 @@
-package elements;
+package Elements;
 
 import Helpers.Element;
 import Interfaces.Observable;
@@ -24,6 +24,11 @@ public class ProgramCounter extends Element implements Observable {
 
     @Override
     public void step() {
+
+    }
+
+    @Override
+    public void cleanUp() {
 
     }
 
