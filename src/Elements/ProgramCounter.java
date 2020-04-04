@@ -28,11 +28,6 @@ public class ProgramCounter extends Element implements Observable {
     }
 
     @Override
-    public void cleanUp() {
-
-    }
-
-    @Override
     public String getObservedValues() {
         return null;
     }

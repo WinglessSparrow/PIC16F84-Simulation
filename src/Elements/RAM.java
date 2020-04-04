@@ -44,9 +44,4 @@ public class RAM extends Element {
 
     }
 
-    @Override
-    public void cleanUp() {
-
-    }
-
 }

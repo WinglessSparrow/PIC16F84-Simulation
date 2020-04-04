@@ -6,7 +6,7 @@ import Helpers.Element;
 
 public class Steuerwerk extends Element {
 
-    private static final int BUS_DECODER = 0;
+    private int[] commandSeq;
 
     private Element[] elements;
     private InstructionDecoder decoder;
@@ -20,7 +20,12 @@ public class Steuerwerk extends Element {
         pc = (ProgramCounter) elements[3];
     }
 
+    //TODO TEMP!
     boolean a = false;
+
+    public int[] getCommandSeq() {
+        return commandSeq;
+    }
 
     public void activateElements(int code) {
         //TODO find elements which have to be activated
@@ -35,6 +40,8 @@ public class Steuerwerk extends Element {
 
         CommandBase command = CommandsAtlas.getCommand(code);
 
+        commandSeq = command.getExecutionSequence();
+        command.setFlags(elements);
     }
 
     @Override
@@ -42,11 +49,6 @@ public class Steuerwerk extends Element {
         activateElements(decoder.getDecodedCommand());
         pc.inc();
         System.out.println("ProgramCounter: " + pc.getCountedValue());
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 
 }

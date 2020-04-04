@@ -31,8 +31,4 @@ public class ProgramMem extends Element {
         }
     }
 
-    @Override
-    public void cleanUp() {
-
-    }
 }

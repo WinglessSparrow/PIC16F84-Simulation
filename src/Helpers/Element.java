@@ -34,7 +34,4 @@ public abstract class Element {
 
     //executeLogic
     public abstract void step();
-
-    //clean up the state after execution
-    public abstract void cleanUp();
 }

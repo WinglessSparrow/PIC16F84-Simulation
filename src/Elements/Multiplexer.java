@@ -25,12 +25,5 @@ public class Multiplexer extends Element {
     @Override
     public void step() {
         storedValue = getFromBus((usingBus1) ? busIn1 : busIn2);
-        cleanUp();
     }
-
-    @Override
-    public void cleanUp() {
-        active = false;
-    }
-
 }

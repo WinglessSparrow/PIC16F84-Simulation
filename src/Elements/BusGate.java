@@ -15,12 +15,5 @@ public class BusGate extends Element {
     @Override
     public void step() {
         putOnBus(getFromBus(Simulation.BUS_I_REG) & mask);
-        cleanUp();
     }
-
-    @Override
-    public void cleanUp() {
-        active = false;
-    }
-
 }

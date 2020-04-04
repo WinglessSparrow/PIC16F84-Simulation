@@ -18,7 +18,4 @@ public class InstructionRegister extends Element {
         command = getFromBus(Simulation.BUS_MEM);
     }
 
-    @Override
-    public void cleanUp() {
-    }
 }

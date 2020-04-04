@@ -56,17 +56,20 @@ public class Simulation implements Runnable {
 
     public void step() {
         // here the program first steps the PMemory, IReg, ID, and Steuerwerk
-        //then the gates from IReg bus
+        //Steuerwerk gets the Commands and then this function fetches them
 
         //fetch
-        for (Element element : elements) {
-            if (element.isActive()) {
-                element.step();
-            }
+        for (int i = 0; i < 4; i++) {
+            elements[i].step();
         }
 
-        //execute
+        //Steuerwerk step
+        elements[8].step();
 
+        //execute
+        for (int idx : ((Steuerwerk) elements[8]).getCommandSeq()) {
+            elements[idx].step();
+        }
     }
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

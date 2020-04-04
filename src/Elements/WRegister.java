@@ -31,12 +31,5 @@ public class WRegister extends Element {
         if (putOnFileBus) putOnBus(storedValue);
 
         System.err.println("Storing in WReg: " + storedValue);
-        cleanUp();
     }
-
-    @Override
-    public void cleanUp() {
-        active = false;
-    }
-
 }

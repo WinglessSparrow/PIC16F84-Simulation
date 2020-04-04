@@ -26,8 +26,4 @@ public class InstructionDecoder extends Element {
         decodedCommand = decode(command);
     }
 
-    @Override
-    public void cleanUp() {
-    }
-
 }

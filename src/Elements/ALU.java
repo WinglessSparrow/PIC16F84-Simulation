@@ -76,8 +76,7 @@ public class ALU extends Element {
         cleanUp();
     }
 
-    @Override
-    public void cleanUp() {
+    private void cleanUp() {
         destination = true;
         active = false;
     }
