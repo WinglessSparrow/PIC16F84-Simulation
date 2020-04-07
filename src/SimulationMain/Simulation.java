@@ -48,8 +48,7 @@ public class Simulation implements Runnable {
         elements[5] = new WRegister(buses[BUS_INTERN_FILE], buses);
         elements[6] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
         elements[7] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[5], (Multiplexer) elements[6]);
-//must be the last element in the array
-        elements[8] = new Steuerwerk(elements);
+        elements[8] = new ControlUnit(elements);
 
         System.out.println("Done creating");
     }
@@ -67,7 +66,7 @@ public class Simulation implements Runnable {
         elements[8].step();
 
         //execute
-        for (int idx : ((Steuerwerk) elements[8]).getCommandSeq()) {
+        for (int idx : ((ControlUnit) elements[8]).getCommandSeq()) {
             elements[idx].step();
         }
     }
