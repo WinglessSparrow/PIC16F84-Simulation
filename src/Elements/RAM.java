@@ -38,7 +38,6 @@ public class RAM extends Element {
         } else {
             setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));
         }
-
     }
 
     public void setWriting(boolean writing) {
