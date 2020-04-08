@@ -62,7 +62,7 @@ public class ALU extends Element {
                 System.out.println("ALU IOR");
                 break;
             default:
-                System.out.println("Something went wrong, you forgot to set the Action");
+                System.out.println("Something went wrong, you forgot to set the Action or smth");
                 result = -1;
         }
 
@@ -72,13 +72,5 @@ public class ALU extends Element {
         } else {
             accumulator.setStoredValue(result);
         }
-
-        cleanUp();
     }
-
-    private void cleanUp() {
-        destination = true;
-        active = false;
-    }
-
 }

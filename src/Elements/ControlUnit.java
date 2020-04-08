@@ -1,10 +1,10 @@
 package Elements;
 
 import Commands.CommandBase;
-import Helpers.CommandsAtlas;
+import Helpers.CommandAtlas;
 import Helpers.Element;
 
-public class Steuerwerk extends Element {
+public class ControlUnit extends Element {
 
     private int[] commandSeq;
 
@@ -12,16 +12,13 @@ public class Steuerwerk extends Element {
     private InstructionDecoder decoder;
     private ProgramCounter pc;
 
-    public Steuerwerk(Element[] elements) {
+    public ControlUnit(Element[] elements) {
         super(null, null);
         active = true;
         this.elements = elements;
         decoder = (InstructionDecoder) elements[2];
         pc = (ProgramCounter) elements[3];
     }
-
-    //TODO TEMP!
-    boolean a = false;
 
     public int[] getCommandSeq() {
         return commandSeq;
@@ -31,16 +28,15 @@ public class Steuerwerk extends Element {
         //TODO find elements which have to be activated
         System.out.println("Steurwerk: " + code);
 
-        if (!a) {
-            code = 0x3000;
-            a = true;
-        } else {
-            code = 0x3e00;
-        }
+        //TODO Temp, before decoding is done
+        code = 0x3000;
 
-        CommandBase command = CommandsAtlas.getCommand(code);
+        //getting the command
+        CommandBase command = CommandAtlas.getCommand(code);
 
+        //getting the sequence in which the elements should tick
         commandSeq = command.getExecutionSequence();
+        //setting the flag within all the components
         command.setFlags(elements);
     }
 
