@@ -25,10 +25,8 @@ public class ControlUnit extends Element {
     }
 
     public void activateElements(int code) {
+        System.out.println("Control Unit: " + Integer.toHexString(code));
         if (code != 0) {
-            //TODO find elements which have to be activated
-            System.out.println("Control Unit: " + Integer.toHexString(code));
-
             //getting the command
             CommandBase command = CommandAtlas.getCommand(code);
 

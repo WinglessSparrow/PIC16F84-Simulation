@@ -7,21 +7,17 @@ public class InstructionDecoder extends Element {
 
     private int decodedCommand;
 
-    private int tmp;
-
     public InstructionDecoder(Bus[] busesIn) {
         super(null, busesIn);
     }
 
     private int decode(int command) {
 
-        command = 64;
-
         //Mask all 14 Bits. If there are more than 14 Bits, they are cut away
         command = command & 16383;
 
         //Mask Bit 14 and 13
-        tmp = command & 12288;
+        int tmp = command & 12288;
 
         //Bit 14,13: 00
         if (tmp == 0) {
