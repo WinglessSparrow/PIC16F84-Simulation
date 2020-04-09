@@ -3,8 +3,9 @@ package Elements;
 import Commands.CommandBase;
 import Helpers.CommandAtlas;
 import Helpers.Element;
+import Interfaces.Observable;
 
-public class ControlUnit extends Element {
+public class ControlUnit extends Element implements Observable {
 
     private int[] commandSeq;
 
@@ -46,4 +47,8 @@ public class ControlUnit extends Element {
         System.out.println("ProgramCounter: " + pc.getCountedValue());
     }
 
+    @Override
+    public String getObservedValues() {
+        return null;
+    }
 }

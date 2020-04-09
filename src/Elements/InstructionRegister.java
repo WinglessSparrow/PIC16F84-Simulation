@@ -1,9 +1,10 @@
 package Elements;
 
 import Helpers.Element;
+import Interfaces.Observable;
 import SimulationMain.Simulation;
 
-public class InstructionRegister extends Element {
+public class InstructionRegister extends Element implements Observable {
 
     private int command;
 
@@ -18,4 +19,8 @@ public class InstructionRegister extends Element {
         command = getFromBus(Simulation.BUS_MEM);
     }
 
+    @Override
+    public String getObservedValues() {
+        return null;
+    }
 }

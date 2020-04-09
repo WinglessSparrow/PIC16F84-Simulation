@@ -2,13 +2,15 @@ package Elements;
 
 import Helpers.BitManipulator;
 import Helpers.Element;
+import Interfaces.Observable;
 import SimulationMain.Simulation;
 
-public class RAM extends Element {
+public class RAM extends Element implements Observable {
 
-    public static final int IDR_ADD = 0, TMR0_OPTION = 1, PCL = 2, STATUS = 3, FSR = 4, PORT_TRIS_A = 5, PORT_TRIS_B = 6;
+    public static final int STATUS = 3;
+    public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2;
 
-    private int[] data = new int[255];
+    static private int[] data = new int[255];
     private boolean writing = false;
 
     private Multiplexer multiplexer;
@@ -23,7 +25,7 @@ public class RAM extends Element {
         //so we could get the offset, to offset the input idx
         //so the bx1 will be bx10000000
         // 48 is the ASSCI offset fro decimal numbers
-        int RP0 = BitManipulator.toNLongBinaryString(8, data[5]).charAt(4) - 48;
+        int RP0 = BitManipulator.toNLongBinaryString(8, data[STATUS]).charAt(4) - 48;
         int mask = (RP0 == 0) ? 0 : RP0 << 7;
 
         return idx | mask;
@@ -66,9 +68,22 @@ public class RAM extends Element {
         return data[idx];
     }
 
+    static public void setSpecificBits(boolean high, int register, int specificBit) {
+        if (high) {
+            data[register] = BitManipulator.setBit(data[register], specificBit);
+        } else {
+            data[register] = BitManipulator.clearBit(data[register], specificBit);
+        }
+    }
+
     private void printAll() {
         for (int i : data) {
             System.out.println(i);
         }
+    }
+
+    @Override
+    public String getObservedValues() {
+        return null;
     }
 }

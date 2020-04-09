@@ -8,7 +8,7 @@ public class ALU extends Element {
     private Multiplexer multiplexer;
 
     public enum Actions {
-        ADD, SUB, AND, OR, XOR, IOR
+        ADD, SUB, AND, OR, XOR
     }
 
     public enum Destinations {
@@ -18,10 +18,10 @@ public class ALU extends Element {
     private Actions action;
     private Destinations destination;
 
-    public ALU(Bus busOut, Bus[] busesIn, WRegister accumulaor, Multiplexer multiplexer) {
+    public ALU(Bus busOut, Bus[] busesIn, WRegister accumulator, Multiplexer multiplexer) {
         super(busOut, busesIn);
 
-        this.accumulator = accumulaor;
+        this.accumulator = accumulator;
         this.multiplexer = multiplexer;
 
         active = false;
@@ -48,25 +48,24 @@ public class ALU extends Element {
 
         switch (action) {
             case ADD:
-                System.out.println("ALU, ADDING");
+                result = wLiteral + literal;
+                setBitsAdd(wLiteral, result);
                 break;
             case SUB:
-                System.out.println("ALU, SUBTRACTING");
+                result = literal - wLiteral;
+                setBitsSub(wLiteral, literal, result);
                 break;
             case AND:
-                System.out.println("ALU, AND");
+                result = wLiteral & literal;
                 break;
             case OR:
-                System.out.println("ALU OR");
+                result = wLiteral | literal;
                 break;
             case XOR:
-                System.out.println("ALU XOR");
-                break;
-            case IOR:
-                System.out.println("ALU IOR");
+                result = wLiteral ^ literal;
                 break;
             default:
-                System.out.println("Something went wrong, you forgot to set the Action or smth");
+                System.out.println("Something went wrong in ALU, you forgot to set the Action?");
                 result = -1;
         }
 
@@ -76,5 +75,41 @@ public class ALU extends Element {
         } else {
             accumulator.setStoredValue(result);
         }
+    }
+
+    private void setBitsSub(int wRegister, int operand, int result) {
+        boolean carry = false, dcarry = false, zero = false;
+        if (wRegister <= operand) {
+            carry = true;
+        }
+        if ((result & 0b1111) < (wRegister & 0b1111)) {
+            dcarry = true;
+        }
+        if (result == 0) {
+            zero = true;
+        }
+
+        setBits(carry, dcarry, zero);
+    }
+
+    private void setBitsAdd(int wRegister, int result) {
+        boolean carry = false, dcarry = false, zero = false;
+        if (result > 255) {
+            carry = true;
+        }
+        if ((result & 0b1111) < (wRegister & 0b1111)) {
+            dcarry = true;
+        }
+        if (result == 0) {
+            zero = true;
+        }
+
+        setBits(carry, dcarry, zero);
+    }
+
+    private void setBits(boolean carry, boolean dcarry, boolean zero) {
+        RAM.setSpecificBits(carry, RAM.STATUS, RAM.CARRY_BIT);
+        RAM.setSpecificBits(dcarry, RAM.STATUS, RAM.DIGIT_CARRY_BIT);
+        RAM.setSpecificBits(zero, RAM.STATUS, RAM.ZERO_BIT);
     }
 }

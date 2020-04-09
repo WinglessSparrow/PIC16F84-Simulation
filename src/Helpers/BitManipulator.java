@@ -19,4 +19,12 @@ public class BitManipulator {
         }
         return temp;
     }
+
+    public static int setBit(int idx, int value) {
+        return value |= (1 << idx);
+    }
+
+    public static int clearBit(int idx, int value) {
+        return value &= ~(1 << idx);
+    }
 }

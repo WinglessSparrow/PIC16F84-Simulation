@@ -1,9 +1,10 @@
 package Elements;
 
 import Helpers.Element;
+import Interfaces.Observable;
 import SimulationMain.Simulation;
 
-public class WRegister extends Element {
+public class WRegister extends Element implements Observable {
 
     private int storedValue;
     private boolean putOnFileBus = false;
@@ -32,5 +33,10 @@ public class WRegister extends Element {
 
         System.out.println("Storing in WReg: " + Integer.toHexString(storedValue));
 
+    }
+
+    @Override
+    public String getObservedValues() {
+        return null;
     }
 }

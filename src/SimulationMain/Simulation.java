@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 public class Simulation implements Runnable {
 
     //here idxes off all buses
-    public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIC_ADDR = 3, BUS_ADDR_STACK = 4, BUS_PCLATCH = 5, BUS_MEM = 6;
+    public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_ADDR_STACK = 4, BUS_PCLATCH = 5, BUS_MEM = 6;
     public static final int PROM = 0, PC = 3, BUS_8GATE = 4, BUS_7GATE = 5, BUS_11GATE = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
 
     private boolean isRunning;
@@ -50,15 +50,15 @@ public class Simulation implements Runnable {
         //mask last 8 bits
         elements[BUS_8GATE] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
         //mask last 7 bits
-        elements[BUS_7GATE] = new BusGate(buses[BUS_DIC_ADDR], buses, 0x7f);
+        elements[BUS_7GATE] = new BusGate(buses[BUS_DIR_ADDR], buses, 0x7f);
         //mask last 11 bits
-        elements[BUS_11GATE] = new BusGate(buses[BUS_DIC_ADDR], buses, 0x7ff);
+        elements[BUS_11GATE] = new BusGate(buses[BUS_DIR_ADDR], buses, 0x7ff);
 
         //each element MUST have a static idx
         elements[W_REGISTER] = new WRegister(buses[BUS_INTERN_FILE], buses);
         elements[ALU_MULTIPLEXER] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
         elements[ALU] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[W_REGISTER], (Multiplexer) elements[ALU_MULTIPLEXER]);
-        elements[RAM_MULTIPLEXER] = new Multiplexer(buses, BUS_DIC_ADDR, BUS_INTERN_FILE);
+        elements[RAM_MULTIPLEXER] = new Multiplexer(buses, BUS_DIR_ADDR, BUS_INTERN_FILE);
         elements[RAM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
         elements[CU] = new ControlUnit(elements);
 
