@@ -15,6 +15,8 @@ public class InstructionDecoder extends Element {
 
     private int decode(int command) {
 
+        command = 64;
+
         //Mask all 14 Bits. If there are more than 14 Bits, they are cut away
         command = command & 16383;
 
@@ -30,12 +32,23 @@ public class InstructionDecoder extends Element {
                 tmp = command & 15;
                 if (tmp == 0) {
                     //Bits 14,13,12,11,10,9,8
-                    //Commands: NOP, MOVWF
+                    //Commands: NOP
                     decodedCommand = command & 16256;
                 } else {
-                    //All Bits
-                    //Control Commands: RETURN, SLEEP, ....
-                    decodedCommand = command;
+                    //Bit 8
+                    tmp = command & 128;
+                    if (tmp == 0) {
+                        //All Bits
+                        //Control Commands: RETURN, SLEEP, ....
+                        decodedCommand = command;
+                    } else {
+                        //Bits 14,13,12,11,10,9,8
+                        //Commands: MOVWF
+                        decodedCommand = command & 16256;
+                    }
+
+
+
                 }
             } else if (tmp == 256) {
                 //Bits 14,13,12,11,10,9,8
