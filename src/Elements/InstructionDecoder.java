@@ -46,9 +46,6 @@ public class InstructionDecoder extends Element {
                         //Commands: MOVWF
                         decodedCommand = command & 16256;
                     }
-
-
-
                 }
             } else if (tmp == 256) {
                 //Bits 14,13,12,11,10,9,8
