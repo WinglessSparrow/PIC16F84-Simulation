@@ -6,16 +6,16 @@ public class Multiplexer extends Element {
 
     private int busIn1, busIn2;
     private int storedValue;
-    private boolean usingBus1 = true;
+    private boolean usingBusIFile = false;
 
-    public Multiplexer(Bus[] busesIn, int busIn1, int busIn2) {
+    public Multiplexer(Bus[] busesIn, int busIn1, int busIFile) {
         super(null, busesIn);
         this.busIn1 = busIn1;
-        this.busIn2 = busIn2;
+        this.busIn2 = busIFile;
     }
 
-    public void setUsingBus1(boolean usingBus1) {
-        this.usingBus1 = usingBus1;
+    public void setUsingBusIFile(boolean usingBusIFile) {
+        this.usingBusIFile = usingBusIFile;
     }
 
     public int getStoredValue() {
@@ -24,6 +24,6 @@ public class Multiplexer extends Element {
 
     @Override
     public void step() {
-        storedValue = getFromBus((usingBus1) ? busIn1 : busIn2);
+        storedValue = getFromBus((usingBusIFile) ? busIn2 : busIn1);
     }
 }

@@ -21,10 +21,25 @@ public class RAM extends Element {
         //getting the 5th bit, because it's the offset of the banks, and shift it 7 positions to the left
         //so we could get the offset, to offset the input idx
         //so the bx1 will be bx10000000
-        int RP0 = Integer.toBinaryString(data[4]).charAt(4);
+        // 48 is the ASSCI offset fro decimal numbers
+        int RP0 = to8LongBinaryString().charAt(4) - 48;
         int mask = (RP0 == 0) ? 0 : RP0 << 7;
 
         return idx | mask;
+    }
+
+    private String to8LongBinaryString() {
+        String temp;
+
+        temp = Integer.toBinaryString(data[4]);
+        //if the binary String is shorter than 8 bits
+        //it could be because toBinaryString cuts all redundant zeros
+        //but I need them
+        while (temp.length() < 8) {
+            temp = "0" + temp;
+        }
+
+        return temp;
     }
 
     @Override
@@ -34,10 +49,13 @@ public class RAM extends Element {
 
         //if writing is true it putts on the bus, otherwise it gets from it
         if (writing) {
-            putOnBus(getData(idx));
-        } else {
             setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));
+        } else {
+            putOnBus(getData(idx));
         }
+
+        //TODO Debug
+        printAll();
     }
 
     public void setWriting(boolean writing) {
@@ -59,5 +77,11 @@ public class RAM extends Element {
 
     public int getData(int idx) {
         return data[idx];
+    }
+
+    private void printAll() {
+        for (int i : data) {
+            System.out.println(i);
+        }
     }
 }

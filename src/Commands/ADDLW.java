@@ -1,12 +1,13 @@
 package Commands;
 
 import Helpers.Element;
+import SimulationMain.Simulation;
 
 public class ADDLW extends CommandBase {
 
     public ADDLW() {
         super(new int[]{
-                4, 6, 7
+                Simulation.BUS_8GATE, Simulation.ALU_MULTIPLEXER, Simulation.ALU
         });
     }
 

@@ -25,19 +25,20 @@ public class ControlUnit extends Element {
     }
 
     public void activateElements(int code) {
-        //TODO find elements which have to be activated
-        System.out.println("Steurwerk: " + code);
+        if (code != 0) {
+            //TODO find elements which have to be activated
+            System.out.println("Control Unit: " + Integer.toHexString(code));
 
-        //TODO Temp, before decoding is done
-        code = 0x3000;
+            //getting the command
+            CommandBase command = CommandAtlas.getCommand(code);
 
-        //getting the command
-        CommandBase command = CommandAtlas.getCommand(code);
-
-        //getting the sequence in which the elements should tick
-        commandSeq = command.getExecutionSequence();
-        //setting the flag within all the components
-        command.setFlags(elements);
+            //getting the sequence in which the elements should tick
+            commandSeq = command.getExecutionSequence();
+            //setting the flag within all the components
+            command.setFlags(elements);
+        } else {
+            System.out.println("NOP");
+        }
     }
 
     @Override

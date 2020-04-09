@@ -11,12 +11,11 @@ public class InstructionDecoder extends Element {
 
     public InstructionDecoder(Bus[] busesIn) {
         super(null, busesIn);
-        active = true;
     }
 
     private int decode(int command) {
 
-        //Mask all 14 Bits. If there are more than 14 Bits, they are cut awy
+        //Mask all 14 Bits. If there are more than 14 Bits, they are cut away
         command = command & 16383;
 
         //Mask Bit 14 and 13
@@ -38,7 +37,7 @@ public class InstructionDecoder extends Element {
                     //Control Commands: RETURN, SLEEP, ....
                     decodedCommand = command;
                 }
-            } else if(tmp == 256) {
+            } else if (tmp == 256) {
                 //Bits 14,13,12,11,10,9,8
                 //Commands: CLRW, CLRF
                 decodedCommand = command & 16256;
@@ -65,7 +64,7 @@ public class InstructionDecoder extends Element {
         }
 
         //Bit 14,13: 11
-        else if (tmp == 12288){
+        else if (tmp == 12288) {
             //Bits 12,11
             tmp = command & 3072;
 

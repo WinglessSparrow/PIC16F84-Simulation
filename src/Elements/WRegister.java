@@ -30,6 +30,7 @@ public class WRegister extends Element {
         storedValue = getFromBus(Simulation.BUS_LITERAL);
         if (putOnFileBus) putOnBus(storedValue);
 
-        System.out.println("Storing in WReg: " + storedValue);
+        System.out.println("Storing in WReg: " + Integer.toHexString(storedValue));
+
     }
 }

@@ -11,7 +11,7 @@ public class Simulation implements Runnable {
 
     //here idxes off all buses
     public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIC_ADDR = 3, BUS_ADDR_STACK = 4, BUS_PCLATCH = 5, BUS_MEM = 6;
-    public static final int CU = 10, ALU = 7, ALU_MULTIPLEXER = 6, W_REGISTER = 5, RAM_MULTIPLEXER = 8, RAM = 9, PROM = 0;
+    public static final int PROM = 0, PC = 3, BUS_8GATE = 4, BUS_7GATE = 5, BUS_11GATE = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
 
     private boolean isRunning;
 
@@ -26,7 +26,7 @@ public class Simulation implements Runnable {
         Bus[] buses = new Bus[ammBuses];
 
         //how many elements are there
-        int ammElements = 9;
+        int ammElements = 13;
         //yhis array must be field by hand
         elements = new Element[ammElements];
 
@@ -35,27 +35,31 @@ public class Simulation implements Runnable {
         }
 
         //create a bunch of dummy data
-        int[] dummyData = {1, 17, 3, 4, 10, 20};
+        int[] dummyData = {0x3017, 0x0083, 0x304e};
 
         //creating and connecting all the components
         // TODO make final Elements idx
         // TODO make it not retarded
+
+        //Fetch cycle
         elements[1] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[2] = new InstructionDecoder(buses);
-        elements[3] = new ProgramCounter(buses, 0);
+        elements[PC] = new ProgramCounter(buses, 0);
         elements[PROM] = new ProgramMem(buses[Simulation.BUS_MEM], dummyData, (ProgramCounter) elements[3]);
-        //mask last 8 bits
-        elements[4] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
-        //mask last 9 bits
-        elements[11] = new BusGate(buses[BUS_DIC_ADDR], buses, 0x7f);
-        //mask last 11 bits
-        elements[12] = new BusGate(buses[BUS_DIC_ADDR], buses, 0x7ff);
 
+        //mask last 8 bits
+        elements[BUS_8GATE] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
+        //mask last 7 bits
+        elements[BUS_7GATE] = new BusGate(buses[BUS_DIC_ADDR], buses, 0x7f);
+        //mask last 11 bits
+        elements[BUS_11GATE] = new BusGate(buses[BUS_DIC_ADDR], buses, 0x7ff);
+
+        //each element MUST have a static idx
         elements[W_REGISTER] = new WRegister(buses[BUS_INTERN_FILE], buses);
         elements[ALU_MULTIPLEXER] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
-        elements[ALU] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[5], (Multiplexer) elements[6]);
+        elements[ALU] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[W_REGISTER], (Multiplexer) elements[ALU_MULTIPLEXER]);
         elements[RAM_MULTIPLEXER] = new Multiplexer(buses, BUS_DIC_ADDR, BUS_INTERN_FILE);
-        elements[RAM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[9]);
+        elements[RAM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
         elements[CU] = new ControlUnit(elements);
 
         System.out.println("Done creating");
@@ -70,13 +74,21 @@ public class Simulation implements Runnable {
             elements[i].step();
         }
 
-        //Steuerwerk step
-        elements[8].step();
+        //ControlUnit step
+        elements[CU].step();
 
         //execute
-        for (int idx : ((ControlUnit) elements[8]).getCommandSeq()) {
-            elements[idx].step();
+
+        //getting the sequence
+        int[] executionSeq = ((ControlUnit) elements[CU]).getCommandSeq();
+        //if nop command or wrong input, then it will return null
+        if (executionSeq != null) {
+            //execute command in the right sequence
+            for (int idx : executionSeq) {
+                elements[idx].step();
+            }
         }
+
     }
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
