@@ -1,5 +1,6 @@
 package Elements;
 
+import Helpers.BitManipulator;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
@@ -22,24 +23,10 @@ public class RAM extends Element {
         //so we could get the offset, to offset the input idx
         //so the bx1 will be bx10000000
         // 48 is the ASSCI offset fro decimal numbers
-        int RP0 = to8LongBinaryString().charAt(4) - 48;
+        int RP0 = BitManipulator.toNLongBinaryString(8, data[5]).charAt(4) - 48;
         int mask = (RP0 == 0) ? 0 : RP0 << 7;
 
         return idx | mask;
-    }
-
-    private String to8LongBinaryString() {
-        String temp;
-
-        temp = Integer.toBinaryString(data[4]);
-        //if the binary String is shorter than 8 bits
-        //it could be because toBinaryString cuts all redundant zeros
-        //but I need them
-        while (temp.length() < 8) {
-            temp = "0" + temp;
-        }
-
-        return temp;
     }
 
     @Override

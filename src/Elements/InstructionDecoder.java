@@ -6,12 +6,14 @@ import SimulationMain.Simulation;
 public class InstructionDecoder extends Element {
 
     private int decodedCommand;
+    private int inputCommand;
 
     public InstructionDecoder(Bus[] busesIn) {
         super(null, busesIn);
     }
 
     private int decode(int command) {
+        inputCommand = command;
 
         //Mask all 14 Bits. If there are more than 14 Bits, they are cut away
         command = command & 16383;
@@ -110,6 +112,10 @@ public class InstructionDecoder extends Element {
 
     public int getDecodedCommand() {
         return decodedCommand;
+    }
+
+    public int getInputCommand() {
+        return inputCommand;
     }
 
     @Override

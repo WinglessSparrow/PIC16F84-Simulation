@@ -6,13 +6,17 @@ public class ALU extends Element {
 
     private WRegister accumulator;
     private Multiplexer multiplexer;
-    private boolean destination = true;
 
-    enum Actions {
+    public enum Actions {
         ADD, SUB, AND, OR, XOR, IOR
     }
 
+    public enum Destinations {
+        BUS, W_REG
+    }
+
     private Actions action;
+    private Destinations destination;
 
     public ALU(Bus busOut, Bus[] busesIn, WRegister accumulaor, Multiplexer multiplexer) {
         super(busOut, busesIn);
@@ -27,7 +31,7 @@ public class ALU extends Element {
         this.action = action;
     }
 
-    public void setDestination(boolean destination) {
+    public void setDestination(Destinations destination) {
         this.destination = destination;
     }
 
@@ -67,7 +71,7 @@ public class ALU extends Element {
         }
 
         //destination bit check
-        if (destination) {
+        if (destination == Destinations.BUS) {
             putOnBus(result);
         } else {
             accumulator.setStoredValue(result);
