@@ -23,7 +23,7 @@ public class InstructionDecoder extends Element {
 
         //Bit 14,13: 00
         if (tmp == 0x0) {
-            tmp = command & 0x3000;
+            tmp = command & 0xF00;
 
             if (tmp == 0x0) {
                 //Bits 4,3,2,1;
