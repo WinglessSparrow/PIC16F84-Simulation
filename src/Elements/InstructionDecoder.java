@@ -119,7 +119,8 @@ public class InstructionDecoder extends Element {
     }
 
     public boolean isDestinationBitSet() {
-        return (inputCommand & (1 << 7)) == 0b10000000;
+        //masking the Destination bit, and then shifting it to the beginning
+        return ((inputCommand & (1 << 7)) >> 7) == 1;
     }
 
     @Override

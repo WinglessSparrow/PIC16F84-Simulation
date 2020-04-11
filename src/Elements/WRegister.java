@@ -26,7 +26,7 @@ public class WRegister extends Element implements Observable {
         return storedValue;
     }
 
-    public void destinationHere() {
+    public void getFrom8BitBus() {
         storedValue = getFromBus(Simulation.BUS_INTERN_FILE);
         System.out.println("Storing in W_Register: " + storedValue);
     }

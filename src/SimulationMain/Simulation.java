@@ -36,12 +36,10 @@ public class Simulation implements Runnable {
         }
 
         //create a bunch of dummy data
-        int[] dummyData = {0x3017, 0x0083, 0x0a03};
+        int[] dummyData = {0x3017, 0x0083, 0x0a03, 0x0503, 0x0903, 0x0c03, 0x0d03, 0x0e03};
 
         //creating and connecting all the components
-        // TODO make final Elements idx
-        // TODO make it not retarded
-
+        // each element MUST have a static idx
         //Fetch cycle
         elements[1] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[I_DECODER] = new InstructionDecoder(buses);
@@ -55,7 +53,7 @@ public class Simulation implements Runnable {
         //mask last 11 bits
         elements[BUS_11GATE] = new BusGate(buses[BUS_DIR_ADDR], buses, 0x7ff);
 
-        //each element MUST have a static idx
+        //Main Components
         elements[W_REGISTER] = new WRegister(buses[BUS_INTERN_FILE], buses);
         elements[ALU_MULTIPLEXER] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
         elements[ALU] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[W_REGISTER], (Multiplexer) elements[ALU_MULTIPLEXER]);

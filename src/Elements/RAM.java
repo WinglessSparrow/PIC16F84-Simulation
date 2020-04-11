@@ -42,49 +42,59 @@ public class RAM extends Element implements Observable {
         //getting the correct idx
         int idx = setOffsetIdx(multiplexer.getStoredValue());
 
+        int temp = 0;
+
         switch (rOperation) {
             case INCREASE:
-                data[idx] = increase(data[idx]);
+                temp = increase(data[idx]);
                 break;
             case DECREASE:
-                data[idx] = decrease(data[idx]);
+                temp = decrease(data[idx]);
                 break;
             case ROTATE_LEFT:
-                data[idx] = rotateLeft(data[idx]);
+                temp = rotateLeft(data[idx]);
                 break;
             case ROTATE_RIGHT:
-                data[idx] = rotateRight(data[idx]);
+                temp = rotateRight(data[idx]);
                 break;
             case COMPLEMENT:
-                data[idx] = complement(data[idx]);
+                temp = complement(data[idx]);
                 break;
             case SWAP:
-                data[idx] = swap(data[idx]);
-                break;
-            default:
-                data[idx] = data[idx];
+                temp = swap(data[idx]);
                 break;
         }
 
-        //resetting the operation type
-        rOperation = RegisterOperation.NONE;
 
         //if writing is true it putts on the bus, otherwise it gets from it
         if (mode == Destinations.RAM) {
-            setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));
+            //if the data is coming after the operation within the RAM
+            if (rOperation != RegisterOperation.NONE) {
+                setData(idx, temp);
+            } else {
+                setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));
+            }
         } else {
-            putOnBus(data[idx]);
+            //if the data is coming after the operation within the RAM
+            if (rOperation != RegisterOperation.NONE) {
+                putOnBus(temp);
+            } else {
+                putOnBus(data[idx]);
+            }
         }
+        //resetting the operation type
+        rOperation = RegisterOperation.NONE;
+
 
         //TODO Debug
-        printAll();
+        printChanges(idx);
     }
 
     public void setMode(Destinations mode) {
         this.mode = mode;
     }
 
-    public void setrOperation(RegisterOperation rOperation) {
+    public void setROperation(RegisterOperation rOperation) {
         this.rOperation = rOperation;
     }
 
@@ -109,9 +119,13 @@ public class RAM extends Element implements Observable {
         }
     }
 
-    private void printAll() {
-        for (int i : data) {
-            System.out.println(i);
+    private void printChanges(int changedIdx) {
+        if (changedIdx - 3 < 0 || changedIdx + 3 > data.length) {
+            System.out.println(changedIdx + " >> " + data[changedIdx]);
+        } else {
+            for (int i = changedIdx - 3; i < changedIdx + 3; i++) {
+                System.out.println(i + " >> " + data[i]);
+            }
         }
     }
 
@@ -122,20 +136,21 @@ public class RAM extends Element implements Observable {
 
     private int rotateLeft(int value) {
         int temp = value;
-        temp = (temp << 1) | (temp >> 7);
+        temp = (temp << 1) | (temp & 0x80 >> 7);
         setCarry(value, temp);
         return temp;
     }
 
     private int rotateRight(int value) {
         int temp = value;
-        temp = (temp >> 1) | (temp << 7);
+        temp = (temp >> 1) | ((temp & 1) << 7);
         setCarry(value, temp);
         return temp;
     }
 
     private int swap(int value) {
-        return 0;
+        //swapping the nibbles
+        return ((value & 0x0f) << 4 | (value & 0xf0) >> 4);
     }
 
     private int increase(int value) {
@@ -152,7 +167,8 @@ public class RAM extends Element implements Observable {
     }
 
     private int complement(int value) {
-        value = ~value;
+        value = ~value & 0xff;
+        System.out.println(Integer.toBinaryString(value));
         setZeroBit(value);
         return value;
     }
