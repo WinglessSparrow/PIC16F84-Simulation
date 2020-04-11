@@ -1,5 +1,6 @@
 package Elements;
 
+import Helpers.Destinations;
 import Helpers.Element;
 
 public class ALU extends Element {
@@ -9,10 +10,6 @@ public class ALU extends Element {
 
     public enum Actions {
         ADD, SUB, AND, OR, XOR
-    }
-
-    public enum Destinations {
-        BUS, W_REG
     }
 
     private Actions action;
@@ -34,6 +31,7 @@ public class ALU extends Element {
     public void setDestination(Destinations destination) {
         this.destination = destination;
     }
+
 
     @Override
     public void step() {
@@ -70,7 +68,7 @@ public class ALU extends Element {
         }
 
         //destination bit check
-        if (destination == Destinations.BUS) {
+        if (destination == Destinations.RAM) {
             putOnBus(result);
         } else {
             accumulator.setStoredValue(result);

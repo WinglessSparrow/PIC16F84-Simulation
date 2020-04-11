@@ -3,6 +3,7 @@ package Commands;
 import Elements.Multiplexer;
 import Elements.RAM;
 import Elements.WRegister;
+import Helpers.Destinations;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
@@ -18,6 +19,11 @@ public class MOVWF extends CommandBase {
     public void setFlags(Element[] elements) {
         ((Multiplexer) elements[Simulation.RAM_MULTIPLEXER]).setUsingBusIFile(false);
         ((WRegister) elements[Simulation.W_REGISTER]).setPutOnFileBus(true);
-        ((RAM) elements[Simulation.RAM]).setWriting(true);
+        ((RAM) elements[Simulation.RAM]).setMode(Destinations.RAM);
+    }
+
+    @Override
+    public void cleanUpInstructions(Element[] elements) {
+
     }
 }

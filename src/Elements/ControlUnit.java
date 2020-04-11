@@ -7,7 +7,7 @@ import Interfaces.Observable;
 
 public class ControlUnit extends Element implements Observable {
 
-    private int[] commandSeq;
+    private CommandBase command;
 
     private Element[] elements;
     private InstructionDecoder decoder;
@@ -21,20 +21,20 @@ public class ControlUnit extends Element implements Observable {
         pc = (ProgramCounter) elements[3];
     }
 
-    public int[] getCommandSeq() {
-        return commandSeq;
+    public CommandBase getCommand() {
+        return command;
     }
 
+
     public void activateElements(int code) {
-        System.out.println("Control Unit: " + Integer.toHexString(code));
         if (code != 0) {
             //getting the command
-            CommandBase command = CommandAtlas.getCommand(code);
-
-            //getting the sequence in which the elements should tick
-            commandSeq = command.getExecutionSequence();
-            //setting the flag within all the components
-            command.setFlags(elements);
+            command = CommandAtlas.getCommand(code);
+            try {
+                System.out.println("Control Unit got: " + command.toString());
+            } catch (NullPointerException e) {
+                System.out.println("Command '0x" + Integer.toHexString(code) + "' does not exist");
+            }
         } else {
             System.out.println("NOP");
         }

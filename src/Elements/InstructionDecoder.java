@@ -106,7 +106,7 @@ public class InstructionDecoder extends Element {
         }
 
 
-        System.out.println("decoded: " + Integer.toBinaryString(decodedCommand));
+        System.out.println("decoded: 0x" + Integer.toHexString(decodedCommand));
         return decodedCommand;
     }
 
@@ -116,6 +116,10 @@ public class InstructionDecoder extends Element {
 
     public int getInputCommand() {
         return inputCommand;
+    }
+
+    public boolean isDestinationBitSet() {
+        return (inputCommand & (1 << 7)) == 0b10000000;
     }
 
     @Override

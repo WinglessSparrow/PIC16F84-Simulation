@@ -1,5 +1,6 @@
 package SimulationMain;
 
+import Commands.CommandBase;
 import Elements.*;
 import Helpers.Element;
 
@@ -11,7 +12,7 @@ public class Simulation implements Runnable {
 
     //here idxes off all buses
     public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_ADDR_STACK = 4, BUS_PCLATCH = 5, BUS_MEM = 6;
-    public static final int PROM = 0, PC = 3, BUS_8GATE = 4, BUS_7GATE = 5, BUS_11GATE = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
+    public static final int PROM = 0, I_DECODER = 2, PC = 3, BUS_8GATE = 4, BUS_7GATE = 5, BUS_11GATE = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
 
     private boolean isRunning;
 
@@ -35,7 +36,7 @@ public class Simulation implements Runnable {
         }
 
         //create a bunch of dummy data
-        int[] dummyData = {0x3017, 0x0083, 0x304e};
+        int[] dummyData = {0x3017, 0x0083, 0x0a03};
 
         //creating and connecting all the components
         // TODO make final Elements idx
@@ -43,7 +44,7 @@ public class Simulation implements Runnable {
 
         //Fetch cycle
         elements[1] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
-        elements[2] = new InstructionDecoder(buses);
+        elements[I_DECODER] = new InstructionDecoder(buses);
         elements[PC] = new ProgramCounter(buses, 0);
         elements[PROM] = new ProgramMem(buses[Simulation.BUS_MEM], dummyData, (ProgramCounter) elements[3]);
 
@@ -80,13 +81,17 @@ public class Simulation implements Runnable {
         //execute
 
         //getting the sequence
-        int[] executionSeq = ((ControlUnit) elements[CU]).getCommandSeq();
+        CommandBase command = ((ControlUnit) elements[CU]).getCommand();
         //if nop command or wrong input, then it will return null
-        if (executionSeq != null) {
+        if (command != null) {
+            //setting flags
+            command.setFlags(elements);
             //execute command in the right sequence
-            for (int idx : executionSeq) {
+            for (int idx : command.getExecutionSequence()) {
                 elements[idx].step();
             }
+            //actions after teh sequence
+            command.cleanUpInstructions(elements);
         }
 
     }

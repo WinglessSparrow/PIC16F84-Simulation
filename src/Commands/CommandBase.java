@@ -13,5 +13,13 @@ public abstract class CommandBase {
         return executionSequence;
     }
 
+    /*
+     *set all the necessary flags
+     */
     public abstract void setFlags(Element[] elements);
+
+    /*
+     * if something should be executed after the main routine
+     */
+    public abstract void cleanUpInstructions(Element[] elements);
 }
