@@ -1,6 +1,6 @@
 package SimulationMain;
 
-import Commands.CommandBase;
+import CommandsHelpers.CommandBase;
 import Elements.*;
 import Helpers.Element;
 
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 public class Simulation implements Runnable {
 
     //here idxes off all buses
-    public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_ADDR_STACK = 4, BUS_PCLATCH = 5, BUS_MEM = 6;
+    public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_MEM = 4;
     public static final int PROM = 0, I_DECODER = 2, PC = 3, BUS_8GATE = 4, BUS_7GATE = 5, BUS_11GATE = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
 
     private boolean isRunning;
@@ -23,13 +23,10 @@ public class Simulation implements Runnable {
         isRunning = true;
 
         //how many buses are there
-        int ammBuses = 7;
-        Bus[] buses = new Bus[ammBuses];
+        Bus[] buses = new Bus[5];
 
-        //how many elements are there
-        int ammElements = 13;
-        //yhis array must be field by hand
-        elements = new Element[ammElements];
+        //this array must be field by hand
+        elements = new Element[13];
 
         for (int i = 0; i < buses.length; i++) {
             buses[i] = new Bus();

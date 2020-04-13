@@ -1,6 +1,6 @@
 package Elements;
 
-import Commands.CommandBase;
+import CommandsHelpers.CommandBase;
 import Helpers.CommandAtlas;
 import Helpers.Element;
 import Interfaces.Observable;

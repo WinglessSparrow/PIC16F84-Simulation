@@ -1,4 +1,4 @@
-package Commands;
+package CommandsHelpers;
 
 import Elements.InstructionDecoder;
 import Elements.Multiplexer;

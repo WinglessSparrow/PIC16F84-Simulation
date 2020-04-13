@@ -1,5 +1,6 @@
 package Commands;
 
+import CommandsHelpers.CommandBase;
 import Elements.Multiplexer;
 import Elements.RAM;
 import Elements.WRegister;

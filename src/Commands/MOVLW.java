@@ -1,5 +1,6 @@
 package Commands;
 
+import CommandsHelpers.CommandBase;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
