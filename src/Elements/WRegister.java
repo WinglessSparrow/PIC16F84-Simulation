@@ -20,6 +20,7 @@ public class WRegister extends Element implements Observable {
 
     public void setStoredValue(int storedValue) {
         this.storedValue = storedValue;
+        System.out.println("Storing in W_Register: " + storedValue);
     }
 
     public int getStoredValue() {

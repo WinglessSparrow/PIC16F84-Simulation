@@ -33,7 +33,7 @@ public class Simulation implements Runnable {
         }
 
         //create a bunch of dummy data
-        int[] dummyData = {0x3017, 0x0083, 0x0a03, 0x0503, 0x0903, 0x0c03, 0x0d03, 0x0e03};
+        int[] dummyData = {0x3002, 0x3904, 0x3802, 0x3a01};
 
         //creating and connecting all the components
         // each element MUST have a static idx
