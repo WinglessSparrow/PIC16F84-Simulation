@@ -11,8 +11,8 @@ import java.io.InputStreamReader;
 public class Simulation implements Runnable {
 
     //here idxes off all buses
-    public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_MEM = 4;
-    public static final int PROM = 0, I_DECODER = 2, PC = 3, BUS_8GATE = 4, BUS_7GATE = 5, BUS_11GATE = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
+    public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_PROM = 4, BUS_JUMPS = 5;
+    public static final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_8BUS = 4, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
 
     private boolean isRunning;
 
@@ -23,7 +23,7 @@ public class Simulation implements Runnable {
         isRunning = true;
 
         //how many buses are there
-        Bus[] buses = new Bus[5];
+        Bus[] buses = new Bus[6];
 
         //this array must be field by hand
         elements = new Element[13];
@@ -33,22 +33,22 @@ public class Simulation implements Runnable {
         }
 
         //create a bunch of dummy data
-        int[] dummyData = {0x3002, 0x3904, 0x3802, 0x3a01};
+        int[] dummyData = {0x2805, 0x3020, 0, 0, 0, 0x3005};
 
         //creating and connecting all the components
         // each element MUST have a static idx
         //Fetch cycle
-        elements[1] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
+        elements[I_REG] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[I_DECODER] = new InstructionDecoder(buses);
         elements[PC] = new ProgramCounter(buses, 0);
-        elements[PROM] = new ProgramMem(buses[Simulation.BUS_MEM], dummyData, (ProgramCounter) elements[3]);
+        elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], dummyData, (ProgramCounter) elements[3]);
 
         //mask last 8 bits
-        elements[BUS_8GATE] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
+        elements[GATE_8BUS] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
         //mask last 7 bits
-        elements[BUS_7GATE] = new BusGate(buses[BUS_DIR_ADDR], buses, 0x7f);
+        elements[GATE_7BUS] = new BusGate(buses[BUS_DIR_ADDR], buses, 0x7f);
         //mask last 11 bits
-        elements[BUS_11GATE] = new BusGate(buses[BUS_DIR_ADDR], buses, 0x7ff);
+        elements[GATE_11BUS] = new BusGate(buses[BUS_JUMPS], buses, 0x7ff);
 
         //Main Components
         elements[W_REGISTER] = new WRegister(buses[BUS_INTERN_FILE], buses);

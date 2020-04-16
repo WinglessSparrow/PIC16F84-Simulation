@@ -12,7 +12,7 @@ public class MOVWF extends CommandBase {
 
     public MOVWF() {
         super(new int[]{
-                Simulation.BUS_7GATE, Simulation.RAM_MULTIPLEXER, Simulation.W_REGISTER, Simulation.RAM
+                Simulation.GATE_7BUS, Simulation.RAM_MULTIPLEXER, Simulation.W_REGISTER, Simulation.RAM
         });
     }
 

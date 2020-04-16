@@ -9,7 +9,7 @@ public class MOVLW extends CommandBase {
     //TODO GIVE EVERY COMPONENT AN UNIQUE IDX
     public MOVLW() {
         super(new int[]{
-                Simulation.BUS_8GATE, Simulation.W_REGISTER
+                Simulation.GATE_8BUS, Simulation.W_REGISTER
         });
     }
 

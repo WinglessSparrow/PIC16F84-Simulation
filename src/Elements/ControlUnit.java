@@ -37,6 +37,7 @@ public class ControlUnit extends Element implements Observable {
             }
         } else {
             System.out.println("NOP");
+            command = null;
         }
     }
 

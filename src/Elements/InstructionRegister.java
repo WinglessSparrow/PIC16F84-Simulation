@@ -13,10 +13,14 @@ public class InstructionRegister extends Element implements Observable {
         active = true;
     }
 
+    public void clear() {
+        command = 0;
+    }
+
     @Override
     public void step() {
         putOnBus(command);
-        command = getFromBus(Simulation.BUS_MEM);
+        command = getFromBus(Simulation.BUS_PROM);
     }
 
     @Override

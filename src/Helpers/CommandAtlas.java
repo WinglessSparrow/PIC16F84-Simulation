@@ -22,6 +22,7 @@ public class CommandAtlas {
             put(0x3a00, new XORLW());
             put(0x3c00, new SUBLW());
             put(0x3e00, new ADDLW());
+            put(0x2800, new GOTO());
         }
     };
 

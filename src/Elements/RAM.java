@@ -8,7 +8,7 @@ import SimulationMain.Simulation;
 
 public class RAM extends Element implements Observable {
 
-    public static final int STATUS = 3;
+    public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b;
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2;
 
     static private int[] data = new int[255];
@@ -39,55 +39,59 @@ public class RAM extends Element implements Observable {
 
     @Override
     public void step() {
-        //getting the correct idx
-        int idx = setOffsetIdx(multiplexer.getStoredValue());
-
-        int temp = 0;
-
-        switch (rOperation) {
-            case INCREASE:
-                temp = increase(data[idx]);
-                break;
-            case DECREASE:
-                temp = decrease(data[idx]);
-                break;
-            case ROTATE_LEFT:
-                temp = rotateLeft(data[idx]);
-                break;
-            case ROTATE_RIGHT:
-                temp = rotateRight(data[idx]);
-                break;
-            case COMPLEMENT:
-                temp = complement(data[idx]);
-                break;
-            case SWAP:
-                temp = swap(data[idx]);
-                break;
-        }
-
-
-        //if writing is true it putts on the bus, otherwise it gets from it
-        if (mode == Destinations.RAM) {
-            //if the data is coming after the operation within the RAM
-            if (rOperation != RegisterOperation.NONE) {
-                setData(idx, temp);
-            } else {
-                setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));
-            }
+        if (mode == Destinations.PC) {
+            //if I jump
+            putOnBus(data[PCLATH]);
         } else {
-            //if the data is coming after the operation within the RAM
-            if (rOperation != RegisterOperation.NONE) {
-                putOnBus(temp);
-            } else {
-                putOnBus(data[idx]);
+            //getting the correct idx
+            int idx = setOffsetIdx(multiplexer.getStoredValue());
+
+            int temp = 0;
+
+            switch (rOperation) {
+                case INCREASE:
+                    temp = increase(getData(idx));
+                    break;
+                case DECREASE:
+                    temp = decrease(getData(idx));
+                    break;
+                case ROTATE_LEFT:
+                    temp = rotateLeft(getData(idx));
+                    break;
+                case ROTATE_RIGHT:
+                    temp = rotateRight(getData(idx));
+                    break;
+                case COMPLEMENT:
+                    temp = complement(getData(idx));
+                    break;
+                case SWAP:
+                    temp = swap(getData(idx));
+                    break;
             }
+
+
+            //if writing is true it putts on the bus, otherwise it gets from it
+            if (mode == Destinations.RAM) {
+                //if the data is coming after the operation within the RAM
+                if (rOperation != RegisterOperation.NONE) {
+                    setData(idx, temp);
+                } else {
+                    setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));
+                }
+            } else {
+                //if the data is coming after the operation within the RAM
+                if (rOperation != RegisterOperation.NONE) {
+                    putOnBus(temp);
+                } else {
+                    putOnBus(getData(idx));
+                }
+            }
+            //resetting the operation type
+            rOperation = RegisterOperation.NONE;
+
+            //TODO Debug
+            printChanges(idx);
         }
-        //resetting the operation type
-        rOperation = RegisterOperation.NONE;
-
-
-        //TODO Debug
-        printChanges(idx);
     }
 
     public void setMode(Destinations mode) {
@@ -98,17 +102,46 @@ public class RAM extends Element implements Observable {
         this.rOperation = rOperation;
     }
 
+    private int getData(int idx) {
+        //just remember >> indirect addressing
+        if (idx == 0 || idx == 0x80) {
+            return data[getData(FSR)];
+        } else {
+            return data[idx];
+        }
+    }
+
     private void setData(int idx, int value) {
-        //if FSR register is being changed, data in indirect addressing registers will also change
-        //FSR is 0x04 or 0x84 depending on the bank
-        if (idx == 0x04 || idx == 0x84) {
-            //indirect addressing register Bank 1
-            data[0x0] = data[idx];
-            //indirect addressing register Bank 2
-            data[0x80] = data[idx];
+        //things with two assignments, are done so, because these registers are duplicated
+        if (idx == 0 || idx == 0x80) {
+            //indirect addressing
+            try {
+                setData(data[FSR], value);
+            } catch (StackOverflowError e) {
+                System.out.println("pointer is 0");
+            }
+        } else if (idx == FSR || idx == 0x84) {
+            data[FSR] = value;
+            data[0x84] = value;
+        } else if (idx == PCL || idx == 0x82) {
+            data[PCL] = value;
+            data[0x82] = value;
+            //Changing ProgramCounter
+            ProgramCounter.assemblePCLATHPCLChange(data[PCL], data[PCLATH]);
+        } else if (idx == STATUS || idx == 0x83) {
+            data[STATUS] = value;
+            data[0x83] = value;
+        } else if (idx == PCLATH || idx == 0x8a) {
+            //0x1f mask first 5 bits
+            data[PCLATH] = value & 0x1f;
+            data[0x8b] = value & 0x1f;
+        } else if (idx == INTCON || idx == 0x8b) {
+            data[INTCON] = value;
+            data[0x8b] = value;
         } else {
             data[idx] = value;
         }
+
     }
 
     static public void setSpecificBits(boolean high, int register, int specificBit) {

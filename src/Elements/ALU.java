@@ -55,12 +55,15 @@ public class ALU extends Element {
                 break;
             case AND:
                 result = wLiteral & literal;
+                setZeroBit(result);
                 break;
             case OR:
                 result = wLiteral | literal;
+                setZeroBit(result);
                 break;
             case XOR:
                 result = wLiteral ^ literal;
+                setZeroBit(result);
                 break;
             default:
                 System.out.println("Something went wrong in ALU, you forgot to set the Action?");
@@ -72,6 +75,12 @@ public class ALU extends Element {
             putOnBus(result);
         } else {
             accumulator.setStoredValue(result);
+        }
+    }
+
+    public void setZeroBit(int value) {
+        if (value == 0) {
+            RAM.setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
         }
     }
 

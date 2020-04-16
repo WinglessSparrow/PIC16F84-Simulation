@@ -14,7 +14,7 @@ public abstract class CommandsDirectRAM extends CommandBase {
 
     public CommandsDirectRAM() {
         super(new int[]{
-                Simulation.BUS_7GATE, Simulation.RAM_MULTIPLEXER, Simulation.RAM
+                Simulation.GATE_7BUS, Simulation.RAM_MULTIPLEXER, Simulation.RAM
         });
     }
 

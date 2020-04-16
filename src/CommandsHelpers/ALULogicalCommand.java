@@ -11,7 +11,7 @@ public abstract class ALULogicalCommand extends CommandBase {
 
     public ALULogicalCommand() {
         super(new int[]{
-                Simulation.BUS_8GATE, Simulation.ALU_MULTIPLEXER, Simulation.ALU
+                Simulation.GATE_8BUS, Simulation.ALU_MULTIPLEXER, Simulation.ALU
         });
     }
 
