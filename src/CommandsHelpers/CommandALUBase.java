@@ -7,9 +7,9 @@ import Helpers.Destinations;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-public abstract class ALULogicalCommand extends CommandBase {
+public abstract class CommandALUBase extends CommandBase {
 
-    public ALULogicalCommand() {
+    public CommandALUBase() {
         super(new int[]{
                 Simulation.GATE_8BUS, Simulation.ALU_MULTIPLEXER, Simulation.ALU
         });

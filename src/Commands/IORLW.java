@@ -1,11 +1,11 @@
 package Commands;
 
-import CommandsHelpers.ALULogicalCommand;
+import CommandsHelpers.CommandALUBase;
 import Elements.ALU;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-public class IORLW extends ALULogicalCommand {
+public class IORLW extends CommandALUBase {
     @Override
     public void setFlags(Element[] elements) {
         super.setFlags(elements);

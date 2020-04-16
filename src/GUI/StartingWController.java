@@ -8,8 +8,6 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 
 public class StartingWController extends Controller {
-
-
     @FXML
     public GridPane grid;
 

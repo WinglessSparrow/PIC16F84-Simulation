@@ -33,8 +33,7 @@ public class Simulation implements Runnable {
         }
 
         //create a bunch of dummy data
-        int[] dummyData = {0x2805, 0x3020, 0, 0, 0, 0x3005};
-
+        int[] dummyData = {0x3005, 0x2005, 0x3006, 0, 0, 0x3004, 0x0089, 0x0008};
         //creating and connecting all the components
         // each element MUST have a static idx
         //Fetch cycle
@@ -62,8 +61,8 @@ public class Simulation implements Runnable {
     }
 
     public void step() {
-        // here the program first steps the PMemory, IReg, ID, and Steuerwerk
-        //Steuerwerk gets the Commands and then this function fetches them
+        // here the program first steps the PMemory, IReg, ID, and ControlUnit
+        //CU gets the Commands and then this function fetches them
 
         //fetch
         for (int i = 0; i < 4; i++) {

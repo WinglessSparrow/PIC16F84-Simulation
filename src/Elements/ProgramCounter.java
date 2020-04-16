@@ -8,20 +8,26 @@ import java.util.Stack;
 
 public class ProgramCounter extends Element implements Observable {
 
+    public enum Operations {
+        JUMP, CALL, RETURN
+    }
+
     private static int countedValue;
     private ProgramMem mem;
+    private Operations operation;
     private Stack<Integer> stack;
-    private boolean jumping = false;
 
     public ProgramCounter(Bus[] busesIn, int countedValue) {
         super(null, busesIn);
         ProgramCounter.countedValue = countedValue;
         active = true;
+        stack = new Stack<>();
     }
 
-    private void putOnStack() {
-        stack.push(countedValue);
-        throw new StackOverflowError("More than 8 words in stack");
+    private void pushOnStack() {
+        //-1 because it's first counted up and then pushed
+        stack.push(countedValue - 1);
+        if (stack.size() > 8) throw new StackOverflowError("More than 8 words in stack");
     }
 
     private void getFromStack() {
@@ -30,7 +36,7 @@ public class ProgramCounter extends Element implements Observable {
     }
 
     public void pushOnRAM() {
-        //TODO this
+        RAM.renewPCL(countedValue);
     }
 
     private void assemblePCLATHGOTO(int literal, int pclath) {
@@ -52,23 +58,41 @@ public class ProgramCounter extends Element implements Observable {
 
     public void inc() {
         countedValue++;
-        //TODO Push on RAM
+        pushOnRAM();
     }
 
     public int getCountedValue() {
         return countedValue;
     }
 
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
+    public void setOperation(Operations operation) {
+        this.operation = operation;
     }
 
     @Override
     public void step() {
-        if (jumping) {
-            assemblePCLATHGOTO(getFromBus(Simulation.BUS_JUMPS), getFromBus(Simulation.BUS_INTERN_FILE));
-            jumping = false;
+
+        if (operation != null) {
+            switch (operation) {
+                case JUMP:
+                    assemblePCLATHGOTO(getFromBus(Simulation.BUS_JUMPS), getFromBus(Simulation.BUS_INTERN_FILE));
+                    break;
+                case CALL:
+                    //remember the last idx
+                    pushOnStack();
+                    assemblePCLATHGOTO(getFromBus(Simulation.BUS_JUMPS), getFromBus(Simulation.BUS_INTERN_FILE));
+                    break;
+                case RETURN:
+                    //retrieve last idx
+                    getFromStack();
+                    break;
+            }
+            //resseting the operation
+            operation = null;
         }
+
+        //renew teh PCL value
+        pushOnRAM();
     }
 
     @Override

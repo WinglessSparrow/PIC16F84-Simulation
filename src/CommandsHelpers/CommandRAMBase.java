@@ -8,11 +8,11 @@ import Helpers.Destinations;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-public abstract class CommandsDirectRAM extends CommandBase {
+public abstract class CommandRAMBase extends CommandBase {
 
     private Destinations temp;
 
-    public CommandsDirectRAM() {
+    public CommandRAMBase() {
         super(new int[]{
                 Simulation.GATE_7BUS, Simulation.RAM_MULTIPLEXER, Simulation.RAM
         });

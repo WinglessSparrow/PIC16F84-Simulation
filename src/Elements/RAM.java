@@ -94,6 +94,10 @@ public class RAM extends Element implements Observable {
         }
     }
 
+    public int getLastRegisterInUse() {
+        return getData(setOffsetIdx(multiplexer.getStoredValue()));
+    }
+
     public void setMode(Destinations mode) {
         this.mode = mode;
     }
@@ -141,10 +145,13 @@ public class RAM extends Element implements Observable {
         } else {
             data[idx] = value;
         }
-
     }
 
-    static public void setSpecificBits(boolean high, int register, int specificBit) {
+    public static void renewPCL(int value) {
+        data[PCL] = value;
+    }
+
+    public static void setSpecificBits(boolean high, int register, int specificBit) {
         if (high) {
             data[register] = BitManipulator.setBit(data[register], specificBit);
         } else {
