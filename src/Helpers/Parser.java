@@ -23,6 +23,12 @@ public class Parser {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        //printing parsed data
+        for (int i : retData) {
+            System.out.println(Integer.toHexString(i));
+        }
+
         return retData;
     }
 
@@ -33,12 +39,13 @@ public class Parser {
         Scanner scanner = null;
 
         try {
-            //pavel, IDEA wanted to have try/catch here, so I made it
+            //IDEA wanted to have try/catch here, so I made it
             scanner = new Scanner(file, StandardCharsets.ISO_8859_1);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        assert scanner != null;
         while (scanner.hasNextLine()) {
             programData.add(scanner.nextLine());
         }
@@ -48,8 +55,8 @@ public class Parser {
 
     private void parseFile() {
 
-        String instructions, code, tmpOrg;                                      //Instructions: Lines and Code,Code: Code without lines
-
+        String instructions, code, tmpOrg;
+        //Instructions: Lines and Code,Code: Code without lines
         //Get line numbers and hex code
         for (String programDatum : programData) {
 

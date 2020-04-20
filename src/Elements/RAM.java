@@ -8,7 +8,7 @@ import SimulationMain.Simulation;
 
 public class RAM extends Element implements Observable {
 
-    public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b;
+    public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81;
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2;
 
     static private int[] data = new int[255];
@@ -40,7 +40,7 @@ public class RAM extends Element implements Observable {
     @Override
     public void step() {
         if (mode == Destinations.PC) {
-            //if I jump
+            //if the program jumps
             putOnBus(data[PCLATH]);
         } else {
             //getting the correct idx
@@ -68,7 +68,6 @@ public class RAM extends Element implements Observable {
                     temp = swap(getData(idx));
                     break;
             }
-
 
             //if writing is true it putts on the bus, otherwise it gets from it
             if (mode == Destinations.RAM) {

@@ -13,7 +13,6 @@ public class ProgramCounter extends Element implements Observable {
     }
 
     private static int countedValue;
-    private ProgramMem mem;
     private Operations operation;
     private Stack<Integer> stack;
 
