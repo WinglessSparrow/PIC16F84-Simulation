@@ -40,7 +40,7 @@ public class Simulation implements Runnable {
 
         Parser parser = new Parser();
 
-        dummyData = parser.parse("res/TPicSim1.LST");
+        dummyData = parser.parse("res/TPicSim2.LST");
 
         //creating and connecting all the components
         // each element MUST have a static idx
@@ -66,10 +66,10 @@ public class Simulation implements Runnable {
         elements[CU] = new ControlUnit(elements);
 
         //setting th mode, better to start with the debug mode
-        debug = true;
+        debug = false;
 
         //setting the hz Rate
-        changeHz(1);
+        changeHz(2);
 
         System.out.println("Boot up and ready to go");
     }
