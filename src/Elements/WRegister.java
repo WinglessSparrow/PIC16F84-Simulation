@@ -43,6 +43,10 @@ public class WRegister extends Element implements Observable {
 
     @Override
     public String getObservedValues() {
-        return null;
+        String output;
+
+        output = "<WREGISTER>" + storedValue + "</WREGISTER>";
+
+        return output;
     }
 }

@@ -5,7 +5,7 @@ import Helpers.CommandAtlas;
 import Helpers.Element;
 import Interfaces.Observable;
 
-public class ControlUnit extends Element implements Observable {
+public class ControlUnit extends Element {
 
     private CommandBase command;
 
@@ -46,10 +46,5 @@ public class ControlUnit extends Element implements Observable {
         activateElements(decoder.getDecodedCommand());
         pc.inc();
         System.out.println("ProgramCounter: " + pc.getCountedValue());
-    }
-
-    @Override
-    public String getObservedValues() {
-        return null;
     }
 }

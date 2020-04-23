@@ -92,10 +92,22 @@ public class ProgramCounter extends Element implements Observable {
 
         //renew teh PCL value
         pushOnRAM();
+
     }
 
     @Override
     public String getObservedValues() {
-        return null;
+        String output;
+
+        output = "<PC>" + countedValue + "</PC>";
+
+        output += "<STACK>";
+        for (int i = 0; i < stack.size() - 1; i++) {
+            output += stack.get(i).toString() + ",";
+        }
+        output += stack.lastElement().toString();
+        output += "</STACK>";
+
+        return output;
     }
 }

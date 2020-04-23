@@ -4,7 +4,7 @@ import Helpers.Element;
 import Interfaces.Observable;
 import SimulationMain.Simulation;
 
-public class InstructionRegister extends Element implements Observable {
+public class InstructionRegister extends Element{
 
     private int command;
 
@@ -21,10 +21,5 @@ public class InstructionRegister extends Element implements Observable {
     public void step() {
         putOnBus(command);
         command = getFromBus(Simulation.BUS_PROM);
-    }
-
-    @Override
-    public String getObservedValues() {
-        return null;
     }
 }

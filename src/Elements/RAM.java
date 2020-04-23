@@ -180,11 +180,6 @@ public class RAM extends Element implements Observable {
         }
     }
 
-    @Override
-    public String getObservedValues() {
-        return null;
-    }
-
     private int rotateLeft(int value) {
         int temp = value;
         temp = (temp << 1) | (temp & 0x80 >> 7);
@@ -271,5 +266,22 @@ public class RAM extends Element implements Observable {
 
     private void resetInterrupts() {
 
+    }
+
+
+
+    @Override
+    public String getObservedValues() {
+        String output;
+
+        output = "<RAM>";
+
+        for (int i = 0; i < data.length - 1; i++) {
+            output += data[i] + ",";
+        }
+        output += data[data.length - 1];
+        output += "</RAM>";
+
+        return output;
     }
 }
