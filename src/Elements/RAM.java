@@ -1,8 +1,6 @@
 package Elements;
 
-import Helpers.BitManipulator;
-import Helpers.Destinations;
-import Helpers.Element;
+import Helpers.*;
 import Interfaces.Observable;
 import SimulationMain.Simulation;
 
@@ -11,7 +9,7 @@ public class RAM extends Element implements Observable {
     public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81, TMR0 = 0x01;
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2, GIE = 7;
 
-    static private int[] data = new int[255];
+    static private int[] data = new int[256];
 
     private Multiplexer multiplexer;
     private Destinations mode;
@@ -143,6 +141,10 @@ public class RAM extends Element implements Observable {
             data[0x8b] = value;
         } else {
             data[idx] = value;
+            if (idx == OPTION) {
+                Prescaler.renewIdx();
+                Watchdog.renewTime();
+            }
         }
     }
 
@@ -166,8 +168,8 @@ public class RAM extends Element implements Observable {
         }
     }
 
-    public static boolean getSpecificBit(int register, int idx) {
-        return BitManipulator.getBit(idx, data[register]) == 1;
+    public static int getSpecificBit(int register, int idx) {
+        return BitManipulator.getBit(idx, data[register]);
     }
 
     private void printChanges(int changedIdx) {

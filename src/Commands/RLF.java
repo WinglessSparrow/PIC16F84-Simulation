@@ -10,6 +10,6 @@ public class RLF extends CommandRAMBase {
     public void setFlags(Element[] elements) {
         super.setFlags(elements);
         //setting the particular operation
-        ((RAM) elements[Simulation.RAM]).setROperation(RAM.RegisterOperation.ROTATE_LEFT);
+        ((RAM) elements[Simulation.RAM_MEM]).setROperation(RAM.RegisterOperation.ROTATE_LEFT);
     }
 }

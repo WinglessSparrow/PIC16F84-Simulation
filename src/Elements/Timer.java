@@ -1,23 +1,29 @@
 package Elements;
 
 import Helpers.Element;
+import Helpers.Prescaler;
 
 public class Timer extends Element {
 
-    private boolean enable;
+    private int count;
+    private Prescaler prescaler;
 
-    public Timer() {
+    public Timer(Prescaler prescaler) {
         super(null, null);
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+        this.prescaler = prescaler;
     }
 
     @Override
     public void step() {
-        if (RAM.getSpecificBit(RAM.INTCON, RAM.TMR0)) {
-            RAM.increaseTMR0();
+        if (RAM.getSpecificBit(RAM.INTCON, RAM.TMR0) == 1) {
+            count++;
+            if (RAM.getSpecificBit(RAM.OPTION, 3) == 1) {
+                if (count > prescaler.getTimerScale()) {
+                    RAM.increaseTMR0();
+                }
+            } else {
+                RAM.increaseTMR0();
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ public class MOVWF extends CommandBase {
 
     public MOVWF() {
         super(new int[]{
-                Simulation.GATE_7BUS, Simulation.RAM_MULTIPLEXER, Simulation.W_REGISTER, Simulation.RAM
+                Simulation.GATE_7BUS, Simulation.RAM_MULTIPLEXER, Simulation.W_REGISTER, Simulation.RAM_MEM
         });
     }
 
@@ -20,7 +20,7 @@ public class MOVWF extends CommandBase {
     public void setFlags(Element[] elements) {
         ((Multiplexer) elements[Simulation.RAM_MULTIPLEXER]).setUsingBusIFile(false);
         ((WRegister) elements[Simulation.W_REGISTER]).setPutOnFileBus(true);
-        ((RAM) elements[Simulation.RAM]).setMode(Destinations.RAM);
+        ((RAM) elements[Simulation.RAM_MEM]).setMode(Destinations.RAM);
     }
 
     @Override

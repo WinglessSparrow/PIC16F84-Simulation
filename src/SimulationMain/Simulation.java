@@ -2,9 +2,7 @@ package SimulationMain;
 
 import CommandsHelpers.CommandBase;
 import Elements.*;
-import Helpers.CommandAtlas;
-import Helpers.Element;
-import Helpers.Parser;
+import Helpers.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,36 +12,40 @@ public class Simulation implements Runnable {
 
     //here idxes off all buses and elements
     public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_PROM = 4, BUS_JUMPS = 5;
-    public static final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_8BUS = 4, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM = 11, CU = 12;
+    public static final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_8BUS = 4, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13;
 
+    //flags
     private boolean isRunning;
     private boolean debug;
+    private boolean isWatchdog;
+
     private long hzRate;
     private long prevTime = 0;
 
     private Element[] elements;
     //TODO temp, after GUI will be implemented, should remove or mb repurposed
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private Watchdog watchdog;
 
     public Simulation() {
         //this true, to make it run forever
         isRunning = true;
+        //setting th mode, better to start with the debug mode
+        debug = false;
+        isWatchdog = false;
 
         //how many buses are there
         Bus[] buses = new Bus[6];
-
-        //this array must be field by hand
-        elements = new Element[13];
-
         for (int i = 0; i < buses.length; i++) {
             buses[i] = new Bus();
         }
 
+        //this array must be field by hand
+        elements = new Element[14];
+
         //create a bunch of dummy data
         int[] dummyData = {0x3005, 0x2005, 0x3006, 0, 0, 0x3004, 0x0089, 0x0008};
-
         Parser parser = new Parser();
-
         dummyData = parser.parse("res/TPicSim2.LST");
 
         //creating and connecting all the components
@@ -66,11 +68,13 @@ public class Simulation implements Runnable {
         elements[ALU_MULTIPLEXER] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
         elements[ALU] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[W_REGISTER], (Multiplexer) elements[ALU_MULTIPLEXER]);
         elements[RAM_MULTIPLEXER] = new Multiplexer(buses, BUS_DIR_ADDR, BUS_INTERN_FILE);
-        elements[RAM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
+        elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
         elements[CU] = new ControlUnit(elements);
 
-        //setting th mode, better to start with the debug mode
-        debug = false;
+        Prescaler prescaler = new Prescaler();
+
+        watchdog = new Watchdog(prescaler);
+        elements[TIMER] = new Timer(prescaler);
 
         //setting the hz Rate
         changeHz(2);
@@ -93,6 +97,15 @@ public class Simulation implements Runnable {
         CommandBase command = fetch();
         //didn't chain them, to make the code more readable
         execute(command);
+
+        //step timer if necessary
+        //TODO stepping with the GUI T0CS
+        //TODO check for low or high in GUI T0SE
+        if (RAM.getSpecificBit(RAM.OPTION, 5) == 0) {
+            elements[TIMER].step();
+        }
+
+        //TODO check for low or high in GUI INTEDG
         interruptCheck();
 
     }
@@ -127,7 +140,7 @@ public class Simulation implements Runnable {
     }
 
     private void interruptCheck() {
-        if (((RAM) elements[RAM]).isInterruptTriggeret()) {
+        if (((RAM) elements[RAM_MEM]).isInterruptTriggeret()) {
             System.out.println();
             //Call subroutine, it's on the fourth place in the ROM
             execute(CommandAtlas.getCommand(0x2004));
@@ -166,11 +179,14 @@ public class Simulation implements Runnable {
                 }
 
             } else {
+
                 if (System.nanoTime() - prevTime >= hzRate) {
                     prevTime = System.nanoTime();
                     step();
                 }
-
+                if (isWatchdog) {
+                    watchdog.update();
+                }
             }
         }
 

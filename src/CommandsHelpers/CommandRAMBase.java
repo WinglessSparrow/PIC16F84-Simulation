@@ -14,7 +14,7 @@ public abstract class CommandRAMBase extends CommandBase {
 
     public CommandRAMBase() {
         super(new int[]{
-                Simulation.GATE_7BUS, Simulation.RAM_MULTIPLEXER, Simulation.RAM
+                Simulation.GATE_7BUS, Simulation.RAM_MULTIPLEXER, Simulation.RAM_MEM
         });
     }
 
@@ -28,7 +28,7 @@ public abstract class CommandRAMBase extends CommandBase {
         } else {
             temp = Destinations.W_REG;
         }
-        ((RAM) elements[Simulation.RAM]).setMode(temp);
+        ((RAM) elements[Simulation.RAM_MEM]).setMode(temp);
     }
 
     @Override

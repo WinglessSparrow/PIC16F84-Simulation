@@ -11,6 +11,6 @@ public class DECF extends CommandRAMBase {
     public void setFlags(Element[] elements) {
         super.setFlags(elements);
         //setting the particular operation
-        ((RAM) elements[Simulation.RAM]).setROperation(RAM.RegisterOperation.DECREASE);
+        ((RAM) elements[Simulation.RAM_MEM]).setROperation(RAM.RegisterOperation.DECREASE);
     }
 }
