@@ -27,9 +27,9 @@ public class WRegister extends Element implements Observable {
         return storedValue;
     }
 
-    public void getFrom8BitBus() {
+    public void getFromInternalBus() {
         storedValue = getFromBus(Simulation.BUS_INTERN_FILE);
-        System.out.println("Storing in W_Register: " + storedValue);
+        System.out.println("Storing in W_Register: " + storedValue + " from Intern 8Bit Bus");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class WRegister extends Element implements Observable {
         storedValue = getFromBus(Simulation.BUS_LITERAL);
         if (putOnFileBus) putOnBus(storedValue);
 
-        System.out.println("Storing in WReg: " + Integer.toHexString(storedValue));
+        System.out.println("Storing in WReg: 0x" + Integer.toHexString(storedValue));
 
     }
 

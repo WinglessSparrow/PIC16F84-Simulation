@@ -34,7 +34,7 @@ public abstract class CommandRAMBase extends CommandBase {
     @Override
     public void cleanUpInstructions(Element[] elements) {
         if (temp == Destinations.W_REG) {
-            ((WRegister) elements[Simulation.W_REGISTER]).getFrom8BitBus();
+            ((WRegister) elements[Simulation.W_REGISTER]).getFromInternalBus();
         }
     }
 }

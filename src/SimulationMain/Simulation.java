@@ -18,8 +18,11 @@ public class Simulation implements Runnable {
     private boolean isRunning;
     private boolean debug;
     private long hzRate;
+    private long prevTime = 0;
 
     private Element[] elements;
+    //TODO temp, after GUI will be implemented, should remove or mb repurposed
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public Simulation() {
         //this true, to make it run forever
@@ -79,22 +82,36 @@ public class Simulation implements Runnable {
     }
 
     public void step() {
-        // here the program first steps the PMemory, IReg, ID, and ControlUnit
-        //CU gets the Commands and then this function fetches them
+        /*
+        fetching teh command
+        executing it
+        checking for interrupts
+        exchange data with GUI
+         */
 
-        //fetch
+        CommandBase command = fetch();
+        //didn't chain them, to make the code more readable
+        execute(command);
+
+    }
+
+    private CommandBase fetch() {
+        //main fetch cycle
         for (int i = 0; i < 4; i++) {
             elements[i].step();
         }
 
-        //ControlUnit step
+        /*
+        ControlUnit step
+        decodes and returns teh command
+         */
         elements[CU].step();
 
-        //execute
-
         //getting the sequence
-        CommandBase command = ((ControlUnit) elements[CU]).getCommand();
-        //if nop command or wrong input, then it will return null
+        return ((ControlUnit) elements[CU]).getCommand();
+    }
+
+    private void execute(CommandBase command) {
         if (command != null) {
             //setting flags
             command.setFlags(elements);
@@ -102,22 +119,29 @@ public class Simulation implements Runnable {
             for (int idx : command.getExecutionSequence()) {
                 elements[idx].step();
             }
-            //actions after teh sequence
+            //actions after the sequence
             command.cleanUpInstructions(elements);
         }
-
     }
 
-    //TODO temp, after GUI will be implemented, should remove or mb repurpose this
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private void interruptCheck() {
+        //TODO execute interrupt if necessary
+    }
 
-    private long prevTime = 0;
+    private void getAllChangedObserveable() {
+        //TODO send data to GUI
+    }
+
+    private void setAllChangedSettable() {
+        //TODO receive Data from GUI
+    }
 
     @Override
     public void run() {
         while (isRunning) {
             //update
 
+            //in debug mode program steps with input
             if (debug) {
                 System.out.print("readLine: ");
                 try {
@@ -144,6 +168,6 @@ public class Simulation implements Runnable {
             }
         }
 
-        System.out.println("End");
+        System.out.println(">>>>>>>>>>>>>>End<<<<<<<<<<<<<");
     }
 }
