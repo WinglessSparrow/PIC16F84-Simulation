@@ -24,6 +24,10 @@ public class BitManipulator {
         return value |= (1 << idx);
     }
 
+    public static int getBit(int idx, int value) {
+        return (value >> idx) & 1;
+    }
+
     public static int clearBit(int idx, int value) {
         return value &= ~(1 << idx);
     }

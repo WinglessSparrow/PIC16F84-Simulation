@@ -2,6 +2,7 @@ package SimulationMain;
 
 import CommandsHelpers.CommandBase;
 import Elements.*;
+import Helpers.CommandAtlas;
 import Helpers.Element;
 import Helpers.Parser;
 
@@ -92,6 +93,7 @@ public class Simulation implements Runnable {
         CommandBase command = fetch();
         //didn't chain them, to make the code more readable
         execute(command);
+        interruptCheck();
 
     }
 
@@ -125,7 +127,11 @@ public class Simulation implements Runnable {
     }
 
     private void interruptCheck() {
-        //TODO execute interrupt if necessary
+        if (((RAM) elements[RAM]).isInterruptTriggeret()) {
+            System.out.println();
+            //Call subroutine, it's on the fourth place in the ROM
+            execute(CommandAtlas.getCommand(0x2004));
+        }
     }
 
     private void getAllChangedObserveable() {

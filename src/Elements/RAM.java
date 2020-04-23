@@ -8,8 +8,8 @@ import SimulationMain.Simulation;
 
 public class RAM extends Element implements Observable {
 
-    public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81;
-    public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2;
+    public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81, TMR0 = 0x01;
+    public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2, GIE = 7;
 
     static private int[] data = new int[255];
 
@@ -150,12 +150,24 @@ public class RAM extends Element implements Observable {
         data[PCL] = value;
     }
 
+    public static void increaseTMR0() {
+        data[TMR0]++;
+        if (data[TMR0] > 255) {
+            data[TMR0] = 0;
+            RAM.setSpecificBits(true, RAM.INTCON, RAM.TMR0);
+        }
+    }
+
     public static void setSpecificBits(boolean high, int register, int specificBit) {
         if (high) {
             data[register] = BitManipulator.setBit(data[register], specificBit);
         } else {
             data[register] = BitManipulator.clearBit(data[register], specificBit);
         }
+    }
+
+    public static boolean getSpecificBit(int register, int idx) {
+        return BitManipulator.getBit(idx, data[register]) == 1;
     }
 
     private void printChanges(int changedIdx) {
@@ -222,5 +234,42 @@ public class RAM extends Element implements Observable {
         if (temp <= value) {
             setSpecificBits(true, RAM.STATUS, RAM.CARRY_BIT);
         }
+    }
+
+    public boolean isInterruptTriggeret() {
+
+        //idx 7 is Global Enable
+        if (BitManipulator.getBit(GIE, getData(INTCON)) == 1) {
+            //EEIF = bit nr 4 & EEIE = 0x88
+            if ((BitManipulator.getBit(getData(INTCON), 6) == 1) && (BitManipulator.getBit(getData(0x88), 4) == 1)) {
+                return true;
+            }
+            /*
+            the mask isolates 2 bits, the enable and the trigger bits
+            if the masked value equals to the mask the bits are both set and the interrupt triggers
+            if not it shifts the mask and compares again
+            because enable bit and trigger bits are offsetted by the same value
+            except for the EEIE nad EEIF, which are in different registers
+            the mask is in binary here to make it more readable
+             */
+            int mask = 0b00100100;
+            for (int i = 0; i < 3; i++) {
+                if ((getData(INTCON) & mask) == mask) {
+                    if (i != 0) {
+                        //resetting the interrupt bits
+                        //except for the timer
+                        setSpecificBits(false, INTCON, mask & 3);
+                    }
+                    return true;
+                }
+                //shift mask
+                mask = mask >> 1;
+            }
+        }
+        return false;
+    }
+
+    private void resetInterrupts() {
+
     }
 }
