@@ -4,7 +4,7 @@ public class Prescaler {
     private int[] scales;
 
     public int getTimerScale() {
-        return scales[];
+        return 0;
     }
 
     public int getWDTScale() {
