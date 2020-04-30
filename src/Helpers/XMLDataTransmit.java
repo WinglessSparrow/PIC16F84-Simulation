@@ -8,16 +8,16 @@ import java.io.UnsupportedEncodingException;
 
 public class XMLDataTransmit {
 
-    public static void packageXML (Element[] elements) throws FileNotFoundException, UnsupportedEncodingException {
+    public static void packageXML(Element[] elements) throws FileNotFoundException, UnsupportedEncodingException {
         PrintWriter writer;
 
-        writer = new PrintWriter("res/toGUI.xml","UTF-8");
+        writer = new PrintWriter("res/toGUI.xml", "UTF-8");
 
         String output = "<Data>\n";
 
-        for (int i = 0; i < elements.length ; i++) {
+        for (int i = 0; i < elements.length; i++) {
             if (elements[i] instanceof Observable) {
-                output += ((Observable)elements[i]).getObservedValues();
+                output += ((Observable) elements[i]).getObservedValues();
                 output += "\n";
             }
         }
