@@ -118,6 +118,11 @@ public class InstructionDecoder extends Element {
         return inputCommand;
     }
 
+    public int getBitChoose() {
+        //getting bits 8 - 10, which are containing the idx of a bit
+        return (inputCommand & 0x380) >> 7;
+    }
+
     public boolean isDestinationBitSet() {
         //masking the Destination bit, and then shifting it to the beginning
         return ((inputCommand & (1 << 7)) >> 7) == 1;

@@ -9,14 +9,16 @@ public class RAM extends Element implements Observable {
     public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81, TMR0 = 0x01;
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2, GIE = 7;
 
-    static private int[] data = new int[256];
+    private static int[] data = new int[256];
+    private boolean bitSet;
+    private int bitIdxFromOP = 0;
 
     private Multiplexer multiplexer;
     private Destinations mode;
     private RegisterOperation rOperation = RegisterOperation.NONE;
 
     public enum RegisterOperation {
-        NONE, INCREASE, DECREASE, ROTATE_LEFT, ROTATE_RIGHT, COMPLEMENT, SWAP
+        NONE, INCREASE, DECREASE, ROTATE_LEFT, ROTATE_RIGHT, COMPLEMENT, SWAP, BIT_SET, BIT_CLR, BIT_TEST_SET, BIT_TEST_CLR, CLR
     }
 
     public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer) {
@@ -47,6 +49,8 @@ public class RAM extends Element implements Observable {
             int temp = 0;
 
             switch (rOperation) {
+                case NONE:
+                    break;
                 case INCREASE:
                     temp = increase(getData(idx));
                     break;
@@ -64,6 +68,21 @@ public class RAM extends Element implements Observable {
                     break;
                 case SWAP:
                     temp = swap(getData(idx));
+                    break;
+                case BIT_SET:
+                    setSpecificBits(true, idx, bitIdxFromOP);
+                    break;
+                case BIT_CLR:
+                    setSpecificBits(false, idx, bitIdxFromOP);
+                    break;
+                case BIT_TEST_SET:
+                    bitSet = (getSpecificBit(idx, bitIdxFromOP) == 1);
+                    break;
+                case BIT_TEST_CLR:
+                    bitSet = (getSpecificBit(idx, bitIdxFromOP) == 0);
+                    break;
+                case CLR:
+                    setData(idx, 0);
                     break;
             }
 
@@ -233,7 +252,7 @@ public class RAM extends Element implements Observable {
         }
     }
 
-    public boolean isInterruptTriggeret() {
+    public boolean isInterruptTriggered() {
 
         //idx 7 is Global Enable
         if (BitManipulator.getBit(GIE, getData(INTCON)) == 1) {
@@ -266,11 +285,13 @@ public class RAM extends Element implements Observable {
         return false;
     }
 
-    private void resetInterrupts() {
-
+    public void setBitIdxFromOP(int bitIdxFromOP) {
+        this.bitIdxFromOP = bitIdxFromOP;
     }
 
-
+    public boolean isBitSet() {
+        return bitSet;
+    }
 
     @Override
     public String getObservedValues() {

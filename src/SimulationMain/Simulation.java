@@ -140,8 +140,9 @@ public class Simulation implements Runnable {
     }
 
     private void interruptCheck() {
-        if (((RAM) elements[RAM_MEM]).isInterruptTriggeret()) {
-            System.out.println();
+        if (((RAM) elements[RAM_MEM]).isInterruptTriggered()) {
+            //disabling global interrupts, for the time of execution
+            RAM.setSpecificBits(false, RAM.INTCON, RAM.GIE);
             //Call subroutine, it's on the fourth place in the ROM
             execute(CommandAtlas.getCommand(0x2004));
         }

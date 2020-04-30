@@ -17,6 +17,10 @@ public class Watchdog {
         Watchdog.timeStart = timeStart;
     }
 
+    public static void clear() {
+        timeStart = System.currentTimeMillis();
+    }
+
     public static void renewTime() {
         if (RAM.getSpecificBit(RAM.OPTION, 3) == 1) {
             timeWait = 18 * prescaler.getWDTScale();
