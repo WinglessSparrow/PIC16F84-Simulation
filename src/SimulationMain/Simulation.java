@@ -1,8 +1,12 @@
 package SimulationMain;
 
+import Commands.SLEEP;
 import CommandsHelpers.CommandBase;
 import Elements.*;
-import Helpers.*;
+import Helpers.CommandAtlas;
+import Helpers.Element;
+import Helpers.Prescaler;
+import Helpers.Watchdog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,9 +17,9 @@ public class Simulation implements Runnable {
     //here idxes off all buses and elements
     public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_PROM = 4, BUS_JUMPS = 5;
     public static final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_8BUS = 4, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8, ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13;
-
     //flags
     private boolean isRunning;
+    private boolean standby;
     private boolean debug;
     private boolean isWatchdog;
 
@@ -26,12 +30,13 @@ public class Simulation implements Runnable {
     //TODO temp, after GUI will be implemented, should remove or mb repurposed
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Watchdog watchdog;
+    private Prescaler prescaler;
 
     public Simulation() {
         //this true, to make it run forever
         isRunning = true;
         //setting th mode, better to start with the debug mode
-        debug = false;
+        debug = true;
         isWatchdog = false;
 
         //how many buses are there
@@ -44,9 +49,9 @@ public class Simulation implements Runnable {
         elements = new Element[14];
 
         //create a bunch of dummy data
-        int[] dummyData = {0x3005, 0x2005, 0x3006, 0, 0, 0x3004, 0x0089, 0x0008};
-        Parser parser = new Parser();
-        dummyData = parser.parse("res/TPicSim2.LST");
+        int[] dummyData = {0x3003, 0x0081, 0x3002, 0b00001000000001};
+//        Parser parser = new Parser();
+//        dummyData = parser.parse("res/TPicSim2.LST");
 
         //creating and connecting all the components
         // each element MUST have a static idx
@@ -71,7 +76,7 @@ public class Simulation implements Runnable {
         elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
         elements[CU] = new ControlUnit(elements);
 
-        Prescaler prescaler = new Prescaler();
+        prescaler = new Prescaler();
 
         watchdog = new Watchdog(prescaler);
         elements[TIMER] = new Timer(prescaler);
@@ -118,7 +123,7 @@ public class Simulation implements Runnable {
 
         /*
         ControlUnit step
-        decodes and returns teh command
+        decodes and returns the command
          */
         elements[CU].step();
 
@@ -128,14 +133,25 @@ public class Simulation implements Runnable {
 
     private void execute(CommandBase command) {
         if (command != null) {
-            //setting flags
-            command.setFlags(elements);
-            //execute command in the right sequence
-            for (int idx : command.getExecutionSequence()) {
-                elements[idx].step();
+            if (!(command instanceof SLEEP)) {
+                //setting flags
+                command.setFlags(elements);
+                try {
+                    //execute command in the right sequence
+                    for (int idx : command.getExecutionSequence()) {
+                        elements[idx].step();
+                    }
+                } catch (NullPointerException e) {
+                    //there is not always a sequence
+                    System.out.println("no sequence << it's ok");
+                }
+                //actions after the sequence
+                command.cleanUpInstructions(elements);
+            } else {
+                standby = true;
             }
-            //actions after the sequence
-            command.cleanUpInstructions(elements);
+        } else {
+            System.err.println("NULLPOINTER IN COMMAND, SOMETHING WENT HORRIBLY WRONG, Simulation, 150 or smth");
         }
     }
 
@@ -145,6 +161,7 @@ public class Simulation implements Runnable {
             RAM.setSpecificBits(false, RAM.INTCON, RAM.GIE);
             //Call subroutine, it's on the fourth place in the ROM
             execute(CommandAtlas.getCommand(0x2004));
+            if (standby) standby = false;
         }
     }
 
@@ -159,38 +176,43 @@ public class Simulation implements Runnable {
     @Override
     public void run() {
         while (isRunning) {
-            //update
+            if (!standby) {
+                //update
 
-            //in debug mode program steps with input
-            if (debug) {
-                System.out.print("readLine: ");
-                try {
-                    if (reader.readLine().equals("step")) {
+                //in debug mode program steps with input
+                if (debug) {
+                    System.out.print("readLine: ");
+                    try {
+                        if (reader.readLine().equals("step")) {
+                            step();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //must be slowed down a bit
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+
+                    if (System.nanoTime() - prevTime >= hzRate) {
+                        prevTime = System.nanoTime();
                         step();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    if (isWatchdog) {
+                        watchdog.update();
+                    }
                 }
-
-                //must be slowed down a bit
-                try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
             } else {
-
-                if (System.nanoTime() - prevTime >= hzRate) {
-                    prevTime = System.nanoTime();
-                    step();
-                }
-                if (isWatchdog) {
-                    watchdog.update();
-                }
+                //on standby
+                interruptCheck();
+                //TODO Watchdog awake
             }
         }
-
         System.out.println(">>>>>>>>>>>>>>End<<<<<<<<<<<<<");
     }
 }

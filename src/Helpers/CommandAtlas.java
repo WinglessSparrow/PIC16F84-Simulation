@@ -34,6 +34,10 @@ public class CommandAtlas {
             put(0x1100, new BSF());
             put(0x0100, new CLRW());
             put(0x0180, new CLRF());
+            put(0x0200, new SUBWF());
+            put(0x0b00, new DECWFZ());
+            put(0x0f00, new INCFSZ());
+            put(0x0063, new SLEEP());
         }
     };
 

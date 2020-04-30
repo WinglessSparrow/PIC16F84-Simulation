@@ -83,6 +83,7 @@ public class RAM extends Element implements Observable {
                     break;
                 case CLR:
                     setData(idx, 0);
+                    setZeroBit(0);
                     break;
             }
 
