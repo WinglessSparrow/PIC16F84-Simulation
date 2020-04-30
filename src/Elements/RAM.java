@@ -303,13 +303,26 @@ public class RAM extends Element implements Observable {
     public String getObservedValues() {
         String output;
 
-        output = "<RAM>";
+        output = "<NODE name=\"RAM\">\n";
+
+        //Prints out all RAM
+        /*
+        for (int i = 0; i < data.length - 1; i++) {
+            output += "<v val=\"" + data[i] + "\"/>\n";
+        }
+        output += "<v val=\"" + data[data.length - 1] + "\"/>";
+        output += "</NODE>";
+        */
 
         for (int i = 0; i < data.length - 1; i++) {
-            output += data[i] + ",";
+            if (data[i] != 0) {
+                output += "<v val=\"" + data[i] + "\" idx=\"" + i + "\"/>\n";
+            }
         }
-        output += data[data.length - 1];
-        output += "</RAM>";
+        if (data[data.length - 1] != 0) {
+            output += "<v val=\"" + data[data.length - 1] + "\"/>";
+        }
+        output += "</NODE>";
 
         return output;
     }

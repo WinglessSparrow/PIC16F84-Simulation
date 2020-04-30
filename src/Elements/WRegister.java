@@ -48,7 +48,7 @@ public class WRegister extends Element implements Observable {
     public String getObservedValues() {
         String output;
 
-        output = "<WREGISTER>" + storedValue + "</WREGISTER>";
+        output = "<NODE name=\"WREGISTER\">\n<v val=\"" + storedValue + "\"/>\n</NODE>";
 
         return output;
     }
