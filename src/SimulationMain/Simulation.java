@@ -3,14 +3,9 @@ package SimulationMain;
 import Commands.SLEEP;
 import CommandsHelpers.CommandBase;
 import Elements.*;
-import Helpers.CommandAtlas;
-import Helpers.Element;
-import Helpers.Prescaler;
-import Helpers.Watchdog;
+import Helpers.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Simulation implements Runnable {
 
@@ -36,7 +31,7 @@ public class Simulation implements Runnable {
         //this true, to make it run forever
         isRunning = true;
         //setting th mode, better to start with the debug mode
-        debug = true;
+        debug = false;
         isWatchdog = false;
 
         //how many buses are there
@@ -175,6 +170,8 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
+        boolean stepDone = false;
+
         while (isRunning) {
             if (!standby) {
                 //update
@@ -185,6 +182,7 @@ public class Simulation implements Runnable {
                     try {
                         if (reader.readLine().equals("step")) {
                             step();
+                            stepDone = true;
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -202,11 +200,25 @@ public class Simulation implements Runnable {
                     if (System.nanoTime() - prevTime >= hzRate) {
                         prevTime = System.nanoTime();
                         step();
+                        stepDone = true;
                     }
                     if (isWatchdog) {
                         watchdog.update();
                     }
                 }
+
+                if (stepDone) {
+                    //Package to XML
+                    try {
+                        XMLDataTransmit.packageXML(elements);
+                        stepDone = false;
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             } else {
                 //on standby
                 interruptCheck();

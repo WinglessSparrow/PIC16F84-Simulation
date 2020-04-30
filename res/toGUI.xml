@@ -1,0 +1,15 @@
+<Data>
+<NODE name="PC">
+<v val="3"/>
+</NODE>
+<NODE name="STACK">
+<v val=""/>
+</NODE>
+<NODE name="WREGISTER">
+<v val="3"/>
+</NODE>
+<NODE name="RAM">
+<v val="3" idx="1"/>
+<v val="3" idx="2"/>
+</NODE>
+</Data>

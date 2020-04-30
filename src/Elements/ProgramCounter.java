@@ -99,14 +99,22 @@ public class ProgramCounter extends Element implements Observable {
     public String getObservedValues() {
         String output;
 
-        output = "<PC>" + countedValue + "</PC>";
+        output = "<NODE name=\"PC\">\n<v val=\"" + countedValue + "\"/>\n</NODE>\n";
 
-        output += "<STACK>";
-        for (int i = 0; i < stack.size() - 1; i++) {
-            output += stack.get(i).toString() + ",";
+        output += "<NODE name=\"STACK\">\n";
+
+        if (stack.size() > 1) {
+            for (int i = 0; i < stack.size() - 1; i++) {
+                output += "<v val=\"" + stack.get(i).toString() + "\"/>\n";
+            }
+            output += "<v val=\"" + stack.lastElement().toString() + "\"/>\n";
+        } else if(stack.size() == 1) {
+            output += "<v val=\"" + stack.lastElement().toString() + "\"/>\n";
+        } else {
+            output += "<v val=\"\"/>\n";
         }
-        output += stack.lastElement().toString();
-        output += "</STACK>";
+
+        output += "</NODE>";
 
         return output;
     }
