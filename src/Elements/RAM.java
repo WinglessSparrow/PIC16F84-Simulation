@@ -18,7 +18,7 @@ public class RAM extends Element implements Observable {
     private RegisterOperation rOperation = RegisterOperation.NONE;
 
     public enum RegisterOperation {
-        NONE, INCREASE, DECREASE, ROTATE_LEFT, ROTATE_RIGHT, COMPLEMENT, SWAP, BIT_SET, BIT_CLR, BIT_TEST_SET, BIT_TEST_CLR, CLR
+        NONE, INCREASE, DECREASE, ROTATE_LEFT, ROTATE_RIGHT, COMPLEMENT, SWAP, BIT_SET, BIT_CLR, BIT_TEST_SET, BIT_TEST_CLR, CLR, MOVF
     }
 
     public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer) {
@@ -70,20 +70,25 @@ public class RAM extends Element implements Observable {
                     temp = swap(getData(idx));
                     break;
                 case BIT_SET:
-                    setSpecificBits(true, idx, bitIdxFromOP);
+                    temp = BitManipulator.setBit(getData(idx), bitIdxFromOP);
                     break;
                 case BIT_CLR:
-                    setSpecificBits(false, idx, bitIdxFromOP);
+                    temp = BitManipulator.clearBit(getData(idx), bitIdxFromOP);
                     break;
                 case BIT_TEST_SET:
                     bitSet = (getSpecificBit(idx, bitIdxFromOP) == 1);
+                    temp = getData(idx);
                     break;
                 case BIT_TEST_CLR:
                     bitSet = (getSpecificBit(idx, bitIdxFromOP) == 0);
+                    temp = getData(idx);
                     break;
                 case CLR:
-                    setData(idx, 0);
+                    temp = 0;
                     setZeroBit(0);
+                    break;
+                case MOVF:
+                    temp = getData(idx);
                     break;
             }
 
@@ -194,10 +199,10 @@ public class RAM extends Element implements Observable {
 
     private void printChanges(int changedIdx) {
         if (changedIdx - 3 < 0 || changedIdx + 3 > data.length) {
-            System.out.println(changedIdx + " >> " + data[changedIdx]);
+            System.out.println(changedIdx + " >> 0x" + Integer.toHexString(data[changedIdx]));
         } else {
             for (int i = changedIdx - 3; i < changedIdx + 3; i++) {
-                System.out.println(i + " >> " + data[i]);
+                System.out.println(i + " >> 0x" + Integer.toHexString(data[i]));
             }
         }
     }

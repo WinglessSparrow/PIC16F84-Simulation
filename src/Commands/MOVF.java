@@ -10,7 +10,7 @@ public class MOVF extends CommandRAMBase {
     public void setFlags(Element[] elements) {
         super.setFlags(elements);
         //setting the particular operation
-        ((RAM) elements[Simulation.RAM_MEM]).setROperation(RAM.RegisterOperation.NONE);
+        ((RAM) elements[Simulation.RAM_MEM]).setROperation(RAM.RegisterOperation.MOVF);
     }
 
     @Override

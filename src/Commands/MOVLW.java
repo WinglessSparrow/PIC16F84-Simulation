@@ -15,11 +15,9 @@ public class MOVLW extends CommandBase {
 
     @Override
     public void setFlags(Element[] elements) {
-        //none
     }
 
     @Override
     public void cleanUpInstructions(Element[] elements) {
-
     }
 }

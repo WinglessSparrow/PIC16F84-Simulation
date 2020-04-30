@@ -34,10 +34,14 @@ public class WRegister extends Element implements Observable {
 
     @Override
     public void step() {
-        storedValue = getFromBus(Simulation.BUS_LITERAL);
-        if (putOnFileBus) putOnBus(storedValue);
+        if (putOnFileBus) {
+            putOnBus(storedValue);
+        } else {
+            storedValue = getFromBus(Simulation.BUS_LITERAL);
+        }
 
         System.out.println("Storing in W_Register: 0x" + Integer.toHexString(storedValue) + " from literal bus");
+        putOnFileBus = false;
     }
 
     @Override

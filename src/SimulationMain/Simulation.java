@@ -3,10 +3,7 @@ package SimulationMain;
 import Commands.SLEEP;
 import CommandsHelpers.CommandBase;
 import Elements.*;
-import Helpers.CommandAtlas;
-import Helpers.Element;
-import Helpers.Prescaler;
-import Helpers.Watchdog;
+import Helpers.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +27,6 @@ public class Simulation implements Runnable {
     //TODO temp, after GUI will be implemented, should remove or mb repurposed
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Watchdog watchdog;
-    private Prescaler prescaler;
 
     public Simulation() {
         //this true, to make it run forever
@@ -50,8 +46,8 @@ public class Simulation implements Runnable {
 
         //create a bunch of dummy data
         int[] dummyData = {0x3003, 0x0081, 0x3002, 0b00001000000001};
-//        Parser parser = new Parser();
-//        dummyData = parser.parse("res/TPicSim2.LST");
+        Parser parser = new Parser();
+        dummyData = parser.parse("res/TPicSim3.LST");
 
         //creating and connecting all the components
         // each element MUST have a static idx
@@ -76,7 +72,7 @@ public class Simulation implements Runnable {
         elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
         elements[CU] = new ControlUnit(elements);
 
-        prescaler = new Prescaler();
+        Prescaler prescaler = new Prescaler();
 
         watchdog = new Watchdog(prescaler);
         elements[TIMER] = new Timer(prescaler);
@@ -150,8 +146,6 @@ public class Simulation implements Runnable {
             } else {
                 standby = true;
             }
-        } else {
-            System.err.println("NULLPOINTER IN COMMAND, SOMETHING WENT HORRIBLY WRONG, Simulation, 150 or smth");
         }
     }
 

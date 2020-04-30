@@ -39,8 +39,8 @@ public class ALU extends Element {
         int literal = multiplexer.getStoredValue();
         int wLiteral = accumulator.getStoredValue();
 
-        System.out.println("Accum: " + wLiteral);
-        System.out.println("literal: " + literal);
+        System.out.println("Accum: 0x" + Integer.toHexString(wLiteral));
+        System.out.println("literal: 0x" + Integer.toHexString(literal));
 
         int result = 0;
 

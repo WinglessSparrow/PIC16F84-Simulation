@@ -13,7 +13,6 @@ public class CommandAtlas {
             put(0x0800, new MOVF());
             put(0x0080, new MOVWF());
             put(0x0a00, new INCF());
-            put(0x0500, new DECF());
             put(0x0e00, new SWAPF());
             put(0x0d00, new RLF());
             put(0x0c00, new RRF());
@@ -34,10 +33,15 @@ public class CommandAtlas {
             put(0x1100, new BSF());
             put(0x0100, new CLRW());
             put(0x0180, new CLRF());
-            put(0x0200, new SUBWF());
             put(0x0b00, new DECWFZ());
             put(0x0f00, new INCFSZ());
             put(0x0063, new SLEEP());
+            put(0x0200, new SUBWF());
+            put(0x0300, new DECF());
+            put(0x0400, new IORWF());
+            put(0x0500, new ANDWF());
+            put(0x0600, new XORWF());
+            put(0x0700, new ADDWF());
         }
     };
 
