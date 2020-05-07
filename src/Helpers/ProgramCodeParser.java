@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Parser {
+public class ProgramCodeParser {
 
     ArrayList<String> programData = new ArrayList<>();
     ArrayList<String> data = new ArrayList<>();

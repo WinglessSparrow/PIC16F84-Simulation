@@ -45,7 +45,7 @@ public class Simulation implements Runnable {
 
         //create a bunch of dummy data
         int[] dummyData = {0x3003, 0x0081, 0x3002, 0b00001000000001};
-        Parser parser = new Parser();
+        ProgramCodeParser parser = new ProgramCodeParser();
         dummyData = parser.parse("res/TPicSim3.LST");
 
         //creating and connecting all the components

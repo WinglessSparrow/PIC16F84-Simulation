@@ -15,7 +15,7 @@ public class Simulation_GUI extends Application {
         launch(args);
     }
 
-    Controller centralController;
+    private Controller centralController;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
