@@ -29,9 +29,12 @@ public class StartingWController extends Controller {
     public Controller addNode(String FXMLUrl, GridPane grid, int xPos, int yPos) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLUrl));
 
+        Controller temp = null;
         Node tempNode = null;
+
         try {
             tempNode = loader.load();
+            temp = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,6 +43,8 @@ public class StartingWController extends Controller {
         GridPane.setRowIndex(tempNode, yPos);
 
         grid.getChildren().add(tempNode);
+
+        return temp;
     }
 
     @Override
