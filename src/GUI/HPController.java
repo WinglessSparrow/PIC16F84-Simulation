@@ -13,7 +13,7 @@ public class HPController extends Controller {
 
     public void setData(int data[]) {
         //8 because I like this config the most
-        hpDisplay = new HeapDisplay(data, 8);
+        hpDisplay = new HeapDisplay(data, 8, 50, 30);
         scr_pane.setContent(hpDisplay);
     }
 
@@ -21,7 +21,5 @@ public class HPController extends Controller {
     public void update(String[] data) {
         //TODO parse out data[array]
         //call update on hpDisplay, give it the array
-
-        hpDisplay.update(null);
     }
 }

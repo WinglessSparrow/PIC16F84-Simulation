@@ -7,13 +7,14 @@ import javafx.scene.layout.GridPane;
 public class HeapDisplay extends GridPane {
 
     //the width of the cells, just to make it more readable
-    private int maxWidth = 50, minWidth = 30;
+    private int maxWidth, minWidth;
 
-    public HeapDisplay(int[] data, int width) {
-
+    public HeapDisplay(int[] data, int width, int maxWidth, int minWidth) {
+        this.maxWidth = maxWidth;
+        this.minWidth = minWidth;
         int count = 0, row = 0;
 
-        createFirstRow(8);
+        createFirstRow(width);
 
         while (count < data.length) {
 
@@ -30,14 +31,14 @@ public class HeapDisplay extends GridPane {
 
     }
 
-    private void startNewRow(int row, int width) {
+    protected void startNewRow(int row, int width) {
         Cell temp = new Cell("", 0, row, minWidth, Integer.toHexString(width * row), false);
         temp.setStyle("-fx-background-color: grey");
         getChildren().add(temp);
     }
 
 
-    private void createFirstRow(int width) {
+    protected void createFirstRow(int width) {
         //very first cell is unique
         Cell temp = new Cell("", 0, 0, minWidth, "0x", false);
         temp.setStyle("-fx-background-color: grey");

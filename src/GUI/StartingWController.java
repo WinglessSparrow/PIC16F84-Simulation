@@ -27,6 +27,7 @@ public class StartingWController extends Controller {
         controllers.add(addNode("/GUI/OperationsPanel.fxml", grid, 1, 1));
         controllers.add(addNode("/GUI/HeapPanel.fxml", grid, 0, 1));
         controllers.add(addNode("/GUI/SFPPanel.fxml", grid, 0, 2));
+        controllers.add(addNode("/GUI/StackPanel.fxml", grid, 1, 2));
 
 
         //TODO THIS HERE IS DUMMY DATA
