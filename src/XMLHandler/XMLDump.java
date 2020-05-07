@@ -1,17 +1,18 @@
-package Helpers;
+package XMLHandler;
 
+import Helpers.Element;
 import Interfaces.Observable;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
-public class XMLDataTransmit {
+public class XMLDump {
 
-    public static void packageXML(Element[] elements) throws FileNotFoundException, UnsupportedEncodingException {
+    public static void packageXML(Element[] elements, String path) throws FileNotFoundException, UnsupportedEncodingException {
         PrintWriter writer;
 
-        writer = new PrintWriter("res/toGUI.xml", "UTF-8");
+        writer = new PrintWriter(path, "UTF-8");
 
         String output = "<Data>\n";
 

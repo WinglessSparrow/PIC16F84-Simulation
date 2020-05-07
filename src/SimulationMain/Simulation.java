@@ -4,6 +4,7 @@ import Commands.SLEEP;
 import CommandsHelpers.CommandBase;
 import Elements.*;
 import Helpers.*;
+import XMLHandler.XMLDump;
 
 import java.io.*;
 
@@ -107,6 +108,10 @@ public class Simulation implements Runnable {
         //TODO check for low or high in GUI INTEDG
         interruptCheck();
 
+
+        //XMLDump
+        dumpXML();
+
     }
 
     private CommandBase fetch() {
@@ -167,7 +172,6 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
-        boolean stepDone = false;
 
         while (isRunning) {
             if (!standby) {
@@ -179,7 +183,6 @@ public class Simulation implements Runnable {
                     try {
                         if (reader.readLine().equals("step")) {
                             step();
-                            stepDone = true;
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -197,22 +200,9 @@ public class Simulation implements Runnable {
                     if (System.nanoTime() - prevTime >= hzRate) {
                         prevTime = System.nanoTime();
                         step();
-                        stepDone = true;
                     }
                     if (isWatchdog) {
                         watchdog.update();
-                    }
-                }
-
-                if (stepDone) {
-                    //Package to XML
-                    try {
-                        XMLDataTransmit.packageXML(elements);
-                        stepDone = false;
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
                     }
                 }
 
@@ -223,5 +213,22 @@ public class Simulation implements Runnable {
             }
         }
         System.out.println(">>>>>>>>>>>>>>End<<<<<<<<<<<<<");
+    }
+
+    //Dumps all data from Observables into an XML file
+    private void dumpXML() {
+        try {
+            XMLDump.packageXML(elements, "res/toGUI.xml");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void readXML() {
+
+
     }
 }
