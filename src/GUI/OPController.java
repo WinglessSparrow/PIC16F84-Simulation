@@ -1,46 +1,56 @@
 package GUI;
 
+import GUI.TableView.OPCodeLine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class OPController extends Controller {
-    public TableView<OPCodeLine> tw_table;
-    public TableColumn tc_BreakPoint;
-    public TableColumn<OPCodeLine, Integer> tc_Line;
-    public TableColumn<OPCodeLine, Integer> tc_PC;
-    public TableColumn<OPCodeLine, String> tc_ProgCode;
+    @FXML
+    private TableView<OPCodeLine> tw_table;
+    //TODO Breakpoint visualization, thou dunno how yet
+    @FXML
+    private TableColumn tc_BreakPoint;
+    @FXML
+    private TableColumn<OPCodeLine, Integer> tc_Line;
+    @FXML
+    private TableColumn<OPCodeLine, Integer> tc_PC;
+    @FXML
+    private TableColumn<OPCodeLine, String> tc_ProgCode;
 
+    private ObservableList<OPCodeLine> list;
 
     public OPController() {
     }
 
     public void initialize() {
-        building();
+        //linking the data with columns
+        tc_Line.setCellValueFactory(new PropertyValueFactory<>("line"));
+        tc_PC.setCellValueFactory(new PropertyValueFactory<>("pc"));
+        tc_ProgCode.setCellValueFactory(new PropertyValueFactory<>("opCode"));
+
+        //creating the list
+        list = FXCollections.observableArrayList();
+
+        //setting the list
+        tw_table.setItems(list);
     }
 
-    private void building() {
-        tc_Line.setCellValueFactory(
-                new PropertyValueFactory<OPCodeLine, Integer>("line")
-        );
-
-        tc_PC.setCellValueFactory(
-                new PropertyValueFactory<OPCodeLine, Integer>("pc")
-        );
-
-        tc_ProgCode.setCellValueFactory(
-                new PropertyValueFactory<OPCodeLine, String>("opCode")
-        );
-
-        ObservableList<OPCodeLine> list = FXCollections.observableArrayList();
-
-        tw_table.setItems(list);
+    /**
+     * @param data   OP Code
+     * @param offset show where the program really is
+     */
+    public void setData(String[] data, int offset) {
+        for (int i = 0; i < data.length; i++) {
+            list.add(new OPCodeLine(i, i + offset, data[i]));
+        }
     }
 
     @Override
     public void update(String[] data) {
-
+        //TODO move pointer (visuals) according to PC value
     }
 }

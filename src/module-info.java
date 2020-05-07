@@ -3,5 +3,6 @@ module PIC16F84.Simulation {
     requires javafx.controls;
     requires java.desktop;
 
+    opens GUI.TableView;
     opens GUI;
 }

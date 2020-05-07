@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SFRPController">
+    <TableView fx:id="tw_table" pickOnBounds="false" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+            <TableColumn fx:id="tc_type" prefWidth="70.0" text="Register" />
+            <TableColumn fx:id="tc_0" prefWidth="45.0" text="+0" />
+            <TableColumn fx:id="tc_1" prefWidth="45.0" text="+1" />
+            <TableColumn fx:id="tc_2" prefWidth="45.0" text="+2" />
+            <TableColumn fx:id="tc_3" prefWidth="45.0" text="+3" />
+            <TableColumn fx:id="tc_4" prefWidth="45.0" text="+4" />
+            <TableColumn fx:id="tc_5" prefWidth="45.0" text="+5" />
+            <TableColumn fx:id="tc_6" prefWidth="45.0" text="+6" />
+            <TableColumn fx:id="tc_7" prefWidth="45.0" text="+7" />
+        </columns>
+    </TableView>
+</AnchorPane>
