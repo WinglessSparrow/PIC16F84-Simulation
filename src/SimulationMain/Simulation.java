@@ -217,13 +217,7 @@ public class Simulation implements Runnable {
 
     //Dumps all data from Observables into an XML file
     private void dumpXML() {
-        try {
-            XMLDump.packageXML(elements, "res/toGUI.xml");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        XMLDump.packageXML(elements, "res/toGUI.xml");
 
     }
 

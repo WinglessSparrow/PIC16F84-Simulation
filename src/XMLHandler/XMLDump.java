@@ -9,10 +9,9 @@ import java.io.UnsupportedEncodingException;
 
 public class XMLDump {
 
-    public static void packageXML(Element[] elements, String path) throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer;
-
-        writer = new PrintWriter(path, "UTF-8");
+    private PrintWriter writer;
+    private String outout = "";
+    public static void packageXML(Element[] elements, String path) {
 
         String output = "<Data>\n";
 
@@ -25,9 +24,25 @@ public class XMLDump {
 
         output += "</Data>";
 
+        write(output, path);
+    }
+
+    private static void write(String output, String path) {
+        PrintWriter writer = null;
+        try {
+            //Init Writer
+            writer = new PrintWriter(path, "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         writer.write(output);
         writer.flush();
         writer.close();
+
     }
+
 
 }
