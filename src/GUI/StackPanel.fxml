@@ -1,129 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane id="stack-panel" fx:id="anchor" prefHeight="375.0" prefWidth="545.0" stylesheets="@Style-Serious.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SPController">
-   <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <children>
-          <VBox id="stack-pane" fx:id="vbox_left" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0">
-              <Label id="underline-bottom" alignment="CENTER" prefHeight="45.0" prefWidth="321.0" text="Stack">
-                 <font>
-                     <Font size="25.0" />
-                 </font>
-              </Label>
-              <HBox alignment="TOP_CENTER" prefHeight="309.0" prefWidth="221.0">
-                  <VBox alignment="TOP_RIGHT" prefHeight="274.0" prefWidth="220.0">
-                      <Label id="underline-bottom" alignment="CENTER" prefHeight="26.0" prefWidth="225.0" text="Stack LvL">
-                          <font>
-                              <Font size="17.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="1:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="2:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="3:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="4:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="5:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="6:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="7:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0" text="8:" textAlignment="RIGHT">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                  </VBox>
-                  <VBox id="line-left" alignment="TOP_CENTER" prefHeight="274.0" prefWidth="308.0">
-                      <Label id="underline-bottom" alignment="CENTER" contentDisplay="CENTER" prefHeight="34.0" prefWidth="222.0" text="Value">
-                          <font>
-                              <Font size="17.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack1" alignment="CENTER" prefHeight="26.0" prefWidth="124.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack2" alignment="CENTER" prefHeight="26.0" prefWidth="132.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack3" alignment="CENTER" prefHeight="26.0" prefWidth="154.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack4" alignment="CENTER" prefHeight="26.0" prefWidth="125.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack5" alignment="CENTER" prefHeight="26.0" prefWidth="175.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack6" alignment="CENTER" prefHeight="26.0" prefWidth="230.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack7" alignment="CENTER" prefHeight="26.0" prefWidth="271.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="lbl_stack8" alignment="CENTER" prefHeight="26.0" prefWidth="302.0" text="xx">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
-                  </VBox>
-              </HBox>
-          </VBox>
-          <VBox id="main-menu-pane" fx:id="vbox_right" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0" spacing="15.0">
-              <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="Main Menu">
-                 <font>
-                     <Font size="26.0" />
-                 </font>
-              </Label>
-              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Load program" />
-              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Remove break point" />
-              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Help" />
-              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Exit" />
-          </VBox>
-      </children>
-   </HBox>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane id="stack-panel" prefHeight="375.0" prefWidth="545.0" stylesheets="@Style-Serious.css"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.SPController">
+    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <children>
+            <VBox id="stack-pane" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0">
+                <Label id="underline-bottom" alignment="CENTER" prefHeight="45.0" prefWidth="321.0" text="Stack">
+                    <font>
+                        <Font size="25.0"/>
+                    </font>
+                </Label>
+                <HBox alignment="TOP_CENTER" prefHeight="309.0" prefWidth="221.0">
+                    <VBox alignment="TOP_RIGHT" prefHeight="274.0" prefWidth="220.0">
+                        <Label id="underline-bottom" alignment="CENTER" prefHeight="26.0" prefWidth="225.0"
+                               text="Stack LvL">
+                            <font>
+                                <Font size="17.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="1:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="2:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="3:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="4:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="5:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="6:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="7:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="127.0"
+                               text="8:" textAlignment="RIGHT">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                    </VBox>
+                    <VBox id="line-left" alignment="TOP_CENTER" prefHeight="274.0" prefWidth="308.0">
+                        <Label id="underline-bottom" alignment="CENTER" contentDisplay="CENTER" prefHeight="34.0"
+                               prefWidth="222.0" text="Value">
+                            <font>
+                                <Font size="17.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack1" alignment="CENTER" prefHeight="26.0" prefWidth="124.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack2" alignment="CENTER" prefHeight="26.0" prefWidth="132.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack3" alignment="CENTER" prefHeight="26.0" prefWidth="154.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack4" alignment="CENTER" prefHeight="26.0" prefWidth="125.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack5" alignment="CENTER" prefHeight="26.0" prefWidth="175.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack6" alignment="CENTER" prefHeight="26.0" prefWidth="230.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack7" alignment="CENTER" prefHeight="26.0" prefWidth="271.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="lbl_stack8" alignment="CENTER" prefHeight="26.0" prefWidth="302.0" text="xx">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                    </VBox>
+                </HBox>
+            </VBox>
+            <VBox id="main-menu-pane" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0" spacing="15.0">
+                <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="Main Menu">
+                    <font>
+                        <Font size="26.0"/>
+                    </font>
+                </Label>
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Load program"/>
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Remove break point"/>
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Help"/>
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" text="Exit"/>
+            </VBox>
+        </children>
+    </HBox>
 </AnchorPane>

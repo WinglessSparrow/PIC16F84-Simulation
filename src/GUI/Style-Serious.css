@@ -85,6 +85,7 @@
 #control-pane {
     -fx-border-color: GREEN_C;
     -fx-border-width: 0 3 3 0;
+    -fx-padding: 3 0 0 0;
 
     -fx-background-color: GREEN_BACK;
 }

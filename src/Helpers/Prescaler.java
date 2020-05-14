@@ -7,6 +7,7 @@ public class Prescaler {
     private static int idx = 0;
 
     public Prescaler() {
+        //fills with possible scale values
         for (int i = 0; i < scales.length; i++) {
             scales[i] = (int) Math.pow(2, i);
         }

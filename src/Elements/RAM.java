@@ -138,6 +138,16 @@ public class RAM extends Element implements Observable {
     }
 
     private void setData(int idx, int value) {
+
+        //mask first bits, so that the could be no artifacts
+        if (idx == 0x0a || idx == 0x05 || idx == 0x85 || idx == 0x88 || idx == 0x8a) {
+            //mask 5 bits (5 bit long registers)
+            value = value & 31;
+        } else {
+            //mask 8 bits
+            value = value & 255;
+        }
+
         //things with two assignments, are done so, because these registers are duplicated
         if (idx == 0 || idx == 0x80) {
             //indirect addressing

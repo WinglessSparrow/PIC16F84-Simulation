@@ -28,7 +28,7 @@
                     <Font size="25.0" />
                 </font>
             </Label>
-            <Label prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms">
+            <Label fx:id="lbl_runtime" prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -39,9 +39,14 @@
                         <Font size="15.0" />
                     </font>
                 </Label>
-                <ComboBox prefHeight="25.0" prefWidth="82.0" promptText="xx Hz" />
+                <ComboBox fx:id="drpd_hz" prefHeight="25.0" prefWidth="82.0" promptText="xx Hz" />
             </HBox>
-            <CheckBox mnemonicParsing="false" prefHeight="35.0" prefWidth="149.0" text="Watchdog">
+         <Label fx:id="lbl_pc" alignment="CENTER" prefHeight="35.0" prefWidth="148.0" text="PC: XX">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+            <CheckBox fx:id="chk_watchdog" mnemonicParsing="false" prefHeight="35.0" prefWidth="149.0" text="Watchdog">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -51,6 +56,11 @@
                     <Font size="20.0" />
                 </font>
             </Label>
+         <Label fx:id="lbl_prescaler" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="148.0" text="Prescaler: x : x" textAlignment="CENTER">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
         </VBox>
     </HBox>
 </AnchorPane>
