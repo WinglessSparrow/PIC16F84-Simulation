@@ -35,9 +35,17 @@ public class OPController extends Controller {
     public void initialize() {
         //linking the data with columns
         tc_Line.setCellValueFactory(new PropertyValueFactory<>("line"));
+        tc_Line.setSortable(false);
+        tc_Line.setEditable(false);
         tc_PC.setCellValueFactory(new PropertyValueFactory<>("pc"));
+        tc_PC.setSortable(false);
+        tc_PC.setEditable(false);
         tc_ProgCode.setCellValueFactory(new PropertyValueFactory<>("opCode"));
+        tc_ProgCode.setSortable(false);
+        tc_ProgCode.setEditable(false);
         tc_BreakPoint.setCellValueFactory(new PropertyValueFactory<>("breakPoint"));
+        tc_BreakPoint.setSortable(false);
+        tc_BreakPoint.setEditable(false);
 
         //creating the list
         list = FXCollections.observableArrayList();

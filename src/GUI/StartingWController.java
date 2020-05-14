@@ -26,7 +26,7 @@ public class StartingWController extends Controller {
         controllers.add(addNode("/GUI/PortsPanel.fxml", grid, 2, 1));
         controllers.add(addNode("/GUI/OperationsPanel.fxml", grid, 1, 1));
         controllers.add(addNode("/GUI/HeapPanel.fxml", grid, 0, 1));
-        controllers.add(addNode("/GUI/SFPPanel.fxml", grid, 0, 2));
+        controllers.add(addNode("/GUI/SFRPanel_2.fxml", grid, 0, 2));
         controllers.add(addNode("/GUI/StackPanel.fxml", grid, 1, 2));
 
 

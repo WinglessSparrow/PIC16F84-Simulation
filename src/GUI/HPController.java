@@ -9,11 +9,9 @@ public class HPController extends Controller {
     @FXML
     private ScrollPane scr_pane;
 
-    private HeapDisplay hpDisplay;
-
     public void setData(int data[]) {
         //8 because I like this config the most
-        hpDisplay = new HeapDisplay(data, 8, 50, 30);
+        HeapDisplay hpDisplay = new HeapDisplay(data, 8, 55, 30);
         scr_pane.setContent(hpDisplay);
     }
 
@@ -22,4 +20,6 @@ public class HPController extends Controller {
         //TODO parse out data[array]
         //call update on hpDisplay, give it the array
     }
+
+
 }

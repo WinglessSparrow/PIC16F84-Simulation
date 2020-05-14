@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -21,8 +20,6 @@ public class Simulation_GUI extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("What the hell are you trying to find up here?!");
 
-//        scene.getStylesheets().add("/fx_Interface/style-o-g.css");
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("StartingWindow.fxml"));
 
         AnchorPane root = null;
@@ -36,11 +33,12 @@ public class Simulation_GUI extends Application {
             root = new AnchorPane();
         }
 
-        Scene scene = new Scene(root, 1200, 700);
+        Scene scene = new Scene(root, 1400, 800);
 
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        scene.getStylesheets().add("/GUI/Style-Serious.css");
+
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 }

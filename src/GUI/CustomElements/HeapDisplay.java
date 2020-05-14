@@ -28,17 +28,15 @@ public class HeapDisplay extends GridPane {
 
             count++;
         }
-
     }
 
-    protected void startNewRow(int row, int width) {
-        Cell temp = new Cell("", 0, row, minWidth, Integer.toHexString(width * row), false);
+    private void startNewRow(int row, int width) {
+        Cell temp = new Cell("", 0, row, minWidth, Integer.toHexString(width * (row - 1)), false);
         temp.setStyle("-fx-background-color: grey");
         getChildren().add(temp);
     }
 
-
-    protected void createFirstRow(int width) {
+    private void createFirstRow(int width) {
         //very first cell is unique
         Cell temp = new Cell("", 0, 0, minWidth, "0x", false);
         temp.setStyle("-fx-background-color: grey");

@@ -6,8 +6,6 @@ import javafx.scene.control.Label;
 import java.util.Stack;
 
 public class SPController extends Controller {
-
-
     @FXML
     private Label lbl_stack1;
     @FXML
@@ -48,6 +46,22 @@ public class SPController extends Controller {
         updateStack(stack);
     }
 
+    public void load() {
+        //TODO make load
+    }
+
+    public void breakPointRem() {
+        //TODO make breakPoint
+    }
+
+    public void help() {
+        //TODO make help
+    }
+
+    public void exit() {
+        //TODO make exit
+    }
+
     private void updateStack(Stack<Integer> stack) {
         for (Label l : labels) {
             if (stack.isEmpty()) {
@@ -63,5 +77,6 @@ public class SPController extends Controller {
         //TODO parse string to stack and then call updateStack
         //possibly for optimisation some flag or counter,
         //so that it's should be completely renewed every time
+        updateStack(null);
     }
 }
