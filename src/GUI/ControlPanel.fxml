@@ -17,13 +17,13 @@
                     <Font size="25.0" />
                 </font>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Run" />
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Stop" />
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Step" />
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Reset" />
+            <Button mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0" text="Run" />
+            <Button mnemonicParsing="false" onAction="#stop" prefHeight="45.0" prefWidth="155.0" text="Stop" />
+            <Button mnemonicParsing="false" onAction="#step" prefHeight="45.0" prefWidth="155.0" text="Step" />
+            <Button mnemonicParsing="false" onAction="#reset" prefHeight="45.0" prefWidth="155.0" text="Reset" />
         </VBox>
         <VBox alignment="TOP_CENTER" prefHeight="313.0" spacing="10.0">
-            <Label alignment="CENTER" prefHeight="33.0" prefWidth="108.0" text="Timing">
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="108.0" text="Timing">
                 <font>
                     <Font size="25.0" />
                 </font>
