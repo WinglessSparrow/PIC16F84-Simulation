@@ -17,7 +17,7 @@
                     <Font size="25.0" />
                 </font>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Run" />
+            <Button mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0" text="Run" />
             <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Stop" />
             <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Step" />
             <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Reset" />

@@ -1,5 +1,6 @@
 package GUI;
 
+import SimulationMain.Simulation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +11,9 @@ import java.io.IOException;
 
 public class Simulation_GUI extends Application {
 
+    Simulation sim;
+    Thread simThread;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -18,6 +22,8 @@ public class Simulation_GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        initSim();
+
         primaryStage.setTitle("What the hell are you trying to find up here?!");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("StartingWindow.fxml"));
@@ -39,6 +45,24 @@ public class Simulation_GUI extends Application {
 
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
+        initControllerSim(loader);
         primaryStage.show();
     }
+
+    private void initSim() {
+        sim = new Simulation();
+        simThread = new Thread(sim);
+        simThread.start();
+    }
+
+    private void initControllerSim(FXMLLoader loader) {
+        StartingWController controller =
+                loader.<StartingWController>getController();
+        controller.setSim(sim);
+
+
+
+    }
+
+
 }

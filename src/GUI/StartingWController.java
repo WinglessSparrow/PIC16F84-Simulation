@@ -1,5 +1,6 @@
 package GUI;
 
+import SimulationMain.Simulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -70,5 +71,13 @@ public class StartingWController extends Controller {
     @Override
     public void update(String[] data) {
 
+    }
+
+    @Override
+    public void setSim(Simulation sim) {
+        this.sim = sim;
+        for (int i = 0; i < controllers.size() ; i++) {
+            controllers.get(i).setSim(sim);
+        }
     }
 }

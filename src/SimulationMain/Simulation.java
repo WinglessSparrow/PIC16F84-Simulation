@@ -34,7 +34,7 @@ public class Simulation implements Runnable {
         //this true, to make it run forever
         isRunning = true;
         //setting th mode, better to start with the debug mode
-        debug = false;
+        debug = true;
         isWatchdog = false;
 
         //how many buses are there
