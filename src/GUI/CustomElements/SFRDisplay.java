@@ -23,7 +23,7 @@ public class SFRDisplay extends VBox {
         setSpacing(5);
         //first row
         Register temp = new Register(maxWidth, minWidth, false);
-        temp.setStyle("-fx-background-color: #9c9c9c");
+        temp.setStyle("-fx-background-color: #bfdbf7");
         getChildren().add(temp);
 
         //all the other rows
@@ -34,11 +34,28 @@ public class SFRDisplay extends VBox {
         }
     }
 
+    /**
+     * @param data array with all teh values in right order!
+     */
     public void update(int[] data) {
 
-        for (int i = 0; i < data.length; i++) {
+        //iterates through data
+        int count = 0;
+
+        for (int i = 0; i < getChildren().size(); i++) {
+            //getting the instance
             Register temp = (Register) getChildren().get(i);
-            temp.update(data[i]);
+            //check if it's the first row
+            if (temp.isWrite()) {
+                try {
+                    temp.update(data[count]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    //no value, by the full operation should happen
+                    //but might happen so just to make sure it's ok
+                    temp.update(0);
+                }
+                count++;
+            }
         }
     }
 }
@@ -59,14 +76,14 @@ class Register extends HBox {
         temp.setPrefWidth(maxWidth);
         temp.setPrefHeight(25);
 
-        temp.setStyle("-fx-background-color: #9c9c9c");
+        temp.setStyle("-fx-background-color: #BFDBF7");
 
         getChildren().add(temp);
 
         for (int i = 7; i > -1; i--) {
             lbls_bin[i] = new Label("+" + i);
 
-            lbls_bin[i].setStyle("-fx-background-color: #9c9c9c");
+            lbls_bin[i].setStyle("-fx-background-color: #BFDBF7");
 
             lbls_bin[i].setAlignment(Pos.CENTER);
             lbls_bin[i].setPrefWidth(minWidth);
@@ -80,12 +97,13 @@ class Register extends HBox {
         temp.setAlignment(Pos.CENTER);
         temp.setPrefWidth(maxWidth);
         temp.setPrefHeight(25);
-        temp.setStyle("-fx-background-color: #9c9c9c");
+        temp.setStyle("-fx-background-color: #BFDBF7");
 
         getChildren().add(temp);
     }
 
     public Register(String name, int value, int maxWidth, int minWidth, boolean write) {
+        this.write = write;
         setSpacing(5);
 
         Label temp = new Label(name);
@@ -93,7 +111,7 @@ class Register extends HBox {
         temp.setPrefWidth(maxWidth);
         temp.setPrefHeight(25);
 
-        temp.setStyle("-fx-background-color: #9c9c9c");
+        temp.setStyle("-fx-background-color: #BFDBF7");
 
         getChildren().add(temp);
 
@@ -101,7 +119,7 @@ class Register extends HBox {
         for (int i = 7; i > -1; i--) {
             lbls_bin[i] = new Label(BitManipulator.getBit(i, value) + "");
 
-            lbls_bin[i].setStyle("-fx-background-color: #b4b4b4");
+            lbls_bin[i].setStyle("-fx-background-color: #E1E5F2");
 
             lbls_bin[i].setAlignment(Pos.CENTER);
             lbls_bin[i].setPrefWidth(minWidth);
@@ -115,7 +133,9 @@ class Register extends HBox {
         temp.setAlignment(Pos.CENTER);
         temp.setPrefWidth(maxWidth);
         temp.setPrefHeight(25);
-        temp.setStyle("-fx-background-color: #9c9c9c");
+        temp.setStyle("-fx-background-color: #BFDBF7");
+
+        lbl_value = temp;
 
         getChildren().add(temp);
     }

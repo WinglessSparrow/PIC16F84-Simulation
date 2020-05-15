@@ -10,6 +10,7 @@ public class OPCodeLine {
     private final SimpleStringProperty breakPoint;
 
     public OPCodeLine(int line, int pc, String opCode) {
+
         this.line = new SimpleIntegerProperty(line);
         if (pc < 0) {
             this.pc = new SimpleStringProperty("");
@@ -35,6 +36,7 @@ public class OPCodeLine {
     public SimpleStringProperty breakPointProperty() {
         return breakPoint;
     }
+
 
     public void setBreakPoint(boolean isBreak) {
         if (isBreak) {

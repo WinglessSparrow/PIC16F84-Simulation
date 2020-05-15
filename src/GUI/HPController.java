@@ -13,7 +13,7 @@ public class HPController extends Controller {
 
     public void setData(int data[]) {
         //init start here, so that we could work with the direct reference of the data array
-        hpDisplay = new HeapDisplay(new int[255], 8, 55, 30);
+        hpDisplay = new HeapDisplay(new int[255], 8, 53, 30);
         scr_pane.setContent(hpDisplay);
     }
 

@@ -32,9 +32,11 @@ public class StartingWController extends Controller {
 
 
         //TODO THIS HERE IS DUMMY DATA
+        ((CPController) controllers.get(CP_CONTR)).setData(20, 0, 2, true);
+
         ((PPController) controllers.get(PP_CONTR)).setData(0b11000, 0b00110011, 0b01100, 0b10010000);
 
-        ((OPController) controllers.get(OP_CONTR)).setData(new String[]{"move your mom into my bed", "asdasdadsadsadas", "adsaasdasdassadas", "asdasfafasfdsa"}, 2);
+        ((OPController) controllers.get(OP_CONTR)).setData(new String[]{"move out of my house", "move into a cardboard box", "send help", "please"}, 2);
 
         ((SFRPController) controllers.get(SFR_CONTR)).setData(new int[]{0, 42, 2, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69});
 

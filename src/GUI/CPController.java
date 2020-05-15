@@ -65,10 +65,16 @@ public class CPController extends Controller {
     }
 
 
+    /**
+     * @param time     time the program took to run
+     * @param pc       programCounter
+     * @param prescale the prescaler value
+     * @param watchdog if prescaler is in watchdog mode
+     */
     public void setData(int time, int pc, int prescale, boolean watchdog) {
-        lbl_runtime.setText("Runtime: " + time);
-        lbl_pc.setText("PC: " + pc);
-        lbl_prescaler.setText("Prescaler: 1 : " + ((watchdog) ? prescale / 2 : prescale));
+        lbl_runtime.setText("Runtime:\t" + time);
+        lbl_pc.setText("PC:\t" + pc);
+        lbl_prescaler.setText("Prescaler:\t 1 : " + ((watchdog) ? prescale / 2 : prescale));
     }
 
     @Override

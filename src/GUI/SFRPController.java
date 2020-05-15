@@ -8,17 +8,24 @@ public class SFRPController extends Controller {
     @FXML
     private ScrollPane scrl_pane;
 
-    public void setData(int values[]) {
-        //TODO Split string into value and name
-        //TODO Dummy Data
+    private SFRDisplay display;
 
-        scrl_pane.setContent(new SFRDisplay(75, 35));
+    public void initialize() {
+        display = new SFRDisplay(68, 35);
+        scrl_pane.setContent(display);
+    }
 
+    /**
+     * @param data must be presorted
+     * @see SFRDisplay for the rigth sequence
+     */
+    public void setData(int data[]) {
+        display.update(data);
     }
 
     @Override
     public void update(String[] data) {
         //TODO call update on list and give it the values
-        //compare names of registers or smth <<< Stefan frag mich, bin nicht ganz sicher
+        //through set data
     }
 }

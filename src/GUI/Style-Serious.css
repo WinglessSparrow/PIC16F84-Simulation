@@ -1,32 +1,45 @@
 .root {
     VIOLET_C: rgba(255, 0, 149, 0.65);
     GREEN_C: #009c21;
+    CIAN_C: #1f7a8c;
 
     VIOLET_BACK: rgba(255, 0, 149, 0.35);
     GREEN_BACK: rgba(0, 156, 33, 0.35);
-    ORANGE_BACK: rgba(255, 165, 0, 0.35);
+    CIAN_BACK: rgba(31, 122, 140, 0.35);
+
+    CIAN_MIDDLE: #BFDBF7;
+
+    /*color paletts*/
+    /*CIAN*/
+    /*https://coolors.co/022b3a-1f7a8c-bfdbf7-e1e5f2-ffffff */
 }
 
 
 #stack-pane {
-    -fx-border-color: orange;
+    -fx-border-color: CIAN_C;
     -fx-border-width: 3 3 3 0;
 
-    -fx-background-color: ORANGE_BACK;
+    -fx-background-color: CIAN_BACK;
+}
+
+#stack-table {
+    -fx-background-color: CIAN_MIDDLE;
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 1;
 }
 
 #sfr-pane {
-    -fx-border-color: orange;
+    -fx-border-color: CIAN_C;
     -fx-border-width: 0 0 3 3;
 
-    -fx-background-color: ORANGE_BACK;
+    -fx-background-color: CIAN_BACK;
 }
 
 #heap-pane {
-    -fx-border-color: orange;
+    -fx-border-color: CIAN_C;
     -fx-border-width: 0 3 0 3;
 
-    -fx-background-color: ORANGE_BACK;
+    -fx-background-color: CIAN_BACK;
 }
 
 #op-code-pane {
@@ -46,10 +59,10 @@
 }
 
 #memory-lbl {
-    -fx-border-color: orange;
+    -fx-border-color: CIAN_C;
     -fx-border-width: 3 3 0 3;
 
-    -fx-background-color: ORANGE_BACK;
+    -fx-background-color: CIAN_BACK;
 }
 
 #debug-lbl {
@@ -90,12 +103,26 @@
 
 #port-panel {
     -fx-border-color: GREEN_C;
+    -fx-background-color: GREEN_BACK;
+
     -fx-border-width: 1;
-    -fx-padding: 3;
+    -fx-padding: 5 3 10 3;
+}
+
+#timing-panel {
+    -fx-border-color: GREEN_C;
+    -fx-background-color: GREEN_BACK;
+
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+.scroll-pane {
+    -fx-border-width: 1;
+    -fx-border-color: CIAN_C;
 }
 
 /*making table view not change itself*/
-
 .table-view:focused {
     -fx-border-color: #bebebe;
     -fx-border-width: 1;
@@ -112,4 +139,22 @@
 
 .table-row-cell:odd:filled:selected {
     -fx-background: -fx-control-inner-background-alt;
+}
+
+.button {
+    -fx-background-color: GREEN_BACK;
+    -fx-border-color: GREEN_C;
+    
+    -fx-border-width: 2 0 2 0;
+}
+
+.button:hover {
+    -fx-background-color: rgba(0, 156, 33, 0.65);
+    -fx-border-color: GREEN_C;
+
+    -fx-border-width: 2 1 2 1;
+}
+
+.button:pressed {
+    -fx-background-color: rgba(0, 255, 37, 0.65);
 }

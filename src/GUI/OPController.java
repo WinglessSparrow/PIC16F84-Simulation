@@ -27,6 +27,7 @@ public class OPController extends Controller {
 
     //TODO make sure this will end up in the simulation, so that we don't need constantly move this pointer
     private Integer breakPointLine = -1;
+    //TODO same + show where you at, some how
     private Integer pc;
     private int offset;
 
@@ -87,7 +88,6 @@ public class OPController extends Controller {
     }
 
     public void clearBreakPoint() {
-        //TODO implement
         //clearing breakpoint
         list.get(breakPointLine + offset).setBreakPoint(false);
         //counter to -1, so that the simulation won't go nuts
@@ -96,7 +96,7 @@ public class OPController extends Controller {
 
     /**
      * @param data   OP Code
-     * @param offset show where the program really is
+     * @param offset show where the program really starts
      */
     public void setData(String[] data, int offset) {
         this.offset = offset;

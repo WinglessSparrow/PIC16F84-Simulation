@@ -63,12 +63,14 @@ public class SPController extends Controller {
     }
 
     private void updateStack(Stack<Integer> stack) {
+        int count = 1;
         for (Label l : labels) {
             if (stack.isEmpty()) {
-                l.setText("¯\\_(ツ)_/¯");
+                l.setText(count + " :\t¯\\_(ツ)_/¯");
             } else {
-                l.setText(stack.pop() + "");
+                l.setText(count + " :\t" + stack.pop());
             }
+            count++;
         }
     }
 

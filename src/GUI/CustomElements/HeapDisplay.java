@@ -32,20 +32,20 @@ public class HeapDisplay extends GridPane {
 
     private void startNewRow(int row, int width) {
         Cell temp = new Cell("", 0, row, minWidth, Integer.toHexString(width * (row - 1)), false);
-        temp.setStyle("-fx-background-color: grey");
+        temp.setStyle("-fx-background-color: #BFDBF7");
         getChildren().add(temp);
     }
 
     private void createFirstRow(int width) {
         //very first cell is unique
         Cell temp = new Cell("", 0, 0, minWidth, "0x", false);
-        temp.setStyle("-fx-background-color: grey");
+        temp.setStyle("-fx-background-color: #BFDBF7");
         getChildren().add(temp);
 
         //completing the first row to look good
         for (int i = 0; i < width; i++) {
             temp = new Cell("+", i + 1, 0, maxWidth, i + "", false);
-            temp.setStyle("-fx-background-color: grey");
+            temp.setStyle("-fx-background-color: #BFDBF7");
             getChildren().add(temp);
         }
     }
@@ -82,7 +82,7 @@ class Cell extends Label {
         GridPane.setRowIndex(this, y);
 
         setAlignment(Pos.CENTER);
-        setStyle("-fx-border-color: white");
+        setStyle("-fx-border-color: white; -fx-background-color: #E1E5F2");
 
     }
 

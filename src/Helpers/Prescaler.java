@@ -13,6 +13,13 @@ public class Prescaler {
         }
     }
 
+    /**
+     * @return current value of prescaler, doesnt account for watchdog or timer mode!
+     */
+    public int getValue() {
+        return scales[idx];
+    }
+
     public int getTimerScale() {
         //the scale here is twice less than in WDT
         return scales[idx] / 2;
