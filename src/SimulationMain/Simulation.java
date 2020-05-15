@@ -4,7 +4,6 @@ import Commands.SLEEP;
 import CommandsHelpers.CommandBase;
 import Elements.*;
 import Helpers.*;
-import XMLHandler.XMLDump;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,6 +50,13 @@ public class Simulation implements Runnable {
         ProgramCodeParser parser = new ProgramCodeParser();
         dummyData = parser.parse("res/TPicSim3.LST");
 
+
+        //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
+        Prescaler prescaler = new Prescaler();
+
+        watchdog = new Watchdog(prescaler);
+        elements[TIMER] = new Timer(prescaler);
+
         //creating and connecting all the components
         // each element MUST have a static idx
         //Fetch cycle
@@ -73,11 +79,6 @@ public class Simulation implements Runnable {
         elements[RAM_MULTIPLEXER] = new Multiplexer(buses, BUS_DIR_ADDR, BUS_INTERN_FILE);
         elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
         elements[CU] = new ControlUnit(elements);
-
-        Prescaler prescaler = new Prescaler();
-
-        watchdog = new Watchdog(prescaler);
-        elements[TIMER] = new Timer(prescaler);
 
         //setting the hz Rate
         changeHz(2);
@@ -110,10 +111,6 @@ public class Simulation implements Runnable {
 
         //TODO check for low or high in GUI INTEDG
         interruptCheck();
-
-
-        //XMLDump
-        dumpXML();
 
     }
 
@@ -218,14 +215,7 @@ public class Simulation implements Runnable {
         System.out.println(">>>>>>>>>>>>>>End<<<<<<<<<<<<<");
     }
 
-    //Dumps all data from Observables into an XML file
-    private void dumpXML() {
-        XMLDump.packageXML(elements, "res/toGUI.xml");
-
-    }
-
-    private void readXML() {
-
+    public void softReset() {
 
     }
 }

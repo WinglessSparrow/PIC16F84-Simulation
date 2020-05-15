@@ -60,8 +60,6 @@ public class Simulation_GUI extends Application {
                 loader.<StartingWController>getController();
         controller.setSim(sim);
 
-
-
     }
 
 

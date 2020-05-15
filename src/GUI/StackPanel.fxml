@@ -120,7 +120,7 @@
                     </font>
                 </Label>
                 <Button mnemonicParsing="false" onAction="#load" prefHeight="45.0" prefWidth="160.0" text="Load program" />
-                <Button mnemonicParsing="false" onAction="#breakPointRem" prefHeight="45.0" prefWidth="160.0" text="Remove break point" />
+                <Button mnemonicParsing="false" onAction="#breakPointRem" prefHeight="45.0" prefWidth="160.0" text="Power reset" />
                 <Button mnemonicParsing="false" onAction="#help" prefHeight="45.0" prefWidth="160.0" text="Help" />
                 <Button mnemonicParsing="false" onAction="#exit" prefHeight="45.0" prefWidth="160.0" text="Exit" />
             </VBox>

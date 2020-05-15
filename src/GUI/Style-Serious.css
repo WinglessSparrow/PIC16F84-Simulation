@@ -32,8 +32,6 @@
 #op-code-pane {
     -fx-border-color: VIOLET_C;
     -fx-border-width: 0 1 1 1;
-
-    -fx-background-color: VIOLET_BACK;
 }
 
 #underline-bottom {
@@ -88,6 +86,12 @@
     -fx-padding: 3 0 0 0;
 
     -fx-background-color: GREEN_BACK;
+}
+
+#port-panel {
+    -fx-border-color: GREEN_C;
+    -fx-border-width: 1;
+    -fx-padding: 3;
 }
 
 /*making table view not change itself*/

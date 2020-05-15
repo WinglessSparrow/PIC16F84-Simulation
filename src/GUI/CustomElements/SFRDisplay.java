@@ -8,14 +8,19 @@ import javafx.scene.layout.VBox;
 
 public class SFRDisplay extends VBox {
 
-    int maxWidth, minWidth;
+    private String names[];
+    private int maxWidth, minWidth;
 
-    public SFRDisplay(String[] names, int[] values, int maxWidth, int minWidth) {
+    public SFRDisplay(int maxWidth, int minWidth) {
         this.maxWidth = maxWidth;
         this.minWidth = minWidth;
 
-        setSpacing(5);
+        names = new String[]{
+                "TMR0", "PCL", "STATUS", "FSR", "PORT-A", "PORT-B", "EEDATA", "EEADR", "PCLATH",
+                "INTCON", "OPTION", "TRISA", "TRISB", "EECON1", "EECON2"
+        };
 
+        setSpacing(5);
         //first row
         Register temp = new Register(maxWidth, minWidth, false);
         temp.setStyle("-fx-background-color: #9c9c9c");
@@ -23,7 +28,7 @@ public class SFRDisplay extends VBox {
 
         //all the other rows
         for (int i = 0; i < names.length; i++) {
-            temp = new Register(names[i], values[i], maxWidth, minWidth, true);
+            temp = new Register(names[i], 0, maxWidth, minWidth, true);
 
             getChildren().add(temp);
         }
@@ -41,13 +46,12 @@ public class SFRDisplay extends VBox {
 class Register extends HBox {
 
     private Label lbl_value;
-    private Label[] lbls_bin;
+    private Label[] lbls_bin = new Label[8];
 
     private boolean write;
 
     public Register(int maxWidth, int minWidth, boolean write) {
         this.write = write;
-
         setSpacing(5);
 
         Label temp = new Label("Register");

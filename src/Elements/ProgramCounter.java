@@ -31,7 +31,6 @@ public class ProgramCounter extends Element implements Observable {
 
     private void getFromStack() {
         countedValue = stack.pop();
-        //TODO Push on RAM
     }
 
     public void pushOnRAM() {

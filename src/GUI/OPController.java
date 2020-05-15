@@ -27,6 +27,7 @@ public class OPController extends Controller {
 
     //TODO make sure this will end up in the simulation, so that we don't need constantly move this pointer
     private Integer breakPointLine = -1;
+    private Integer pc;
     private int offset;
 
     public OPController() {
@@ -47,6 +48,9 @@ public class OPController extends Controller {
         tc_BreakPoint.setSortable(false);
         tc_BreakPoint.setEditable(false);
 
+        tc_BreakPoint.setStyle("-fx-text-fill: red");
+
+
         //creating the list
         list = FXCollections.observableArrayList();
 
@@ -57,19 +61,26 @@ public class OPController extends Controller {
         tw_table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //getting the line user clicked on
-                //need to parse it, cause it's saved as String
+                //setting/resetting the breakpoint
                 try {
-                    //resetting old breakpoint
-                    if (breakPointLine != -1) {
-                        list.get(breakPointLine).setBreakPoint(false);
+                    //getting the line number from the cell, already offsetted
+                    int offsettedLine = Integer.parseInt(tc_PC.getCellData(tw_table.getFocusModel().getFocusedCell().getRow()));
+
+                    //number must be more than -1
+                    if (offsettedLine >= 0) {
+
+                        int prevBrP = breakPointLine;
+
+                        clearBreakPoint();
+                        //if not the same line, create new breakpoint
+                        if (offsettedLine != prevBrP) {
+                            breakPointLine = offsettedLine;
+                            list.get(breakPointLine + offset).setBreakPoint(true);
+                        }
                     }
-                    //getting place of a new one, accounting for teh offset
-                    breakPointLine = Integer.parseInt(tc_PC.getCellData(tw_table.getFocusModel().getFocusedCell().getRow())) + offset;
-                    //setting it
-                    list.get(breakPointLine).setBreakPoint(true);
                 } catch (NumberFormatException e) {
-                    breakPointLine = -1;
+                    //nothing to parse, which means it's not on the program part
+                    clearBreakPoint();
                 }
             }
         });
@@ -78,7 +89,7 @@ public class OPController extends Controller {
     public void clearBreakPoint() {
         //TODO implement
         //clearing breakpoint
-        list.get(breakPointLine).setBreakPoint(false);
+        list.get(breakPointLine + offset).setBreakPoint(false);
         //counter to -1, so that the simulation won't go nuts
         breakPointLine = -1;
     }
@@ -89,14 +100,24 @@ public class OPController extends Controller {
      */
     public void setData(String[] data, int offset) {
         this.offset = offset;
+        pc = 0;
 
         for (int i = 0; i < data.length; i++) {
             list.add(new OPCodeLine(i, i - offset, data[i]));
         }
     }
 
+    /**
+     * @param data only the pc, so data[0] is the pc
+     */
     @Override
     public void update(String[] data) {
         //TODO move pointer (visuals) according to PC value
+        try {
+            pc = Integer.parseInt(data[0]) + offset;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            System.out.println("Program Counter Wrong Format in OPController");
+        }
     }
 }

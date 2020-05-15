@@ -6,7 +6,8 @@ import SimulationMain.Simulation;
 
 public class RAM extends Element implements Observable {
 
-    public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81, TMR0 = 0x01;
+    public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81, TMR0 = 0x01, PORT_A = 0x05,
+            PORT_B = 0x06, EEDATA = 0x08, EEADR = 0x09, TRIS_A = 0x85, TRIS_B = 0x86;
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2, GIE = 7;
 
     private static int[] data = new int[256];
@@ -24,6 +25,8 @@ public class RAM extends Element implements Observable {
     public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer) {
         super(busOut, busesIn);
         this.multiplexer = multiplexer;
+
+        init();
     }
 
     private int setOffsetIdx(int idx) {
@@ -111,7 +114,6 @@ public class RAM extends Element implements Observable {
             //resetting the operation type
             rOperation = RegisterOperation.NONE;
 
-            //TODO Debug
             printChanges(idx);
         }
     }
@@ -174,6 +176,9 @@ public class RAM extends Element implements Observable {
         } else if (idx == INTCON || idx == 0x8b) {
             data[INTCON] = value;
             data[0x8b] = value;
+        } else if (idx == TRIS_A) {
+            //first 5 bits
+            data[TRIS_A] = value & 0b11111;
         } else {
             data[idx] = value;
             if (idx == OPTION) {
@@ -299,6 +304,26 @@ public class RAM extends Element implements Observable {
             }
         }
         return false;
+    }
+
+    private void init() {
+        setData(STATUS, 0b11000);
+        setData(OPTION, 255);
+        setData(TRIS_A, 255);
+        setData(TRIS_B, 255);
+    }
+
+    public void reset() {
+        for (int i = 0; i < data.length; i++) {
+            if (i != TMR0 && i != FSR && i != 0x084 && i != PORT_A && i != PORT_B && i != EEDATA && i != EEADR && i != STATUS && i != INTCON && i != 0x83 && i != 0x8b) {
+                data[i] = 0;
+            }
+        }
+
+        //setting specific conditions
+        setData(STATUS, data[STATUS] & 7);
+        setData(INTCON, data[INTCON] & 1);
+        setData(OPTION, 255);
     }
 
     public void setBitIdxFromOP(int bitIdxFromOP) {

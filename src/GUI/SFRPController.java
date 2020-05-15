@@ -8,16 +8,11 @@ public class SFRPController extends Controller {
     @FXML
     private ScrollPane scrl_pane;
 
-    public void setData(String[] names, int values[]) {
+    public void setData(int values[]) {
         //TODO Split string into value and name
         //TODO Dummy Data
 
-        scrl_pane.setContent(new SFRDisplay(new String[]{
-                "HELLO", "SUKA", "SOROKDVA", "SOROKDVA", "SOROKDVA", "SOROKDVA", "SOROKDVA", "SOROKDVA"
-                , "SOROKDVA", "SOROKDVA", "SOROKDVA"
-        }, new int[]{
-                2, 3, 42, 42, 42, 42, 42, 42, 42, 42, 42
-        }, 75, 35));
+        scrl_pane.setContent(new SFRDisplay(75, 35));
 
     }
 

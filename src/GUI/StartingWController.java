@@ -32,10 +32,11 @@ public class StartingWController extends Controller {
 
 
         //TODO THIS HERE IS DUMMY DATA
+        ((PPController) controllers.get(PP_CONTR)).setData(0b11000, 0b00110011, 0b01100, 0b10010000);
+
         ((OPController) controllers.get(OP_CONTR)).setData(new String[]{"move your mom into my bed", "asdasdadsadsadas", "adsaasdasdassadas", "asdasfafasfdsa"}, 2);
 
-        ((SFRPController) controllers.get(SFR_CONTR)).setData(new String[]{"SUKA", "KAK", "ZE", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO", "ZAEBALO"},
-                new int[]{0, 42, 2, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69});
+        ((SFRPController) controllers.get(SFR_CONTR)).setData(new int[]{0, 42, 2, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69});
 
         ((HPController) controllers.get(HP_CONTR)).setData(new int[]{
                 255, 13, 5, 123, 43, 0, 67, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -76,7 +77,7 @@ public class StartingWController extends Controller {
     @Override
     public void setSim(Simulation sim) {
         this.sim = sim;
-        for (int i = 0; i < controllers.size() ; i++) {
+        for (int i = 0; i < controllers.size(); i++) {
             controllers.get(i).setSim(sim);
         }
     }
