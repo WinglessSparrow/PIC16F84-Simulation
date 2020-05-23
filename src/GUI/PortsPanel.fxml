@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="ports-pane" prefHeight="400.0" prefWidth="351.0" stylesheets="@Style-Serious.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PPController">
+<AnchorPane id="ports-pane" prefHeight="400.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PPController">
     <HBox alignment="CENTER" prefWidth="443.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox alignment="TOP_CENTER" prefHeight="325.0" prefWidth="160.0" spacing="10.0">
             <Label text="Port A">

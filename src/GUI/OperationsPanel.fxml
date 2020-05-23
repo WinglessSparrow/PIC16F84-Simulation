@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<AnchorPane id="op-code-pane" prefHeight="400.0" prefWidth="545.0" stylesheets="@Style-Serious.css"
-            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="GUI.OPController">
-    <TableView id="op-code-pane" fx:id="tw_table" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="op-code-pane" prefHeight="400.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.OPController">
+    <TableView id="op-code-table" fx:id="tw_table" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
-            <TableColumn fx:id="tc_BreakPoint" prefWidth="27.0" resizable="false" text="BP"/>
-            <TableColumn fx:id="tc_Line" prefWidth="33.0" resizable="false" text="Line"/>
-            <TableColumn fx:id="tc_PC" prefWidth="29.0" resizable="false" text="PC"/>
-            <TableColumn fx:id="tc_ProgCode" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0"
-                         prefWidth="443.0" resizable="false" sortable="false" text="Programm Code"/>
+            <TableColumn fx:id="tc_BreakPoint" prefWidth="27.0" resizable="false" text="BP" />
+            <TableColumn fx:id="tc_Line" prefWidth="33.0" resizable="false" text="Line" />
+            <TableColumn fx:id="tc_PC" prefWidth="29.0" resizable="false" text="PC" />
+            <TableColumn fx:id="tc_ProgCode" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="443.0" resizable="false" sortable="false" text="Programm Code" />
         </columns>
     </TableView>
 </AnchorPane>

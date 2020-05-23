@@ -1,17 +1,23 @@
 .root {
-    /*color pallets*/
+    VIOLET_C: rgba(255, 0, 149, 0.65);
+    GREEN_C: #009c21;
+    CIAN_C: #1f7a8c;
+
+    VIOLET_BACK: rgba(255, 0, 149, 0.35);
+    GREEN_BACK: rgba(0, 156, 33, 0.35);
+    CIAN_BACK: rgba(31, 122, 140, 0.35);
+
+    CIAN_MIDDLE: #BFDBF7;
+
+    /*color paletts*/
     /*CIAN*/
     /*https://coolors.co/022b3a-1f7a8c-bfdbf7-e1e5f2-ffffff */
-
-    CIAN_C: #1f7a8c;
-    CIAN_BACK: rgba(31, 122, 140, 0.35);
-    CIAN_MIDDLE: #BFDBF7;
 }
 
 
 #stack-pane {
     -fx-border-color: CIAN_C;
-    -fx-border-width: 0 0 3 0;
+    -fx-border-width: 3 3 3 0;
 
     -fx-background-color: CIAN_BACK;
 }
@@ -31,22 +37,14 @@
 
 #heap-pane {
     -fx-border-color: CIAN_C;
-    -fx-border-width: 0 0 0 3;
+    -fx-border-width: 0 3 0 3;
 
     -fx-background-color: CIAN_BACK;
-}
-
-#op-code-table {
-    -fx-border-color: CIAN_C;
-    -fx-background-color: CIAN_BACK;
-
-    -fx-border-width: 1;
-    -fx-padding: 5;
 }
 
 #op-code-pane {
-    -fx-background-color: CIAN_BACK;
-    -fx-padding: 5 0 5 0;
+    -fx-border-color: VIOLET_C;
+    -fx-border-width: 0 1 1 1;
 }
 
 #underline-bottom {
@@ -62,58 +60,58 @@
 
 #memory-lbl {
     -fx-border-color: CIAN_C;
-    -fx-border-width: 3 0 0 3;
+    -fx-border-width: 3 3 0 3;
 
     -fx-background-color: CIAN_BACK;
 }
 
 #debug-lbl {
-    -fx-border-color: CIAN_C;
-    -fx-border-width: 3 0 0 0;
+    -fx-border-color: VIOLET_C;
+    -fx-border-width: 3 3 0 3;
 
-    -fx-background-color: CIAN_BACK;
+    -fx-background-color: VIOLET_BACK;
 }
 
 #interaction-lbl {
-    -fx-border-color: CIAN_C;
-    -fx-border-width: 3 3 0 0;
+    -fx-border-color: GREEN_C;
+    -fx-border-width: 3 3 0 3;
 
-    -fx-background-color: CIAN_BACK;
+    -fx-background-color: GREEN_BACK;
 }
 
 #main-menu-pane {
-    -fx-border-color: CIAN_C;
-    -fx-border-width: 0 0 3 0;
+    -fx-border-color: GREEN_C;
+    -fx-border-width: 3 0 3 3;
 
-    -fx-background-color: CIAN_BACK;
+    -fx-background-color: GREEN_BACK;
 }
 
 #ports-pane {
-    -fx-border-color: CIAN_C;
-    -fx-border-width: 0 3 0 0;
+    -fx-border-color: GREEN_C;
+    -fx-border-width: 0 3 0 3;
 
-    -fx-background-color: CIAN_BACK;
+    -fx-background-color: GREEN_BACK;
 }
 
 #control-pane {
-    -fx-border-color: CIAN_C;
+    -fx-border-color: GREEN_C;
     -fx-border-width: 0 3 3 0;
     -fx-padding: 3 0 0 0;
 
-    -fx-background-color: CIAN_BACK;
+    -fx-background-color: GREEN_BACK;
 }
 
 #port-panel {
-    -fx-border-color: CIAN_C;
-    -fx-background-color: CIAN_BACK;
+    -fx-border-color: GREEN_C;
+    -fx-background-color: GREEN_BACK;
 
     -fx-border-width: 1;
     -fx-padding: 5 3 10 3;
 }
 
 #timing-panel {
-    -fx-border-color: CIAN_C;
-    -fx-background-color: CIAN_BACK;
+    -fx-border-color: GREEN_C;
+    -fx-background-color: GREEN_BACK;
 
     -fx-border-width: 1;
     -fx-padding: 5;
@@ -144,15 +142,15 @@
 }
 
 .button {
-    -fx-background-color: CIAN_BACK;
-    -fx-border-color: CIAN_C;
+    -fx-background-color: GREEN_BACK;
+    -fx-border-color: GREEN_C;
 
     -fx-border-width: 2 0 2 0;
 }
 
 .button:hover {
     -fx-background-color: rgba(0, 156, 33, 0.65);
-    -fx-border-color: CIAN_C;
+    -fx-border-color: GREEN_C;
 
     -fx-border-width: 2 1 2 1;
 }
