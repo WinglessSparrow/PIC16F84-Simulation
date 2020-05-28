@@ -37,7 +37,6 @@ public class OPCodeLine {
         return breakPoint;
     }
 
-
     public void setBreakPoint(boolean isBreak) {
         if (isBreak) {
             breakPoint.set("■");

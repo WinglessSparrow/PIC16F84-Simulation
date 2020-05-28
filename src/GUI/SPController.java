@@ -3,7 +3,6 @@ package GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 
 import java.io.File;
 import java.util.Stack;
@@ -59,6 +58,10 @@ public class SPController extends Controller {
         fChooser.setTitle("Choose your .LST file");
         fChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("LST Files", "*.LST")
+        );
+
+        fChooser.setInitialDirectory(
+                new File(System.getProperty("user.dir") + "/res")
         );
 
         File selectedFile = fChooser.showOpenDialog(null);

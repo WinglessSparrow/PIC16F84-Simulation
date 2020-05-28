@@ -25,10 +25,11 @@ public class OPController extends Controller {
 
     private ObservableList<OPCodeLine> list;
 
+    //Integers are Boxed, so that we could change them without actively moving data
     //TODO make sure this will end up in the simulation, so that we don't need constantly move this pointer
     private Integer breakPointLine = -1;
-    //TODO same + show where you at, some how
-    private Integer pc;
+
+    private int pc;
     private int offset;
 
     public OPController() {
@@ -83,6 +84,8 @@ public class OPController extends Controller {
                     //nothing to parse, which means it's not on the program part
                     clearBreakPoint();
                 }
+
+                moveProgramPointer();
             }
         });
     }
@@ -94,16 +97,23 @@ public class OPController extends Controller {
         breakPointLine = -1;
     }
 
+    private void moveProgramPointer() {
+        tw_table.requestFocus();
+        tw_table.getSelectionModel().select(pc);
+        tw_table.getFocusModel().focus(pc);
+    }
+
     /**
      * @param data   OP Code
      * @param offset show where the program really starts
      */
-    public void setData(String[] data, int offset) {
+    public void setData(String[] data, String[] pcAbscenceData, int offset) {
         this.offset = offset;
         pc = 0;
 
         for (int i = 0; i < data.length; i++) {
-            list.add(new OPCodeLine(i, i - offset, data[i]));
+            //i + 1 because it should start by the line 1
+            list.add(new OPCodeLine(i + 1, i - offset, data[i]));
         }
     }
 
@@ -115,9 +125,14 @@ public class OPController extends Controller {
         //TODO move pointer (visuals) according to PC value
         try {
             pc = Integer.parseInt(data[0]) + offset;
+
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            System.out.println("Program Counter Wrong Format in OPController");
+            System.out.println("Program Counter Wrong Format (can't parse to int) in OPController");
+            //WARNING, it's just to make sure no wrong value will end up in pc
+            return;
         }
+
+        moveProgramPointer();
     }
 }

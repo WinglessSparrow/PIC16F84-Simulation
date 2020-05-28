@@ -32,23 +32,33 @@ public class StartingWController extends Controller {
 
 
         //TODO THIS HERE IS DUMMY DATA
-        //((CPController) controllers.get(CP_CONTR)).setData(20, 0, 2, true);
-
-        //((PPController) controllers.get(PP_CONTR)).setData(0b11000, 0b00110011, 0b01100, 0b10010000);
-
-        //((OPController) controllers.get(OP_CONTR)).setData(new String[]{"move out of my house", "move into a cardboard box", "send help", "please"}, 2);
-
-        //((SFRPController) controllers.get(SFR_CONTR)).setData(new int[]{0, 42, 2, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69});
-
-        /*((HPController) controllers.get(HP_CONTR)).setData(new int[]{
-                255, 13, 5, 123, 43, 0, 67, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0
-        });*/
+//        ((CPController) controllers.get(CP_CONTR)).setData(20, 0, 2, false);
+//
+//        ((PPController) controllers.get(PP_CONTR)).setData(0b11000, 0b00110011, 0b01100, 0b10010000);
+//
+//        ((OPController) controllers.get(OP_CONTR)).setData(new String[]{"org 0", "start", "movlw 11h\t ;W = 10h, C=x, DC=x, Z=0", "andlw 30h\t ;W = 1Dh, C=x, DC=x, Z=0", "iorlw 0Dh \t ;W = 20h, C=1, DC=1, Z=0", "sublw 3Dh\t ;W = 00h, C=1, DC=1, Z=1"}, 2);
+//
+//        ((SFRPController) controllers.get(SFR_CONTR)).setData(new int[]{0, 42, 2, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69});
+//
+//        ((HPController) controllers.get(HP_CONTR)).setData(new int[]{
+//                255, 13, 5, 123, 43, 0, 67, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                0, 0, 0, 0, 0, 0
+//        });
     }
+
+//    int a = 0;
+//
+//    public void pcasd() {
+//        String[] s = new String[1];
+//        a++;
+//        s[0] = a + "";
+//        ((OPController) controllers.get(OP_CONTR)).update(s);
+//        System.out.println("hi");
+//    }
 
     public Controller addNode(String FXMLUrl, GridPane grid, int xPos, int yPos) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLUrl));
