@@ -5,6 +5,7 @@ import CommandsHelpers.CommandBase;
 import Elements.*;
 import GUI.StartingWController;
 import Helpers.*;
+import XMLHandler.XMLDump;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +26,6 @@ public class Simulation implements Runnable {
     private long hzRate;
     private long prevTime = 0;
 
-    private String filePath;
     private StartingWController centralController;
 
     private Element[] elements;
@@ -33,8 +33,9 @@ public class Simulation implements Runnable {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Watchdog watchdog;
 
+    private ProgramCodeParser parser;
+
     public Simulation(String filePath, StartingWController centralController) {
-        this.filePath = filePath;
         this.centralController = centralController;
 
         //this true, to make it run forever
@@ -53,10 +54,11 @@ public class Simulation implements Runnable {
         elements = new Element[14];
 
         //create a bunch of dummy data
-        int[] programData;
+        int[] dummyData;
 
-        ProgramCodeParser parser = new ProgramCodeParser();
-        programData = parser.parse(filePath);
+        parser = new ProgramCodeParser();
+        dummyData = parser.parse(filePath);
+
 
         //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
         Prescaler prescaler = new Prescaler();
@@ -70,7 +72,7 @@ public class Simulation implements Runnable {
         elements[I_REG] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[I_DECODER] = new InstructionDecoder(buses);
         elements[PC] = new ProgramCounter(buses, 0);
-        elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], programData, (ProgramCounter) elements[3]);
+        elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], dummyData, (ProgramCounter) elements[3]);
 
         //mask last 8 bits
         elements[GATE_8BUS] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
@@ -226,17 +228,16 @@ public class Simulation implements Runnable {
     }
 
 
-    //Sets filePath
-    public void setPath(String path) {
-        filePath = path;
-        //TODO: reset Sim;
-    }
-
     private void initGuiSettings() {
-        //TODO setAll Datas
-        centralController.setData();
+        //TODO setAll Data
+        //INIT sequence
+        /*
+        Program View
 
 
+
+         */
+        centralController.setData(parser);
     }
 
     public void softReset() {
