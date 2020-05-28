@@ -23,12 +23,12 @@ public class StartingWController extends Controller {
     }
 
     public void initialize() {
-        controllers.add(addNode("/GUI/ControlPanel.fxml", grid, 2, 2));
-        controllers.add(addNode("/GUI/PortsPanel.fxml", grid, 2, 1));
-        controllers.add(addNode("/GUI/OperationsPanel.fxml", grid, 1, 1));
-        controllers.add(addNode("/GUI/HeapPanel.fxml", grid, 0, 1));
-        controllers.add(addNode("/GUI/SFRPanel.fxml", grid, 0, 2));
-        controllers.add(addNode("/GUI/StackPanel.fxml", grid, 1, 2));
+        controllers.add(addNode("/GUI/FXML/ControlPanel.fxml", grid, 2, 2));
+        controllers.add(addNode("/GUI/FXML/PortsPanel.fxml", grid, 2, 1));
+        controllers.add(addNode("/GUI/FXML/OperationsPanel.fxml", grid, 1, 1));
+        controllers.add(addNode("/GUI/FXML/HeapPanel.fxml", grid, 0, 1));
+        controllers.add(addNode("/GUI/FXML/SFRPanel.fxml", grid, 0, 2));
+        controllers.add(addNode("/GUI/FXML/StackPanel.fxml", grid, 1, 2));
 
 
         //TODO THIS HERE IS DUMMY DATA

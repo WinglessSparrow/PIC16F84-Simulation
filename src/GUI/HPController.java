@@ -22,7 +22,6 @@ public class HPController extends Controller {
         //TODO parse out data[array]
         //TOD maybe redundant
         //call update on hpDisplay, give it the array
-//        hpDisplay.update();
     }
 
 

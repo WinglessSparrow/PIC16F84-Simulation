@@ -64,7 +64,6 @@ public class CPController extends Controller {
     private void reset() {
     }
 
-
     /**
      * @param time     time the program took to run
      * @param pc       programCounter
