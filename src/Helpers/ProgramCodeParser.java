@@ -11,8 +11,8 @@ public class ProgramCodeParser {
 
     private ArrayList<String> programData = new ArrayList<>();
     private ArrayList<String> data = new ArrayList<>();
+    private ArrayList<Boolean> pcPresenceData = new ArrayList<>();
 
-    private int offset = 0;
 
     //Parses a given File .LST File
     public int[] parse(String location) {
@@ -56,12 +56,9 @@ public class ProgramCodeParser {
         //Get line numbers and hex code
         for (String programDatum : programData) {
 
+
             instructions = programDatum;
 
-            //Calc offset
-            if (!offsetFound) {
-                offset++;
-            }
 
 
             //Test for ORG
@@ -70,9 +67,13 @@ public class ProgramCodeParser {
                 tmpOrg = tmpOrg.replaceAll("[Hh]", "");          //Replace H/h in Hex values like 100H
                 int org = Integer.parseInt(tmpOrg, 16);
 
+                //Added false, because otherwise ArrayList is missing one false
+                pcPresenceData.add(false);
+
                 //Fills Spaces with NOP operations
                 while (data.size() < org) {
                     data.add("0");
+                    pcPresenceData.add(false);
                 }
             } else {
                 instructions = instructions.split(" {11}")[0];
@@ -81,11 +82,11 @@ public class ProgramCodeParser {
                 if (!instructions.equals("")) {
                     code = instructions.split(" ")[1];
                     data.add(code);
+                    pcPresenceData.add(true);
 
-                    //Disable offsetCounter
-                    if (offsetFound == false) {
-                        offsetFound = true;
-                    }
+
+                } else {
+                    pcPresenceData.add(false);
                 }
             }
         }
@@ -104,15 +105,28 @@ public class ProgramCodeParser {
 
     public String[] getProgramData() {
         String[] programDataString = new String[programData.size()];
+        String[] tmpProgramData;
 
         for (int i = 0; i < programDataString.length; i++) {
-            programDataString[i] = programData.get(i);
+            if (pcPresenceData.get(i) == true) {
+                tmpProgramData = programData.get(i).split(" ", 2);
+                programDataString[i] = tmpProgramData[1];
+            } else {
+                programDataString[i] = programData.get(i).substring(4);
+            }
+            //System.out.println(pcPresenceData.get(i) + "    " + programDataString[i]);
         }
 
         return programDataString;
     }
 
-    public int getOffset() {
-        return (offset - 1);
+    public boolean[] getPcPresenceData() {
+        boolean[] pcPresenceDataString = new boolean[pcPresenceData.size()];
+
+        for (int i = 0; i < pcPresenceDataString.length; i++) {
+            pcPresenceDataString[i] = pcPresenceData.get(i);
+        }
+
+        return pcPresenceDataString;
     }
 }
