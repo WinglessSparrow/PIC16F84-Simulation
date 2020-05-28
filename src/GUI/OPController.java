@@ -107,7 +107,7 @@ public class OPController extends Controller {
      * @param data   OP Code
      * @param offset show where the program really starts
      */
-    public void setData(String[] data, String[] pcAbscenceData, int offset) {
+    public void setData(String[] data, boolean[] pcPresenceData) {
         this.offset = offset;
         pc = 0;
 

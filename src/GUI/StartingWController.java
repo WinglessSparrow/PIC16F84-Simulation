@@ -89,7 +89,8 @@ public class StartingWController extends Controller {
 
     public void setData(ProgramCodeParser parser) {
         //TODO null is temp
-        ((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), null, parser.getOffset());
+        //((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), parser.getPCPresenceData());
+        parser.getProgramData();
 
         ((HPController) controllers.get(HP_CONTR)).setData(RAM.getData());
     }
