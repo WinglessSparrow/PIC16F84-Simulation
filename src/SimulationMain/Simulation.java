@@ -5,7 +5,6 @@ import CommandsHelpers.CommandBase;
 import Elements.*;
 import GUI.StartingWController;
 import Helpers.*;
-import XMLHandler.XMLDump;
 
 import java.io.BufferedReader;
 import java.io.IOException;
