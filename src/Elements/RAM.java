@@ -334,6 +334,10 @@ public class RAM extends Element implements Observable {
         return bitSet;
     }
 
+    public static int[] getData() {
+        return data;
+    }
+
     @Override
     public String getObservedValues() {
         String output;

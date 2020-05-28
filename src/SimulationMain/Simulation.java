@@ -3,7 +3,9 @@ package SimulationMain;
 import Commands.SLEEP;
 import CommandsHelpers.CommandBase;
 import Elements.*;
+import GUI.StartingWController;
 import Helpers.*;
+import XMLHandler.XMLDump;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,12 +26,18 @@ public class Simulation implements Runnable {
     private long hzRate;
     private long prevTime = 0;
 
+    private String filePath;
+    private StartingWController centralController;
+
     private Element[] elements;
     //TODO temp, after GUI will be implemented, should remove or mb repurposed
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Watchdog watchdog;
 
-    public Simulation() {
+    public Simulation(String filePath, StartingWController centralController) {
+        this.filePath = filePath;
+        this.centralController = centralController;
+
         //this true, to make it run forever
         isRunning = true;
         //setting th mode, better to start with the debug mode
@@ -46,9 +54,10 @@ public class Simulation implements Runnable {
         elements = new Element[14];
 
         //create a bunch of dummy data
-        int[] dummyData = {0x3003, 0x0081, 0x3002, 0b00001000000001};
+        int[] dummyData;
+
         ProgramCodeParser parser = new ProgramCodeParser();
-        dummyData = parser.parse("res/TPicSim3.LST");
+        dummyData = parser.parse(filePath);
 
 
         //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
@@ -83,6 +92,8 @@ public class Simulation implements Runnable {
         //setting the hz Rate
         changeHz(2);
 
+        initGuiSettings();
+
         System.out.println("Boot up and ready to go");
     }
 
@@ -111,6 +122,7 @@ public class Simulation implements Runnable {
 
         //TODO check for low or high in GUI INTEDG
         interruptCheck();
+
 
     }
 
@@ -213,6 +225,21 @@ public class Simulation implements Runnable {
             }
         }
         System.out.println(">>>>>>>>>>>>>>End<<<<<<<<<<<<<");
+    }
+
+
+    //Sets filePath
+    public void setPath(String path) {
+        filePath = path;
+        //TODO: reset Sim;
+    }
+
+    private void initGuiSettings() {
+        //TODO setAll Datas
+        centralController.setData();
+
+
+
     }
 
     public void softReset() {

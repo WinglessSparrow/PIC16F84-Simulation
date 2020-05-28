@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public class ProgramCodeParser {
 
-    ArrayList<String> programData = new ArrayList<>();
-    ArrayList<String> data = new ArrayList<>();
+    private ArrayList<String> programData = new ArrayList<>();
+    private ArrayList<String> data = new ArrayList<>();
     int[] retData;
 
     //Parses a given File .LST File
@@ -93,5 +93,15 @@ public class ProgramCodeParser {
             retData[i] = Integer.parseInt(data.get(i), 16);
         }
         return retData;
+    }
+
+    public String[] getProgramData() {
+        String[] programDataString = new String[programData.size()];
+
+        for (int i = 0; i < programDataString.length; i++) {
+            programDataString[i] = programData.get(i);
+        }
+
+        return programDataString;
     }
 }

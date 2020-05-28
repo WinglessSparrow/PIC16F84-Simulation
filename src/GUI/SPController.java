@@ -2,7 +2,10 @@ package GUI;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
+import java.io.File;
 import java.util.Stack;
 
 public class SPController extends Controller {
@@ -24,6 +27,8 @@ public class SPController extends Controller {
     private Label lbl_stack8;
 
     private Label[] labels;
+
+    private Simulation_GUI simGUI;
 
     public void initialize() {
         //javaFX forces me to do war crimes
@@ -47,7 +52,21 @@ public class SPController extends Controller {
     }
 
     public void load() {
-        //TODO make load
+
+        String path;
+
+        FileChooser fChooser = new FileChooser();
+        fChooser.setTitle("Choose your .LST file");
+        fChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("LST Files", "*.LST")
+        );
+
+        File selectedFile = fChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            path = selectedFile.getPath();
+
+            simGUI.loadFile(path);
+        }
     }
 
     public void breakPointRem() {
@@ -80,5 +99,9 @@ public class SPController extends Controller {
         //possibly for optimisation some flag or counter,
         //so that it's should be completely renewed every time
         updateStack(null);
+    }
+
+    public void setSimGUI(Simulation_GUI simGUI) {
+        this.simGUI = simGUI;
     }
 }

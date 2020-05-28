@@ -14,20 +14,20 @@ import java.io.IOException;
 
 public class Simulation_GUI extends Application {
 
-    Simulation sim;
-    Thread simThread;
+    private Simulation sim;
+    private Thread simThread;
+    private String path;
+
+    private Controller centralController;
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    private Controller centralController;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        initSim();
-
-        primaryStage.setTitle("What the hell are you trying to find up here?!");
+        primaryStage.setTitle("PIC 16F84 Simulator");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/StartingWindow.fxml"));
 
@@ -63,17 +63,30 @@ public class Simulation_GUI extends Application {
         primaryStage.show();
     }
 
-    private void initSim() {
-        sim = new Simulation();
+
+    //Gives  simGUI to all controllers
+    private void initControllerSim(FXMLLoader loader) {
+        //StartingWController controller  = loader.getController();
+        centralController.setSimGUI(this);
+
+    }
+
+    //Lads a file and restarts the backend
+    public void loadFile(String path) {
+        this.path = path;
+        powerReset();
+    }
+
+    //restarts the backend
+    public void powerReset() {
+        sim = new Simulation(path, (StartingWController) centralController);
         simThread = new Thread(sim);
         simThread.start();
     }
 
-    private void initControllerSim(FXMLLoader loader) {
-        StartingWController controller =
-                loader.<StartingWController>getController();
-        controller.setSim(sim);
 
+    public Simulation getSim() {
+        return sim;
     }
 
 
