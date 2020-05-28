@@ -1,3 +1,7 @@
+@font-face {
+    src: url('Quicksand-Light.ttf');
+}
+
 .root {
     /*color pallets*/
     /*CIAN*/
@@ -6,6 +10,8 @@
     CIAN_C: #1f7a8c;
     CIAN_BACK: rgba(31, 122, 140, 0.35);
     CIAN_MIDDLE: #BFDBF7;
+
+    -fx-font-family: "Quicksand-Light";
 }
 
 

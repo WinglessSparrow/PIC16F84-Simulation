@@ -1,6 +1,5 @@
 package GUI;
 
-import Elements.RAM;
 import Helpers.ProgramCodeParser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +36,9 @@ public class StartingWController extends Controller {
 //
 //        ((PPController) controllers.get(PP_CONTR)).setData(0b11000, 0b00110011, 0b01100, 0b10010000);
 //
-//        ((OPController) controllers.get(OP_CONTR)).setData(new String[]{"org 0", "start", "movlw 11h\t ;W = 10h, C=x, DC=x, Z=0", "andlw 30h\t ;W = 1Dh, C=x, DC=x, Z=0", "iorlw 0Dh \t ;W = 20h, C=1, DC=1, Z=0", "sublw 3Dh\t ;W = 00h, C=1, DC=1, Z=1"}, 2);
+//        ((OPController) controllers.get(OP_CONTR)).setData(new String[]{"org 0", "start", "movlw 11h\t ;W = 10h, C=x, DC=x, Z=0",
+//                        "andlw 30h\t ;W = 1Dh, C=x, DC=x, Z=0", "iorlw 0Dh \t ;W = 20h, C=1, DC=1, Z=0", "sublw 3Dh\t ;W = 00h, C=1, DC=1, Z=1", "mov", "blank", "mov", "mov"},
+//                new boolean[]{false, false, true, true, true, true, true, false, true, true});
 //
 //        ((SFRPController) controllers.get(SFR_CONTR)).setData(new int[]{0, 42, 2, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69});
 //
@@ -51,9 +52,13 @@ public class StartingWController extends Controller {
 //        });
     }
 
+
+//    //TODO meant for debug
 //    int a = 0;
 //
-//    public void pcasd() {
+//    //this too
+//    public void debugStep() {
+//
 //        String[] s = new String[1];
 //        a++;
 //        s[0] = a + "";
@@ -89,10 +94,9 @@ public class StartingWController extends Controller {
 
     public void setData(ProgramCodeParser parser) {
         //TODO null is temp
-        //((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), parser.getPCPresenceData());
-        parser.getProgramData();
-
-        ((HPController) controllers.get(HP_CONTR)).setData(RAM.getData());
+//        ((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), null);
+//
+//        ((HPController) controllers.get(HP_CONTR)).setData(RAM.getData());
     }
 
     @Override

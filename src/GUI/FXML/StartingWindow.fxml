@@ -25,7 +25,8 @@
                     <Font size="25.0"/>
                 </font>
             </Label>
-            <!--         <Button layoutX="334.0" layoutY="15.0" mnemonicParsing="false" onAction="#pcasd" text="Button" />-->
+            <!--            meant for debug-->
+            <!--            <Button layoutX="334.0" layoutY="15.0" mnemonicParsing="false" onAction="#debugStep" text="DebugStepButton"/>-->
         </AnchorPane>
         <AnchorPane id="debug-lbl" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
             <Label id="label-name" alignment="CENTER" contentDisplay="CENTER" prefWidth="443.0"
