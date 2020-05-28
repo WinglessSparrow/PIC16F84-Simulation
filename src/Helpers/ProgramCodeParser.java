@@ -65,6 +65,7 @@ public class ProgramCodeParser {
             if (instructions.contains("org ")) {
                 tmpOrg = instructions.split("org ")[1];
                 tmpOrg = tmpOrg.replaceAll("[Hh]", "");          //Replace H/h in Hex values like 100H
+                tmpOrg = tmpOrg.replaceAll(" ", "");
                 int org = Integer.parseInt(tmpOrg, 16);
 
                 //Added false, because otherwise ArrayList is missing one false
