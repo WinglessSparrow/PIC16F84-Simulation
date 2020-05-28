@@ -30,7 +30,7 @@ public class OPController extends Controller {
     private Integer breakPointLine = -1;
 
     private int pc;
-    private int offset;
+    private boolean[] pcPresenceData;
 
     public OPController() {
     }
@@ -65,19 +65,20 @@ public class OPController extends Controller {
             public void handle(MouseEvent mouseEvent) {
                 //setting/resetting the breakpoint
                 try {
-                    //getting the line number from the cell, already offsetted
-                    int offsettedLine = Integer.parseInt(tc_PC.getCellData(tw_table.getFocusModel().getFocusedCell().getRow()));
+                    //getting the line number from the cell
+                    int chosenLine = tw_table.getFocusModel().getFocusedCell().getRow();
+                    int chosenPC = Integer.parseInt(tc_PC.getCellData(chosenLine));
 
-                    //number must be more than -1
-                    if (offsettedLine >= 0) {
-
+                    //this is a Program Code line (not Blank or a comment)
+                    if (pcPresenceData[chosenLine]) {
                         int prevBrP = breakPointLine;
-
+                        //clearing the old break point
                         clearBreakPoint();
+
                         //if not the same line, create new breakpoint
-                        if (offsettedLine != prevBrP) {
-                            breakPointLine = offsettedLine;
-                            list.get(breakPointLine + offset).setBreakPoint(true);
+                        if (chosenPC != prevBrP) {
+                            breakPointLine = chosenPC;
+                            list.get(findPc(breakPointLine)).setBreakPoint(true);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -91,30 +92,59 @@ public class OPController extends Controller {
     }
 
     public void clearBreakPoint() {
-        //clearing breakpoint
-        list.get(breakPointLine + offset).setBreakPoint(false);
-        //counter to -1, so that the simulation won't go nuts
-        breakPointLine = -1;
+        if (breakPointLine > -1) {
+            //clearing breakpoint
+            list.get(findPc(breakPointLine)).setBreakPoint(false);
+            //counter to -1, so that the simulation won't go nuts
+            breakPointLine = -1;
+        }
     }
 
     private void moveProgramPointer() {
         tw_table.requestFocus();
-        tw_table.getSelectionModel().select(pc);
-        tw_table.getFocusModel().focus(pc);
+        tw_table.getSelectionModel().select(findPc(pc));
+        tw_table.getFocusModel().focus(findPc(pc));
     }
 
     /**
-     * @param data   OP Code
-     * @param offset show where the program really starts
+     * @return idx of the row where the current Program Counter is
      */
-    public void setData(String[] data, String[] pcAbscenceData, int offset) {
-        this.offset = offset;
+    private int findPc(int pc) {
+        for (int i = 0; i < list.size(); i++) {
+            if ((list.get(i).pcProperty().get()).equals(pc + "")) {
+                //found the correct pointer
+                //return
+                return i;
+            }
+        }
+
+        //no program code
+        return -1;
+    }
+
+    /**
+     * @param data           OP Code
+     * @param pcPresenceData maps 1:1 where lines with ProgramCode
+     */
+    public void setData(String[] data, boolean[] pcPresenceData) {
         pc = 0;
+        this.pcPresenceData = pcPresenceData;
+
+        int pcCount = 0;
 
         for (int i = 0; i < data.length; i++) {
             //i + 1 because it should start by the line 1
-            list.add(new OPCodeLine(i + 1, i - offset, data[i]));
+            if (pcPresenceData[i]) {
+                //a code line -> PC is being registered
+                list.add(new OPCodeLine(i + 1, pcCount, data[i]));
+                pcCount++;
+            } else {
+                //here not a code line
+                list.add(new OPCodeLine(i + 1, -1, data[i]));
+            }
         }
+
+        moveProgramPointer();
     }
 
     /**
@@ -124,7 +154,7 @@ public class OPController extends Controller {
     public void update(String[] data) {
         //TODO move pointer (visuals) according to PC value
         try {
-            pc = Integer.parseInt(data[0]) + offset;
+            pc = Integer.parseInt(data[0]);
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
