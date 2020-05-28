@@ -112,7 +112,7 @@ public class ProgramCodeParser {
                 tmpProgramData = programData.get(i).split(" ", 2);
                 programDataString[i] = tmpProgramData[1];
             } else {
-                programDataString[i] = programData.get(i).substring(6);
+                programDataString[i] = programData.get(i).substring(4);
             }
             //System.out.println(pcPresenceData.get(i) + "    " + programDataString[i]);
         }

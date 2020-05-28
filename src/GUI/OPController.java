@@ -132,6 +132,9 @@ public class OPController extends Controller {
 
         int pcCount = 0;
 
+        //Clear list
+        //list = FXCollections.observableArrayList();
+
         for (int i = 0; i < data.length; i++) {
             //i + 1 because it should start by the line 1
             if (pcPresenceData[i]) {

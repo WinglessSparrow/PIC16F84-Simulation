@@ -1,5 +1,6 @@
 package GUI;
 
+import Elements.RAM;
 import Helpers.ProgramCodeParser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,9 +95,8 @@ public class StartingWController extends Controller {
 
     public void setData(ProgramCodeParser parser) {
         //TODO null is temp
-//        ((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), null);
-//
-//        ((HPController) controllers.get(HP_CONTR)).setData(RAM.getData());
+        ((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), parser.getPcPresenceData());
+        ((HPController) controllers.get(HP_CONTR)).setData(RAM.getData());
     }
 
     @Override
