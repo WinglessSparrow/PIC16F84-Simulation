@@ -52,7 +52,6 @@ public class OPController extends Controller {
 
         tc_BreakPoint.setStyle("-fx-text-fill: red");
 
-
         //creating the list
         list = FXCollections.observableArrayList();
 
@@ -131,6 +130,9 @@ public class OPController extends Controller {
         this.pcPresenceData = pcPresenceData;
 
         int pcCount = 0;
+
+        list = FXCollections.observableArrayList();
+        tw_table.setItems(list);
 
         for (int i = 0; i < data.length; i++) {
             //i + 1 because it should start by the line 1

@@ -1,5 +1,5 @@
 @font-face {
-    src: url('Quicksand-Light.ttf');
+    src: url('Quicksand-Bold.ttf');
 }
 
 .root {
@@ -10,8 +10,10 @@
     CIAN_C: #1f7a8c;
     CIAN_BACK: rgba(31, 122, 140, 0.35);
     CIAN_MIDDLE: #BFDBF7;
+}
 
-    -fx-font-family: "Quicksand-Light";
+* {
+    -fx-font-family: "Quicksand Bold";
 }
 
 
