@@ -133,7 +133,8 @@ public class OPController extends Controller {
         int pcCount = 0;
 
         //Clear list
-        //list = FXCollections.observableArrayList();
+        list = FXCollections.observableArrayList();
+        tw_table.setItems(list);
 
         for (int i = 0; i < data.length; i++) {
             //i + 1 because it should start by the line 1

@@ -1,5 +1,5 @@
 @font-face {
-    src: url('Quicksand-Bold.ttf');
+    src: url('Quicksand-Regular.ttf');
 }
 
 .root {
@@ -13,7 +13,8 @@
 }
 
 * {
-    -fx-font-family: "Quicksand Bold";
+    -fx-font-smoothing-type: gray;
+    -fx-font-family: "Quicksand Regular";
 }
 
 
