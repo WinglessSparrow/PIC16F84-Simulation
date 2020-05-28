@@ -26,7 +26,6 @@ public class Simulation implements Runnable {
     private long hzRate;
     private long prevTime = 0;
 
-    private String filePath;
     private StartingWController centralController;
 
     private Element[] elements;
@@ -34,8 +33,9 @@ public class Simulation implements Runnable {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Watchdog watchdog;
 
+    private ProgramCodeParser parser;
+
     public Simulation(String filePath, StartingWController centralController) {
-        this.filePath = filePath;
         this.centralController = centralController;
 
         //this true, to make it run forever
@@ -56,7 +56,7 @@ public class Simulation implements Runnable {
         //create a bunch of dummy data
         int[] dummyData;
 
-        ProgramCodeParser parser = new ProgramCodeParser();
+        parser = new ProgramCodeParser();
         dummyData = parser.parse(filePath);
 
 
@@ -228,18 +228,16 @@ public class Simulation implements Runnable {
     }
 
 
-    //Sets filePath
-    public void setPath(String path) {
-        filePath = path;
-        //TODO: reset Sim;
-    }
-
     private void initGuiSettings() {
-        //TODO setAll Datas
-        centralController.setData();
+        //TODO setAll Data
+        //INIT sequence
+        /*
+        Program View
 
 
 
+         */
+        centralController.setData(parser);
     }
 
     public void softReset() {

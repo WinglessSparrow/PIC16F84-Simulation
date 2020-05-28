@@ -1,6 +1,7 @@
 package GUI;
 
 import Elements.RAM;
+import Helpers.ProgramCodeParser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -76,7 +77,9 @@ public class StartingWController extends Controller {
 
     }
 
-    public void setData() {
+    public void setData(ProgramCodeParser parser) {
+        ((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), parser.getOffset());
+
         ((HPController) controllers.get(HP_CONTR)).setData(RAM.getData());
     }
 

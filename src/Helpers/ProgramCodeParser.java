@@ -11,29 +11,24 @@ public class ProgramCodeParser {
 
     private ArrayList<String> programData = new ArrayList<>();
     private ArrayList<String> data = new ArrayList<>();
-    int[] retData;
+
+    private int offset = 0;
 
     //Parses a given File .LST File
     public int[] parse(String location) {
+        int[] retData;
 
-        try {
-            readFile(location);
-            parseFile();
-            convert();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        readFile(location);
+        parseFile();
 
-        //printing parsed data
-        for (int i : retData) {
-            System.out.println(Integer.toHexString(i));
-        }
+
+        retData = convert();
 
         return retData;
     }
 
     //Reads file an puts it line by line
-    private void readFile(String location) throws FileNotFoundException {
+    private void readFile(String location) {
 
         File file = new File(location);
         Scanner scanner = null;
@@ -54,13 +49,20 @@ public class ProgramCodeParser {
 
 
     private void parseFile() {
-
+        boolean offsetFound = false;
         String instructions, code, tmpOrg;
+
         //Instructions: Lines and Code,Code: Code without lines
         //Get line numbers and hex code
         for (String programDatum : programData) {
 
             instructions = programDatum;
+
+            //Calc offset
+            if (!offsetFound) {
+                offset++;
+            }
+
 
             //Test for ORG
             if (instructions.contains("org ")) {
@@ -79,6 +81,11 @@ public class ProgramCodeParser {
                 if (!instructions.equals("")) {
                     code = instructions.split(" ")[1];
                     data.add(code);
+
+                    //Disable offsetCounter
+                    if (offsetFound == false) {
+                        offsetFound = true;
+                    }
                 }
             }
         }
@@ -87,7 +94,7 @@ public class ProgramCodeParser {
 
     //Converts the Data-list to an int[] Array
     private int[] convert() {
-        retData = new int[data.size()];
+        int[] retData = new int[data.size()];
 
         for (int i = 0; i < retData.length; i++) {
             retData[i] = Integer.parseInt(data.get(i), 16);
@@ -103,5 +110,9 @@ public class ProgramCodeParser {
         }
 
         return programDataString;
+    }
+
+    public int getOffset() {
+        return (offset - 1);
     }
 }
