@@ -8,8 +8,10 @@ public class HeapDisplay extends GridPane {
 
     //the width of the cells, just to make it more readable
     private int maxWidth, minWidth;
+    private int[] data;
 
     public HeapDisplay(int[] data, int width, int maxWidth, int minWidth) {
+        this.data = data;
         this.maxWidth = maxWidth;
         this.minWidth = minWidth;
         int count = 0, row = 0;
@@ -50,7 +52,7 @@ public class HeapDisplay extends GridPane {
         }
     }
 
-    public void update(int[] data) {
+    public void update() {
         //Count goes through the whole list, and idx is only for the cell which should be changed
         int count = 0, idx = 0;
 

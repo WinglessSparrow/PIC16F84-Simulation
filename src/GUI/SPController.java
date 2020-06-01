@@ -1,5 +1,6 @@
 package GUI;
 
+import Elements.ProgramCounter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
@@ -28,6 +29,7 @@ public class SPController extends Controller {
     private Label[] labels;
 
     private Simulation_GUI simGUI;
+    private ProgramCounter programCounter;
 
     public void initialize() {
         //javaFX forces me to do war crimes
@@ -44,9 +46,9 @@ public class SPController extends Controller {
 
         //TODO DUMMY DATA
         Stack<Integer> stack = new Stack<>();
-        stack.push(21);
-        stack.push(4);
-        stack.push(42);
+        //stack.push(21);
+        //stack.push(4);
+        //stack.push(42);
         updateStack(stack);
     }
 
@@ -111,11 +113,15 @@ public class SPController extends Controller {
     }
 
     @Override
-    public void update(String[] data) {
+    public void update() {
         //TODO parse string to stack and then call updateStack
         //possibly for optimisation some flag or counter,
         //so that it's should be completely renewed every time
         updateStack(null);
+    }
+
+    public void setData(ProgramCounter programCounter) {
+        this.programCounter = programCounter;
     }
 
     public void setSimGUI(Simulation_GUI simGUI) {

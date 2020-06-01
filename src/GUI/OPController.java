@@ -1,6 +1,8 @@
 package GUI;
 
+import Elements.ProgramCounter;
 import GUI.TableView.OPCodeLine;
+import Helpers.ProgramCodeParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -31,6 +33,7 @@ public class OPController extends Controller {
 
     private int pc;
     private boolean[] pcPresenceData;
+    private ProgramCounter programCounter;
 
     public OPController() {
     }
@@ -123,12 +126,17 @@ public class OPController extends Controller {
     }
 
     /**
-     * @param data           OP Code
-     * @param pcPresenceData maps 1:1 where lines with ProgramCode
+     //* @param data           OP Code
+     //* @param pcPresenceData maps 1:1 where lines with ProgramCode
      */
-    public void setData(String[] data, boolean[] pcPresenceData) {
+    //public void setData(String[] data, boolean[] pcPresenceData) {
+    public void setData(ProgramCodeParser parser, ProgramCounter programCounter) {
         pc = 0;
-        this.pcPresenceData = pcPresenceData;
+
+        //this.pcPresenceData = pcPresenceData;
+        String[] data = parser.getProgramData();
+        pcPresenceData = parser.getPcPresenceData();
+        this.programCounter = programCounter;
 
         int pcCount = 0;
 
@@ -151,14 +159,11 @@ public class OPController extends Controller {
         moveProgramPointer();
     }
 
-    /**
-     * @param data only the pc, so data[0] is the pc
-     */
     @Override
-    public void update(String[] data) {
+    public void update() {
         //TODO move pointer (visuals) according to PC value
         try {
-            pc = Integer.parseInt(data[0]);
+            pc = programCounter.getCountedValue();
 
         } catch (NumberFormatException e) {
             e.printStackTrace();

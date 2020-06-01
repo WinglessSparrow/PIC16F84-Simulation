@@ -256,7 +256,7 @@ public class Simulation implements Runnable {
 
 
         */
-        centralController.setData(parser);
+        centralController.setData(parser,elements);
     }
 
     public void softReset() {

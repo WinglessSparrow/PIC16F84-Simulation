@@ -6,10 +6,11 @@ import SimulationMain.Simulation;
 public class RAM extends Element {
 
     public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81, TMR0 = 0x01, PORT_A = 0x05,
-            PORT_B = 0x06, EEDATA = 0x08, EEADR = 0x09, TRIS_A = 0x85, TRIS_B = 0x86;
+            PORT_B = 0x06, EEDATA = 0x08, EEADR = 0x09, TRIS_A = 0x85, TRIS_B = 0x86, EECON_1 = 0x88, EECON_2 = 0x89;
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2, GIE = 7;
 
     private static int[] data = new int[256];
+    private int[] sfrData = new int[15];
     private boolean bitSet;
     private int bitIdxFromOP = 0;
 
@@ -333,7 +334,30 @@ public class RAM extends Element {
         return bitSet;
     }
 
-    public static int[] getData() {
+    public int[] getData() {
         return data;
     }
+
+    public int[] getSfrData() {
+        sfrData = new int [15];
+
+        sfrData[0] = data[TMR0];
+        sfrData[1] = data[PCL];
+        sfrData[2] = data[STATUS];
+        sfrData[3] = data[FSR];
+        sfrData[4] = data[PORT_A];
+        sfrData[5] = data[PORT_B];
+        sfrData[6] = data[EEDATA];
+        sfrData[7] = data[EEADR];
+        sfrData[8] = data[PCLATH];
+        sfrData[9] = data[INTCON];
+        sfrData[10] = data[OPTION];
+        sfrData[11] = data[TRIS_A];
+        sfrData[12] = data[TRIS_B];
+        sfrData[13] = data[EECON_1];
+        sfrData[14] = data[EECON_2];
+
+        return sfrData;
+    }
+
 }

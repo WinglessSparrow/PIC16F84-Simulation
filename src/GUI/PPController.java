@@ -110,7 +110,7 @@ public class PPController extends Controller {
     }
 
     @Override
-    public void update(String[] data) {
+    public void update() {
 
     }
 }
