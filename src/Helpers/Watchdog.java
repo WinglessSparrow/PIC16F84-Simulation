@@ -13,10 +13,6 @@ public class Watchdog {
         Watchdog.prescaler = prescaler;
     }
 
-    public void setTimeStart(long timeStart) {
-        Watchdog.timeStart = timeStart;
-    }
-
     public static void clear() {
         timeStart = System.currentTimeMillis();
     }

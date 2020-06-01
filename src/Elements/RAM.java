@@ -1,10 +1,9 @@
 package Elements;
 
 import Helpers.*;
-import Interfaces.Observable;
 import SimulationMain.Simulation;
 
-public class RAM extends Element implements Observable {
+public class RAM extends Element {
 
     public static final int STATUS = 3, PCL = 0x2, PCLATH = 0x0a, FSR = 0x04, INTCON = 0x0b, OPTION = 0x81, TMR0 = 0x01, PORT_A = 0x05,
             PORT_B = 0x06, EEDATA = 0x08, EEADR = 0x09, TRIS_A = 0x85, TRIS_B = 0x86;
@@ -336,33 +335,5 @@ public class RAM extends Element implements Observable {
 
     public static int[] getData() {
         return data;
-    }
-
-    @Override
-    public String getObservedValues() {
-        String output;
-
-        output = "<NODE name=\"RAM\">\n";
-
-        //Prints out all RAM
-        /*
-        for (int i = 0; i < data.length - 1; i++) {
-            output += "<v val=\"" + data[i] + "\"/>\n";
-        }
-        output += "<v val=\"" + data[data.length - 1] + "\"/>";
-        output += "</NODE>";
-        */
-
-        for (int i = 0; i < data.length - 1; i++) {
-            if (data[i] != 0) {
-                output += "<v val=\"" + data[i] + "\" idx=\"" + i + "\"/>\n";
-            }
-        }
-        if (data[data.length - 1] != 0) {
-            output += "<v val=\"" + data[data.length - 1] + "\"/>";
-        }
-        output += "</NODE>";
-
-        return output;
     }
 }

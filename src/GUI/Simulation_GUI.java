@@ -68,10 +68,9 @@ public class Simulation_GUI extends Application {
     private void initControllerSim(FXMLLoader loader) {
         //StartingWController controller  = loader.getController();
         centralController.setSimGUI(this);
-
     }
 
-    //Lads a file and restarts the backend
+    //Loads a file and restarts the backend
     public void loadFile(String path) {
         this.path = path;
         powerReset();

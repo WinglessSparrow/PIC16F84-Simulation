@@ -71,7 +71,7 @@ public class PPController extends Controller {
         return array;
     }
 
-    //not using global variables, so that can reuse this method
+    //not using global variables, so that I can reuse this method
     private void updateBoxes(int valueTris, int valuePorts, CheckBox[] tris, CheckBox[] ports) {
         for (int i = 0; i < tris.length; i++) {
             //setting state of the set CheckBox

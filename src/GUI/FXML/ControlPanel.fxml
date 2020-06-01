@@ -49,6 +49,11 @@
                 </font>
             </Label>
             <VBox id="timing-panel" prefHeight="300.0" prefWidth="160.0" spacing="15.0">
+            <Label fx:id="lbl_status" prefHeight="35.0" prefWidth="148.0" text="Status: Standby">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
                 <Label fx:id="lbl_runtime" prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms">
                     <font>
                         <Font size="20.0" />
@@ -68,9 +73,6 @@
                     </font>
                 </Label>
                 <CheckBox fx:id="chk_watchdog" mnemonicParsing="false" prefHeight="35.0" prefWidth="149.0" style="-fx-font-size: 20px" text="Watchdog">
-                    <!--                    <font>-->
-                    <!--                        <Font size="20.0"/>-->
-                    <!--                    </font>-->
                 </CheckBox>
                 <Label prefHeight="35.0" prefWidth="148.0" text="Watchdog: xx">
                     <font>

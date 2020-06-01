@@ -6,10 +6,6 @@ import Elements.*;
 import GUI.StartingWController;
 import Helpers.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 public class Simulation implements Runnable {
 
     //here idxes off all buses and elements
@@ -19,18 +15,18 @@ public class Simulation implements Runnable {
     //flags
     private boolean isRunning;
     private boolean standby;
-    private boolean debug;
-    private boolean isWatchdog;
+    private boolean flagWatchdog;
+    private boolean pause;
 
+    private long runTime;
     private long hzRate;
     private long prevTime = 0;
 
     private StartingWController centralController;
 
     private Element[] elements;
-    //TODO temp, after GUI will be implemented, should remove or mb repurposed
-    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Watchdog watchdog;
+    private Prescaler prescaler;
 
     private ProgramCodeParser parser;
 
@@ -39,9 +35,10 @@ public class Simulation implements Runnable {
 
         //this true, to make it run forever
         isRunning = true;
-        //setting the mode, better to start with the debug mode
-        debug = true;
-        isWatchdog = false;
+
+        flagWatchdog = false;
+        standby = false;
+        pause = true;
 
         //how many buses are there
         Bus[] buses = new Bus[6];
@@ -59,7 +56,7 @@ public class Simulation implements Runnable {
         dummyData = parser.parse(filePath);
 
         //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
-        Prescaler prescaler = new Prescaler();
+        prescaler = new Prescaler();
 
         watchdog = new Watchdog(prescaler);
         elements[TIMER] = new Timer(prescaler);
@@ -95,8 +92,44 @@ public class Simulation implements Runnable {
         System.out.println("Boot up and ready to go");
     }
 
-    public void changeHz(int newHz) {
-        hzRate = 1000000000 / newHz;
+    public Element getElement(int idx) {
+        return elements[idx];
+    }
+
+    public Prescaler getPrescaler() {
+        return prescaler;
+    }
+
+    public long getRunTime() {
+        return runTime;
+    }
+
+    public void setWatchdog(boolean enable) {
+        flagWatchdog = enable;
+    }
+
+    /**
+     * @implNote simulation pauses, won't respond to anything
+     */
+    public void pauseSimulation() {
+        pause = true;
+    }
+
+    public void enableStandBy(boolean standby) {
+        this.standby = standby;
+    }
+
+    public boolean isPause() {
+        return pause;
+    }
+
+    public boolean isStandby() {
+        return standby;
+    }
+
+    public void changeHz(long newHz) {
+        //Could be made more precise with double
+        hzRate = 1000000000L / newHz;
     }
 
     public void step() {
@@ -155,7 +188,7 @@ public class Simulation implements Runnable {
                 //actions after the sequence
                 command.cleanUpInstructions(elements);
             } else {
-                standby = true;
+                enableStandBy(true);
             }
         }
     }
@@ -170,59 +203,45 @@ public class Simulation implements Runnable {
         }
     }
 
-    //TODO cleanup
-    private void getAllChangedObserveable() {
-        //TODO send data to GUI
-    }
-
-    private void setAllChangedSettable() {
-        //TODO receive Data from GUI
-    }
-
     @Override
     public void run() {
 
+        RunTimeCounter timeCounter = new RunTimeCounter();
+        timeCounter.start();
+
         while (isRunning) {
-            if (!standby) {
-                //update
-
-                //in debug mode program steps with input
-                if (debug) {
-                    System.out.print("readLine: ");
-                    try {
-                        if (reader.readLine().equals("step")) {
-                            step();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    //must be slowed down a bit
-                    try {
-                        Thread.sleep(5);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-
+            if (!pause) {
+                timeCounter.countTime();
+                if (!standby) {
                     if (System.nanoTime() - prevTime >= hzRate) {
                         prevTime = System.nanoTime();
                         step();
                     }
-                    if (isWatchdog) {
+                    if (flagWatchdog) {
                         watchdog.update();
                     }
-                }
 
+                } else {
+                    //on standby
+                    interruptCheck();
+                    prevTime = System.nanoTime();
+                    //TODO Watchdog awake
+
+                }
             } else {
-                //on standby
-                interruptCheck();
-                //TODO Watchdog awake
+                timeCounter.pause();
+            }
+
+            runTime = timeCounter.getRuntime();
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
-        System.out.println(">>>>>>>>>>>>>>End<<<<<<<<<<<<<");
+        System.out.println(">>>>>>>>>>>>>>Simulation End<<<<<<<<<<<<<");
     }
 
 
@@ -243,5 +262,7 @@ public class Simulation implements Runnable {
     public void softReset() {
         //Resets just RAM, every other values are the same as before
         ((RAM) elements[RAM_MEM]).reset();
+        ((ProgramCounter) elements[PC]).reset();
+        enableStandBy(true);
     }
 }

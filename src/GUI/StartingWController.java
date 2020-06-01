@@ -1,7 +1,9 @@
 package GUI;
 
+import Elements.ProgramCounter;
 import Elements.RAM;
 import Helpers.ProgramCodeParser;
+import SimulationMain.Simulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -94,9 +96,9 @@ public class StartingWController extends Controller {
     }
 
     public void setData(ProgramCodeParser parser) {
-        //TODO null is temp
         ((OPController) controllers.get(OP_CONTR)).setData(parser.getProgramData(), parser.getPcPresenceData());
         ((HPController) controllers.get(HP_CONTR)).setData(RAM.getData());
+        ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) simGUI.getSim().getElement(Simulation.PC), simGUI.getSim().getPrescaler());
     }
 
     @Override

@@ -1,7 +1,6 @@
 package Elements;
 
 import Helpers.Element;
-import Interfaces.Observable;
 import SimulationMain.Simulation;
 
 public class InstructionRegister extends Element{
