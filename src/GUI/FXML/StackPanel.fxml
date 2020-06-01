@@ -1,101 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane id="stack-panel" prefHeight="375.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SPController">
-    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane id="stack-panel" prefHeight="375.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SPController">
+    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
         <children>
             <VBox id="stack-pane" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0" spacing="2.0">
                 <Label alignment="CENTER" prefHeight="45.0" prefWidth="320.0" text="Stack">
                     <font>
-                        <Font size="25.0" />
+                        <Font size="25.0"/>
                     </font>
                 </Label>
                 <VBox id="stack-table" alignment="TOP_CENTER" prefWidth="308.0">
-                    <Label id="underline-bottom" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="159.0" text="Level : Value">
+                    <Label id="underline-bottom" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0"
+                           prefWidth="159.0" text="Level : Value">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack1" prefHeight="30.0" prefWidth="150.0" text="1 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack2" prefHeight="30.0" prefWidth="150.0" text="2 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack3" prefHeight="30.0" prefWidth="150.0" text="3 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack4" prefHeight="30.0" prefWidth="150.0" text="4 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack5" prefHeight="30.0" prefWidth="150.0" text="5 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack6" prefHeight="30.0" prefWidth="150.0" text="6 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack7" prefHeight="30.0" prefWidth="150.0" text="7 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                     <Label fx:id="lbl_stack8" prefHeight="30.0" prefWidth="150.0" text="8 : xx">
                         <font>
-                            <Font size="20.0" />
+                            <Font size="20.0"/>
                         </font>
                     </Label>
                 </VBox>
                 <padding>
-                    <Insets left="5.0" right="5.0" />
+                    <Insets left="5.0" right="5.0"/>
                 </padding>
                 <HBox.margin>
-                    <Insets />
+                    <Insets/>
                 </HBox.margin>
             </VBox>
             <VBox id="main-menu-pane" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0" spacing="15.0">
                 <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="Main Menu">
                     <font>
-                        <Font size="26.0" />
+                        <Font size="26.0"/>
                     </font>
                 </Label>
-                <Button mnemonicParsing="false" onAction="#load" prefHeight="45.0" prefWidth="160.0" text="Load program">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
+                <Button mnemonicParsing="false" onAction="#load" prefHeight="45.0" prefWidth="160.0"
+                        text="Load program" style="-fx-font-size: 18px">
+                    <!--                    <font>-->
+                    <!--                        <Font size="18.0"/>-->
+                    <!--                    </font>-->
                 </Button>
-                <Button mnemonicParsing="false" onAction="#breakPointRem" prefHeight="45.0" prefWidth="160.0" text="Power reset">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
+                <Button mnemonicParsing="false" onAction="#breakPointRem" prefHeight="45.0" prefWidth="160.0"
+                        text="Power reset" style="-fx-font-size: 20px">
+                    <!--                    <font>-->
+                    <!--                        <Font size="20.0"/>-->
+                    <!--                    </font>-->
                 </Button>
-                <Button mnemonicParsing="false" onAction="#help" prefHeight="45.0" prefWidth="160.0" text="Help">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
+                <Button mnemonicParsing="false" onAction="#help" prefHeight="45.0" prefWidth="160.0" text="Help"
+                        style="-fx-font-size: 20px">
+                    <!--                    <font>-->
+                    <!--                        <Font size="20.0"/>-->
+                    <!--                    </font>-->
                 </Button>
-                <Button mnemonicParsing="false" onAction="#exit" prefHeight="45.0" prefWidth="160.0" text="Exit">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
+                <Button mnemonicParsing="false" onAction="#exit" prefHeight="45.0" prefWidth="160.0" text="Exit"
+                        style="-fx-font-size: 20px">
+                    <!--                    <font>-->
+                    <!--                        <Font size="20.0"/>-->
+                    <!--                    </font>-->
                 </Button>
             </VBox>
         </children>

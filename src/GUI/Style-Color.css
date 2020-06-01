@@ -14,6 +14,10 @@
     /*https://coolors.co/022b3a-1f7a8c-bfdbf7-e1e5f2-ffffff */
 }
 
+* {
+    -fx-font-smoothing-type: gray;
+    -fx-font-family: "Quicksand Regular";
+}
 
 #stack-pane {
     -fx-border-color: CIAN_C;

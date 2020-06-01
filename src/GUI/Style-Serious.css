@@ -160,12 +160,12 @@
 }
 
 .button:hover {
-    -fx-background-color: rgba(0, 156, 33, 0.65);
+    -fx-background-color: rgba(31, 122, 140, 0.65);
     -fx-border-color: CIAN_C;
 
     -fx-border-width: 2 1 2 1;
 }
 
 .button:pressed {
-    -fx-background-color: rgba(0, 255, 37, 0.65);
+    -fx-background-color: #1fb6c8;
 }
