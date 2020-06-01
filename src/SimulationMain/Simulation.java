@@ -89,6 +89,7 @@ public class Simulation implements Runnable {
 
         initGuiSettings();
 
+        //parser, elements, prescaler, watchdog
         System.out.println("Boot up and ready to go");
     }
 
@@ -248,7 +249,7 @@ public class Simulation implements Runnable {
     private void initGuiSettings() {
         //TODO setAll Data
         //INIT sequence
-        /*
+        /*ProgramCodeParser parser, Element[] elements, Prescaler prescaler, Watchdog watchdog
         Program View
 
 

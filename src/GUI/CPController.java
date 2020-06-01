@@ -111,7 +111,6 @@ public class CPController extends Controller {
     public void setData(ProgramCounter pc, Prescaler prescaler) {
         this.pc = pc;
         this.prescaler = prescaler;
-        renewData();
     }
 
     private void renewData() {
