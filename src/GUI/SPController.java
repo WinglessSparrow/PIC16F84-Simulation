@@ -44,14 +44,13 @@ public class SPController extends Controller {
 
         //TODO DUMMY DATA
         Stack<Integer> stack = new Stack<>();
-        stack.push(2);
+        stack.push(21);
         stack.push(4);
         stack.push(42);
         updateStack(stack);
     }
 
     public void load() {
-
         String path;
 
         FileChooser fChooser = new FileChooser();
@@ -85,15 +84,30 @@ public class SPController extends Controller {
     }
 
     private void updateStack(Stack<Integer> stack) {
+
+        Stack<?> stackTemp = (Stack<?>) stack.clone();
+//        stackTemp = reverseStack(stackTemp);
+
         int count = 1;
         for (Label l : labels) {
-            if (stack.isEmpty()) {
-                l.setText(count + " :\t¯\\_(ツ)_/¯");
+            if (stackTemp.isEmpty()) {
+                l.setText(count + "\t:\txxxx");
             } else {
-                l.setText(count + " :\t" + stack.pop());
+                l.setText(count + "\t:\t" + String.format("%04d", (Integer) stackTemp.pop()));
             }
             count++;
         }
+    }
+
+    private <T> Stack<T> reverseStack(Stack<T> stack) {
+
+        Stack<T> stackTemp = new Stack<>();
+        //reversing the stack
+        while (!stack.isEmpty()) {
+            stackTemp.push(stack.pop());
+        }
+
+        return stackTemp;
     }
 
     @Override

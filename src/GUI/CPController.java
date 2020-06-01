@@ -1,5 +1,7 @@
 package GUI;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ public class CPController extends Controller {
     private Label lbl_prescaler;
 
     private long[] hz;
+    private int selectedIdx = 0;
 
     public void initialize() {
 
@@ -45,7 +48,17 @@ public class CPController extends Controller {
             list.add(temp);
         }
 
+        //init drop box
         drpd_hz.setItems(list);
+        //saves the idx of the selected value, 1 : 1 map to hz array
+        drpd_hz.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                //saving the selected idx, since the values are in the hz array
+                selectedIdx = drpd_hz.getSelectionModel().getSelectedIndex();
+            }
+        });
+        drpd_hz.getSelectionModel().select(0);
     }
 
     @FXML
@@ -62,6 +75,10 @@ public class CPController extends Controller {
 
     @FXML
     private void reset() {
+    }
+
+    public long getSelectedIdx() {
+        return hz[selectedIdx];
     }
 
     /**

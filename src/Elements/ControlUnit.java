@@ -3,7 +3,6 @@ package Elements;
 import CommandsHelpers.CommandBase;
 import Helpers.CommandAtlas;
 import Helpers.Element;
-import Interfaces.Observable;
 
 public class ControlUnit extends Element {
 

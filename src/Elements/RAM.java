@@ -320,7 +320,7 @@ public class RAM extends Element implements Observable {
             }
         }
 
-        //setting specific conditions
+        //setting values for specific registers
         setData(STATUS, data[STATUS] & 7);
         setData(INTCON, data[INTCON] & 1);
         setData(OPTION, 255);

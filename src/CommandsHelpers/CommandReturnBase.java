@@ -5,7 +5,7 @@ import Elements.ProgramCounter;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-public class CommandReturnBase extends CommandBase {
+abstract public class CommandReturnBase extends CommandBase {
 
     public CommandReturnBase(int[] seq) {
         super(seq);

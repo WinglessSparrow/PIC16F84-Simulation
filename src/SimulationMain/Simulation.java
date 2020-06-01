@@ -39,7 +39,7 @@ public class Simulation implements Runnable {
 
         //this true, to make it run forever
         isRunning = true;
-        //setting th mode, better to start with the debug mode
+        //setting the mode, better to start with the debug mode
         debug = true;
         isWatchdog = false;
 
@@ -58,7 +58,6 @@ public class Simulation implements Runnable {
         parser = new ProgramCodeParser();
         dummyData = parser.parse(filePath);
 
-
         //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
         Prescaler prescaler = new Prescaler();
 
@@ -66,7 +65,7 @@ public class Simulation implements Runnable {
         elements[TIMER] = new Timer(prescaler);
 
         //creating and connecting all the components
-        // each element MUST have a static idx
+        //each element MUST have a static idx
         //Fetch cycle
         elements[I_REG] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[I_DECODER] = new InstructionDecoder(buses);
@@ -102,7 +101,7 @@ public class Simulation implements Runnable {
 
     public void step() {
         /*
-        fetching teh command
+        fetching the command
         executing it
         checking for interrupts
         exchange data with GUI
@@ -121,8 +120,6 @@ public class Simulation implements Runnable {
 
         //TODO check for low or high in GUI INTEDG
         interruptCheck();
-
-
     }
 
     private CommandBase fetch() {
@@ -173,6 +170,7 @@ public class Simulation implements Runnable {
         }
     }
 
+    //TODO cleanup
     private void getAllChangedObserveable() {
         //TODO send data to GUI
     }
@@ -223,6 +221,7 @@ public class Simulation implements Runnable {
                 //TODO Watchdog awake
             }
         }
+
         System.out.println(">>>>>>>>>>>>>>End<<<<<<<<<<<<<");
     }
 
@@ -235,11 +234,14 @@ public class Simulation implements Runnable {
 
 
 
-         */
+
+
+        */
         centralController.setData(parser);
     }
 
     public void softReset() {
-
+        //Resets just RAM, every other values are the same as before
+        ((RAM) elements[RAM_MEM]).reset();
     }
 }
