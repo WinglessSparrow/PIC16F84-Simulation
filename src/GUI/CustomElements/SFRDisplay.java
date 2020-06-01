@@ -6,10 +6,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.Arrays;
+
 public class SFRDisplay extends VBox {
 
     private String names[];
     private int maxWidth, minWidth;
+    private int[] data;
 
     public SFRDisplay(int maxWidth, int minWidth) {
         this.maxWidth = maxWidth;
@@ -34,11 +37,13 @@ public class SFRDisplay extends VBox {
         }
     }
 
-    /**
-     * @param data array with all teh values in right order!
-     */
-    public void update(int[] data) {
+    public void setData(int[] data) {
+        this.data = data;
+        update();
+    }
 
+
+    public void update() {
         //iterates through data
         int count = 0;
 

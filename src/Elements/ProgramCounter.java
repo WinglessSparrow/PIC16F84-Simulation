@@ -1,12 +1,11 @@
 package Elements;
 
 import Helpers.Element;
-import Interfaces.Observable;
 import SimulationMain.Simulation;
 
 import java.util.Stack;
 
-public class ProgramCounter extends Element implements Observable {
+public class ProgramCounter extends Element {
 
     public enum Operations {
         JUMP, CALL, RETURN
@@ -92,29 +91,5 @@ public class ProgramCounter extends Element implements Observable {
         //renew teh PCL value
         pushOnRAM();
 
-    }
-
-    @Override
-    public String getObservedValues() {
-        String output;
-
-        output = "<NODE name=\"PC\">\n<v val=\"" + countedValue + "\"/>\n</NODE>\n";
-
-        output += "<NODE name=\"STACK\">\n";
-
-        if (stack.size() > 1) {
-            for (int i = 0; i < stack.size() - 1; i++) {
-                output += "<v val=\"" + stack.get(i).toString() + "\"/>\n";
-            }
-            output += "<v val=\"" + stack.lastElement().toString() + "\"/>\n";
-        } else if(stack.size() == 1) {
-            output += "<v val=\"" + stack.lastElement().toString() + "\"/>\n";
-        } else {
-            output += "<v val=\"\"/>\n";
-        }
-
-        output += "</NODE>";
-
-        return output;
     }
 }
