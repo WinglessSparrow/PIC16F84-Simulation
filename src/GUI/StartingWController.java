@@ -3,7 +3,9 @@ package GUI;
 import Elements.ProgramCounter;
 import Elements.RAM;
 import Helpers.Element;
+import Helpers.Prescaler;
 import Helpers.ProgramCodeParser;
+import Helpers.Watchdog;
 import SimulationMain.Simulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -92,16 +93,12 @@ public class StartingWController extends Controller {
         return temp;
     }
 
-    @Override
-    public void update(String[] data) {
-
-    }
-
     /**
      * Initializes the data in the GUI every time a new program is loaded.
+     *
      * @param parser is used for Setting the program view
      */
-    public void setData(ProgramCodeParser parser, Element[] elements) {
+    public void setData(ProgramCodeParser parser, Element[] elements, Prescaler prescaler, Watchdog watchdog) {
         /*  Only for visual reference.
         final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8,
                 ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13;
@@ -109,21 +106,26 @@ public class StartingWController extends Controller {
 
         //TODO null is temp
         //Init the program view
-        ((OPController) controllers.get(OP_CONTR)).setData(parser, (ProgramCounter) elements[3]);
+        ((OPController) controllers.get(OP_CONTR)).setData(parser, (ProgramCounter) elements[Simulation.PC]);
 
         //Init stack view
-        ((SPController) controllers.get(SP_CONTR)).setData((ProgramCounter) elements[3]);
+        ((SPController) controllers.get(SP_CONTR)).setData((ProgramCounter) elements[Simulation.PC]);
 
         //Init the RAM view
-        ((HPController) controllers.get(HP_CONTR)).setData((RAM) elements[11]);
+        ((HPController) controllers.get(HP_CONTR)).setData((RAM) elements[Simulation.RAM_MEM]);
 
         //Init SFR view
-        ((SFRPController) controllers.get(SFR_CONTR)).setData((RAM) elements[11]);
+        ((SFRPController) controllers.get(SFR_CONTR)).setData((RAM) elements[Simulation.RAM_MEM]);
 
         //Init timing view
 
         //Ports not ready now
-        ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) simGUI.getSim().getElement(Simulation.PC), simGUI.getSim().getPrescaler());
+        ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler);
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override

@@ -121,7 +121,7 @@ public class CPController extends Controller {
     }
 
     @Override
-    public void update(String[] data) {
+    public void update() {
         simGUI.getSim().setWatchdog(chk_watchdog.isSelected());
         setStatus();
         renewData();
