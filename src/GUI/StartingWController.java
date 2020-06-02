@@ -126,10 +126,10 @@ public class StartingWController extends Controller {
 
     @Override
     public void update() {
-//        for (Controller c : controllers) {
-//            c.update();
-//        }
-        controllers.get(CP_CONTR).update();
+        for (Controller c : controllers) {
+            c.update();
+        }
+
     }
 
     @Override

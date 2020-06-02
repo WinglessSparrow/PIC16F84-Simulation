@@ -5,6 +5,7 @@ import CommandsHelpers.CommandBase;
 import Elements.*;
 import GUI.StartingWController;
 import Helpers.*;
+import javafx.application.Platform;
 
 public class Simulation implements Runnable {
 
@@ -198,42 +199,50 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
+
+        Runnable updater = new Runnable() {
+            @Override
+            public void run() {
+                centralController.update();
+            }
+        };
+
+
         RunTimeCounter timeCounter = new RunTimeCounter();
         timeCounter.start();
-//
-//        while (isRunning) {
-        if (!pause) {
-//            centralController.update();
 
-            timeCounter.countTime();
-            if (!standby) {
-                if (System.nanoTime() - prevTime >= hzRate) {
+        while (isRunning) {
+            if (!pause) {
+                Platform.runLater(updater);
+                timeCounter.countTime();
+                if (!standby) {
+                    if (System.nanoTime() - prevTime >= hzRate) {
+                        prevTime = System.nanoTime();
+                        step();
+                    }
+                    if (flagWatchdog) {
+                        watchdog.update();
+                    }
+
+                } else {
+                    //on standby
+                    interruptCheck();
                     prevTime = System.nanoTime();
-                    step();
-                }
-                if (flagWatchdog) {
-                    watchdog.update();
-                }
+                    //TODO Watchdog awake
 
+                }
             } else {
-                //on standby
-                interruptCheck();
-                prevTime = System.nanoTime();
-                //TODO Watchdog awake
-
+                timeCounter.pause();
             }
-        } else {
-            timeCounter.pause();
-        }
 
-        runTime = timeCounter.getRuntime();
+            runTime = timeCounter.getRuntime();
 
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-//        }
     }
 
 
