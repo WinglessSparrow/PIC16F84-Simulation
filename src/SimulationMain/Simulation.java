@@ -93,14 +93,6 @@ public class Simulation implements Runnable {
         System.out.println("Boot up and ready to go");
     }
 
-    public Element getElement(int idx) {
-        return elements[idx];
-    }
-
-    public Prescaler getPrescaler() {
-        return prescaler;
-    }
-
     public long getRunTime() {
         return runTime;
     }
@@ -112,8 +104,8 @@ public class Simulation implements Runnable {
     /**
      * @implNote simulation pauses, won't respond to anything
      */
-    public void pauseSimulation() {
-        pause = true;
+    public void pauseSimulation(boolean pause) {
+        this.pause = pause;
     }
 
     public void enableStandBy(boolean standby) {
@@ -206,43 +198,42 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
-
         RunTimeCounter timeCounter = new RunTimeCounter();
         timeCounter.start();
+//
+//        while (isRunning) {
+        if (!pause) {
+//            centralController.update();
 
-        while (isRunning) {
-            if (!pause) {
-                timeCounter.countTime();
-                if (!standby) {
-                    if (System.nanoTime() - prevTime >= hzRate) {
-                        prevTime = System.nanoTime();
-                        step();
-                    }
-                    if (flagWatchdog) {
-                        watchdog.update();
-                    }
-
-                } else {
-                    //on standby
-                    interruptCheck();
+            timeCounter.countTime();
+            if (!standby) {
+                if (System.nanoTime() - prevTime >= hzRate) {
                     prevTime = System.nanoTime();
-                    //TODO Watchdog awake
-
+                    step();
                 }
+                if (flagWatchdog) {
+                    watchdog.update();
+                }
+
             } else {
-                timeCounter.pause();
-            }
+                //on standby
+                interruptCheck();
+                prevTime = System.nanoTime();
+                //TODO Watchdog awake
 
-            runTime = timeCounter.getRuntime();
-
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
+        } else {
+            timeCounter.pause();
         }
 
-        System.out.println(">>>>>>>>>>>>>>Simulation End<<<<<<<<<<<<<");
+        runTime = timeCounter.getRuntime();
+
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        }
     }
 
 
@@ -266,4 +257,5 @@ public class Simulation implements Runnable {
         ((ProgramCounter) elements[PC]).reset();
         enableStandBy(true);
     }
+
 }

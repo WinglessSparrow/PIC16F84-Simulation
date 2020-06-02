@@ -120,12 +120,16 @@ public class StartingWController extends Controller {
         //Init timing view
 
         //Ports not ready now
+        //Init Control panel
         ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler);
     }
 
     @Override
     public void update() {
-
+//        for (Controller c : controllers) {
+//            c.update();
+//        }
+        controllers.get(CP_CONTR).update();
     }
 
     @Override

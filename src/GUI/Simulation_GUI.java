@@ -15,7 +15,6 @@ import java.io.IOException;
 public class Simulation_GUI extends Application {
 
     private Simulation sim;
-    private Thread simThread;
     private String path;
 
     private Controller centralController;
@@ -80,14 +79,36 @@ public class Simulation_GUI extends Application {
     //restarts the backend
     public void powerReset() {
         sim = new Simulation(path, (StartingWController) centralController);
-        simThread = new Thread(sim);
+        Thread simThread = new Thread(sim);
         simThread.start();
+
+        //worst case scenario, this here works, but not very good
+//        Thread th = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    Platform.runLater(sim);
+//
+//                    try {
+//                        Thread.sleep(30);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+//        th.start();
+
+        //TODO proper rework with Task and Service JavaFX
+
+    }
+
+    public void update() {
+        centralController.update();
     }
 
 
     public Simulation getSim() {
         return sim;
     }
-
-
 }

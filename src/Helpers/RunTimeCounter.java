@@ -30,7 +30,7 @@ public class RunTimeCounter extends Thread {
 
         while (true) {
             if (count) {
-                runtime = startTime - System.currentTimeMillis();
+                runtime = System.currentTimeMillis() - startTime;
             }
 
             //waiting to not make it too fast

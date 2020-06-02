@@ -31,7 +31,7 @@ public class OPController extends Controller {
     //TODO make sure this will end up in the simulation, so that we don't need constantly move this pointer
     private Integer breakPointLine = -1;
 
-    private int pc;
+    private int pc = 0;
     private boolean[] pcPresenceData;
     private ProgramCounter programCounter;
 
@@ -107,6 +107,7 @@ public class OPController extends Controller {
         tw_table.requestFocus();
         tw_table.getSelectionModel().select(findPc(pc));
         tw_table.getFocusModel().focus(findPc(pc));
+
     }
 
     /**
@@ -126,8 +127,8 @@ public class OPController extends Controller {
     }
 
     /**
-     //* @param data           OP Code
-     //* @param pcPresenceData maps 1:1 where lines with ProgramCode
+     * //* @param data           OP Code
+     * //* @param pcPresenceData maps 1:1 where lines with ProgramCode
      */
     //public void setData(String[] data, boolean[] pcPresenceData) {
     public void setData(ProgramCodeParser parser, ProgramCounter programCounter) {

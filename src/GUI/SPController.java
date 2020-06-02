@@ -114,10 +114,8 @@ public class SPController extends Controller {
 
     @Override
     public void update() {
-        //TODO parse string to stack and then call updateStack
-        //possibly for optimisation some flag or counter,
-        //so that it's should be completely renewed every time
-        updateStack(null);
+        //TODO DUMMY STACK
+        updateStack(new Stack<>());
     }
 
     public void setData(ProgramCounter programCounter) {

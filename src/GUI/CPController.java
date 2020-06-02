@@ -86,26 +86,22 @@ public class CPController extends Controller {
 
     @FXML
     private void run() {
-        simGUI.getSim().pauseSimulation();
-        setStatus();
+        simGUI.getSim().pauseSimulation(false);
     }
 
     @FXML
     private void stop() {
-        simGUI.getSim().pauseSimulation();
-        setStatus();
+        simGUI.getSim().pauseSimulation(true);
     }
 
     @FXML
     private void step() {
         simGUI.getSim().step();
-        setStatus();
     }
 
     @FXML
     private void reset() {
         simGUI.getSim().softReset();
-        setStatus();
     }
 
     public void setData(ProgramCounter pc, Prescaler prescaler) {
