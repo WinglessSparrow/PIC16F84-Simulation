@@ -3,21 +3,20 @@ package Elements;
 import CommandsHelpers.CommandBase;
 import Helpers.CommandAtlas;
 import Helpers.Element;
+import SimulationMain.Simulation;
 
 public class ControlUnit extends Element {
 
     private CommandBase command;
 
-    private Element[] elements;
     private InstructionDecoder decoder;
     private ProgramCounter pc;
 
     public ControlUnit(Element[] elements) {
         super(null, null);
         active = true;
-        this.elements = elements;
-        decoder = (InstructionDecoder) elements[2];
-        pc = (ProgramCounter) elements[3];
+        decoder = (InstructionDecoder) elements[Simulation.I_DECODER];
+        pc = (ProgramCounter) elements[Simulation.PC];
     }
 
     public CommandBase getCommand() {
@@ -25,7 +24,7 @@ public class ControlUnit extends Element {
     }
 
 
-    public void activateElements(int code) {
+    public void getCommandCode(int code) {
         if (code != 0) {
             //getting the command
             command = CommandAtlas.getCommand(code);
@@ -42,8 +41,7 @@ public class ControlUnit extends Element {
 
     @Override
     public void step() {
-        activateElements(decoder.getDecodedCommand());
+        getCommandCode(decoder.getDecodedCommand());
         pc.inc();
-        System.out.println("ProgramCounter: " + pc.getCountedValue());
     }
 }

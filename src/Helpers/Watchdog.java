@@ -7,17 +7,23 @@ public class Watchdog {
     private static Prescaler prescaler;
     private static long timeStart;
     //min time to wait is 18 millis
-    private static long timeWait = 18;
+    private static long timeWait;
+    private boolean overflow;
 
-    public Watchdog(Prescaler prescaler) {
+    private static RuntimeCounter runtimeCounter;
+
+    public Watchdog(Prescaler prescaler, RuntimeCounter runtimeCounter) {
+        timeWait = 18;
+        overflow = false;
         Watchdog.prescaler = prescaler;
+        Watchdog.runtimeCounter = runtimeCounter;
     }
 
     public static void clear() {
-        timeStart = System.currentTimeMillis();
+        timeStart = runtimeCounter.getRuntime();
     }
 
-    public static void renewTime() {
+    public static void renewTimeWaitingTime() {
         if (RAM.getSpecificBit(RAM.OPTION, 3) == 1) {
             timeWait = 18 * prescaler.getWDTScale();
         } else {
@@ -25,10 +31,19 @@ public class Watchdog {
         }
     }
 
-    public boolean update() {
-        if (System.currentTimeMillis() - timeStart >= timeWait) {
-            return true;
-        }
-        return false;
+    public void update() {
+        overflow = runtimeCounter.getRuntime() - timeStart >= timeWait;
+    }
+
+    public long getCountedTime() {
+        return runtimeCounter.getRuntime() - timeStart;
+    }
+
+    public static long getTimeWait() {
+        return timeWait;
+    }
+
+    public boolean isOverflow() {
+        return overflow;
     }
 }

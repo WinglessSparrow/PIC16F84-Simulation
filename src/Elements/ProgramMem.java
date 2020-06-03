@@ -26,9 +26,11 @@ public class ProgramMem extends Element {
         idx = counter.getCountedValue();
         try {
             putOnBus(data[idx]);
+            System.out.println("Fetched PC: " + idx);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Out of bound! with counter for: " + (data.length - idx));
         }
+
     }
 
 }

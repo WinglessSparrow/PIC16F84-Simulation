@@ -1,6 +1,7 @@
 package GUI;
 
 import Elements.ProgramCounter;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
@@ -82,7 +83,9 @@ public class SPController extends Controller {
     }
 
     public void exit() {
-        //TODO make exit
+        Platform.exit();
+        System.out.println("see you space cowboy");
+        System.exit(0);
     }
 
     private void updateStack(Stack<Integer> stack) {

@@ -25,6 +25,9 @@ public class Simulation implements Runnable {
 
     private StartingWController centralController;
 
+    Runnable updater;
+    RuntimeCounter timeCounter;
+
     private Element[] elements;
     private Watchdog watchdog;
     private Prescaler prescaler;
@@ -51,15 +54,19 @@ public class Simulation implements Runnable {
         elements = new Element[14];
 
         //create a bunch of dummy data
-        int[] dummyData;
+        int[] programData;
 
         parser = new ProgramCodeParser();
-        dummyData = parser.parse(filePath);
+        programData = parser.parse(filePath);
+
+        timeCounter = new RuntimeCounter();
+        timeCounter.pause();
+        timeCounter.start();
 
         //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
         prescaler = new Prescaler();
 
-        watchdog = new Watchdog(prescaler);
+        watchdog = new Watchdog(prescaler, timeCounter);
         elements[TIMER] = new Timer(prescaler);
 
         //creating and connecting all the components
@@ -68,7 +75,7 @@ public class Simulation implements Runnable {
         elements[I_REG] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[I_DECODER] = new InstructionDecoder(buses);
         elements[PC] = new ProgramCounter(buses, 0);
-        elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], dummyData, (ProgramCounter) elements[3]);
+        elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], programData, (ProgramCounter) elements[3]);
 
         //mask last 8 bits
         elements[GATE_8BUS] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
@@ -86,7 +93,14 @@ public class Simulation implements Runnable {
         elements[CU] = new ControlUnit(elements);
 
         //setting the hz Rate
-        changeHz(2);
+        changeHz(1);
+
+        updater = new Runnable() {
+            @Override
+            public void run() {
+                centralController.update();
+            }
+        };
 
         initGuiSettings();
 
@@ -100,6 +114,9 @@ public class Simulation implements Runnable {
 
     public void setWatchdog(boolean enable) {
         flagWatchdog = enable;
+        if (!flagWatchdog) {
+            Watchdog.clear();
+        }
     }
 
     /**
@@ -131,11 +148,9 @@ public class Simulation implements Runnable {
         fetching the command
         executing it
         checking for interrupts
-        exchange data with GUI
          */
 
         CommandBase command = fetch();
-        //didn't chain them, to make the code more readable
         execute(command);
 
         //step timer if necessary
@@ -147,6 +162,8 @@ public class Simulation implements Runnable {
 
         //TODO check for low or high in GUI INTEDG
         interruptCheck();
+
+        System.out.println(" ");
     }
 
     private CommandBase fetch() {
@@ -184,6 +201,9 @@ public class Simulation implements Runnable {
             } else {
                 enableStandBy(true);
             }
+
+            //-2 because the latest PC value is 2 things ahead of execution
+            System.out.println("Executed PC: " + (((ProgramCounter) elements[PC]).getCountedValue() - 2));
         }
     }
 
@@ -200,37 +220,31 @@ public class Simulation implements Runnable {
     @Override
     public void run() {
 
-        Runnable updater = new Runnable() {
-            @Override
-            public void run() {
-                centralController.update();
-            }
-        };
-
-
-        RunTimeCounter timeCounter = new RunTimeCounter();
-        timeCounter.start();
-
         while (isRunning) {
             if (!pause) {
-                Platform.runLater(updater);
-                timeCounter.countTime();
+                updateGUI();
+                timeCounter.resumeCounting();
+
+                if (flagWatchdog) {
+                    watchdog.update();
+                }
+
                 if (!standby) {
+                    //usual mode
                     if (System.nanoTime() - prevTime >= hzRate) {
                         prevTime = System.nanoTime();
                         step();
                     }
-                    if (flagWatchdog) {
-                        watchdog.update();
-                    }
-
                 } else {
                     //on standby
                     interruptCheck();
                     prevTime = System.nanoTime();
-                    //TODO Watchdog awake
 
+                    if (flagWatchdog) {
+                        standby = !watchdog.isOverflow();
+                    }
                 }
+
             } else {
                 timeCounter.pause();
             }
@@ -238,11 +252,22 @@ public class Simulation implements Runnable {
             runTime = timeCounter.getRuntime();
 
             try {
-                Thread.sleep(10);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        timeCounter.killThread();
+    }
+
+    //god knows I hate threading in UI applications
+    public void updateGUI() {
+        Platform.runLater(updater);
+    }
+
+    public void killThread() {
+        isRunning = false;
     }
 
 
@@ -252,19 +277,24 @@ public class Simulation implements Runnable {
         /*ProgramCodeParser parser, Element[] elements, Prescaler prescaler, Watchdog watchdog
         Program View
 
-
-
-
-
         */
         centralController.setData(parser, elements, prescaler, watchdog);
     }
 
     public void softReset() {
         //Resets just RAM, every other values are the same as before
+        enableStandBy(false);
+        pauseSimulation(true);
+
         ((RAM) elements[RAM_MEM]).reset();
         ((ProgramCounter) elements[PC]).reset();
-        enableStandBy(true);
+        ((InstructionRegister) elements[I_REG]).clear();
+
+        //TODO ask if soft reset the internal timer resetted
+        timeCounter.pause();
+        timeCounter.reset();
+
+        Watchdog.clear();
     }
 
 }

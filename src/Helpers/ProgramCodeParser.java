@@ -1,7 +1,6 @@
 package Helpers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -56,10 +55,7 @@ public class ProgramCodeParser {
         //Get line numbers and hex code
         for (String programDatum : programData) {
 
-
             instructions = programDatum;
-
-
 
             //Test for ORG
             if (instructions.contains("org ")) {

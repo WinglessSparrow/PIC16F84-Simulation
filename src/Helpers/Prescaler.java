@@ -22,7 +22,7 @@ public class Prescaler {
 
     public int getTimerScale() {
         //the scale here is twice less than in WDT
-        return scales[idx] / 2;
+        return scales[idx] * 2;
     }
 
     public int getWDTScale() {
@@ -31,6 +31,6 @@ public class Prescaler {
 
     public static void renewIdx() {
         //assembling the idx out of 3 bits in the Option register
-        idx = RAM.getSpecificBit(RAM.OPTION, 0) & (RAM.getSpecificBit(RAM.OPTION, 1) << 1) & (RAM.getSpecificBit(RAM.OPTION, 2) << 1);
+        idx = (RAM.getSpecificBit(RAM.OPTION, 0)) | (RAM.getSpecificBit(RAM.OPTION, 1) << 1) | (RAM.getSpecificBit(RAM.OPTION, 2) << 2);
     }
 }

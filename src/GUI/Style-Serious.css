@@ -128,6 +128,14 @@
     -fx-padding: 5;
 }
 
+#lbl-status {
+    -fx-border-color: CIAN_C;
+    -fx-background-color: CIAN_BACK;
+
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
 .scroll-pane {
     -fx-border-width: 1;
     -fx-border-color: CIAN_C;

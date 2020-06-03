@@ -13,34 +13,27 @@
 <AnchorPane id="control-pane" prefHeight="387.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CPController">
     <HBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox alignment="TOP_CENTER" prefHeight="357.0" prefWidth="160.0" spacing="15.0">
-            <Label alignment="CENTER" prefHeight="42.0" prefWidth="159.0" text="Execution">
+            <Label alignment="CENTER" prefHeight="40.0" prefWidth="159.0" text="Execution">
                 <font>
                     <Font size="25.0" />
                 </font>
             </Label>
-            <Button mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Run">
-                <!--            <font>-->
-                <!--               <Font size="20.0" />-->
-                <!--            </font>-->
+            <Label id="lbl-status" fx:id="lbl_status" prefHeight="45.0" prefWidth="160.0" text="Status: Standby">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Label>
+            <Button fx:id="btn_run" mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Run">
             </Button>
-            <Button mnemonicParsing="false" onAction="#stop" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Stop">
-                <!--            <font>-->
-                <!--               <Font size="20.0" />-->
-                <!--            </font>-->
+            <Button fx:id="btn_stop" mnemonicParsing="false" onAction="#stop" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Stop">
             </Button>
-            <Button mnemonicParsing="false" onAction="#step" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Step">
-                <!--            <font>-->
-                <!--               <Font size="20.0" />-->
-                <!--                        </font>-->
+            <Button fx:id="btn_step" mnemonicParsing="false" onAction="#step" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Step">
             </Button>
-            <Button mnemonicParsing="false" onAction="#reset" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Reset">
-                <!--            <font>-->
-                <!--               <Font size="20.0" />-->
-                <!--            </font>-->
+            <Button fx:id="btn_reset" mnemonicParsing="false" onAction="#reset" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Reset">
             </Button>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
         </VBox>
         <VBox alignment="TOP_CENTER" prefHeight="313.0" spacing="10.0">
             <Label alignment="CENTER" prefHeight="45.0" prefWidth="108.0" text="Timing">
@@ -49,11 +42,6 @@
                 </font>
             </Label>
             <VBox id="timing-panel" prefHeight="300.0" prefWidth="160.0" spacing="15.0">
-            <Label fx:id="lbl_status" prefHeight="35.0" prefWidth="148.0" text="Status: Standby">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
                 <Label fx:id="lbl_runtime" prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms">
                     <font>
                         <Font size="20.0" />
@@ -72,16 +60,21 @@
                         <Font size="20.0" />
                     </font>
                 </Label>
-                <CheckBox fx:id="chk_watchdog" mnemonicParsing="false" prefHeight="35.0" prefWidth="149.0" style="-fx-font-size: 20px" text="Watchdog">
-                </CheckBox>
-                <Label prefHeight="35.0" prefWidth="148.0" text="Watchdog: xx">
+                <Label fx:id="lbl_wReg" prefHeight="35.0" prefWidth="148.0" text="W-Reg: xxx">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </Label>
+                <CheckBox fx:id="chk_watchdog" mnemonicParsing="false" onAction="#onCheckBoxTrigger" prefHeight="35.0" prefWidth="149.0" style="-fx-font-size: 20px" text="Watchdog">
+                </CheckBox>
+                <Label fx:id="lbl_watchdogTime" prefHeight="35.0" prefWidth="148.0" text="WDT: xxx / xxx">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
                 <Label fx:id="lbl_prescaler" contentDisplay="CENTER" prefHeight="35.0" prefWidth="153.0" text="Prescaler: x : x" textAlignment="CENTER">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="18.0" />
                     </font>
                 </Label>
             </VBox>

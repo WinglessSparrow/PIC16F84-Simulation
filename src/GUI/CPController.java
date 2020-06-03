@@ -1,12 +1,15 @@
 package GUI;
 
 import Elements.ProgramCounter;
+import Elements.WRegister;
 import Helpers.Prescaler;
+import Helpers.Watchdog;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -14,6 +17,18 @@ import javafx.scene.control.Label;
 public class CPController extends Controller {
 
 
+    @FXML
+    private Label lbl_watchdogTime;
+    @FXML
+    private Button btn_run;
+    @FXML
+    private Button btn_stop;
+    @FXML
+    private Button btn_step;
+    @FXML
+    private Button btn_reset;
+    @FXML
+    private Label lbl_wReg;
     @FXML
     private Label lbl_status;
     @FXML
@@ -32,6 +47,8 @@ public class CPController extends Controller {
 
     private long[] hz;
     private int selectedIdx = 0;
+    private WRegister wReg;
+    private Watchdog watchdog;
 
     public void initialize() {
 
@@ -70,6 +87,15 @@ public class CPController extends Controller {
                 }
             }
         });
+
+        //should be off at teh beginning
+        btn_run.setDisable(true);
+        btn_reset.setDisable(true);
+        btn_step.setDisable(true);
+        btn_stop.setDisable(true);
+
+        chk_watchdog.setDisable(true);
+        drpd_hz.setDisable(true);
     }
 
     private void setStatus() {
@@ -85,34 +111,83 @@ public class CPController extends Controller {
     }
 
     @FXML
+    private void onCheckBoxTrigger() {
+        try {
+            simGUI.getSim().updateGUI();
+            simGUI.update();
+        } catch (NullPointerException e) {
+            System.out.println("yeah");
+        }
+    }
+
+    @FXML
     private void run() {
         simGUI.getSim().pauseSimulation(false);
+
+        btn_run.setDisable(true);
+        btn_step.setDisable(true);
+
+        chk_watchdog.setDisable(true);
+        drpd_hz.setDisable(true);
+
+        btn_stop.setDisable(false);
+        btn_reset.setDisable(false);
     }
 
     @FXML
     private void stop() {
         simGUI.getSim().pauseSimulation(true);
+
+        drpd_hz.setDisable(false);
+        chk_watchdog.setDisable(false);
+        btn_run.setDisable(false);
+        btn_step.setDisable(false);
+        btn_reset.setDisable(false);
+
+        btn_stop.setDisable(true);
     }
 
     @FXML
     private void step() {
         simGUI.getSim().step();
+        simGUI.getSim().updateGUI();
     }
 
     @FXML
     private void reset() {
         simGUI.getSim().softReset();
+        simGUI.getSim().updateGUI();
+
+        drpd_hz.setDisable(false);
+        chk_watchdog.setDisable(false);
+        btn_run.setDisable(false);
+        btn_step.setDisable(false);
+        btn_reset.setDisable(false);
+
+        btn_stop.setDisable(true);
     }
 
-    public void setData(ProgramCounter pc, Prescaler prescaler) {
+    public void setData(ProgramCounter pc, Prescaler prescaler, Watchdog watchdog, WRegister wReg) {
         this.pc = pc;
         this.prescaler = prescaler;
+        this.wReg = wReg;
+        this.watchdog = watchdog;
+
+        drpd_hz.setDisable(false);
+        chk_watchdog.setDisable(false);
+        btn_run.setDisable(false);
+        btn_step.setDisable(false);
+        btn_reset.setDisable(false);
+
+        btn_stop.setDisable(true);
     }
 
     private void renewData() {
         lbl_runtime.setText("Runtime:\t" + simGUI.getSim().getRunTime());
         lbl_pc.setText("PC:\t" + pc.getCountedValue());
-        lbl_prescaler.setText("Prescaler:\t 1 : " + ((chk_watchdog.isSelected()) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
+        lbl_prescaler.setText("Prescaler: 1 : " + ((chk_watchdog.isSelected()) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
+        lbl_wReg.setText("W-Reg: 0x" + Integer.toHexString(wReg.getStoredValue()));
+        lbl_watchdogTime.setText("WDT: " + ((chk_watchdog.isSelected()) ? watchdog.getCountedTime() : 0) + " / " + Watchdog.getTimeWait());
     }
 
     @Override

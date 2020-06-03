@@ -54,8 +54,9 @@ public class Simulation_GUI extends Application {
             @Override
             public void handle(WindowEvent windowEvent) {
                 //Closes the JavaFX application and all the Other running threads
-                //second one should be sufficient, but to make sure
+                //second one should be sufficient, but to make sure first kill FX thread
                 Platform.exit();
+                System.out.println("see you space cowboy");
                 System.exit(0);
             }
         });
@@ -78,19 +79,31 @@ public class Simulation_GUI extends Application {
 
     //restarts the backend
     public void powerReset() {
+        //garbage collection is cool and all, but I don't trust it enough
+        if (sim != null) {
+            sim.killThread();
+        }
+
         sim = new Simulation(path, (StartingWController) centralController);
+        sim.updateGUI();
         Thread simThread = new Thread(sim);
         simThread.start();
+
 
         //worst case scenario, this here works, but not very good
 //        Thread th = new Thread(new Runnable() {
 //            @Override
 //            public void run() {
 //                while (true) {
-//                    Platform.runLater(sim);
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            centralController.update();
+//                        }
+//                    });
 //
 //                    try {
-//                        Thread.sleep(30);
+//                        Thread.sleep(100);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
@@ -98,8 +111,6 @@ public class Simulation_GUI extends Application {
 //            }
 //        });
 //        th.start();
-
-        //TODO proper rework with Task and Service JavaFX
 
     }
 

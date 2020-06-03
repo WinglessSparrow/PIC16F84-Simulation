@@ -2,6 +2,7 @@ package GUI;
 
 import Elements.ProgramCounter;
 import Elements.RAM;
+import Elements.WRegister;
 import Helpers.Element;
 import Helpers.Prescaler;
 import Helpers.ProgramCodeParser;
@@ -99,11 +100,6 @@ public class StartingWController extends Controller {
      * @param parser is used for Setting the program view
      */
     public void setData(ProgramCodeParser parser, Element[] elements, Prescaler prescaler, Watchdog watchdog) {
-        /*  Only for visual reference.
-        final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8,
-                ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13;
-        */
-
         //TODO null is temp
         //Init the program view
         ((OPController) controllers.get(OP_CONTR)).setData(parser, (ProgramCounter) elements[Simulation.PC]);
@@ -121,7 +117,7 @@ public class StartingWController extends Controller {
 
         //Ports not ready now
         //Init Control panel
-        ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler);
+        ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler, watchdog, ((WRegister) elements[Simulation.W_REGISTER]));
     }
 
     @Override
@@ -129,7 +125,6 @@ public class StartingWController extends Controller {
         for (Controller c : controllers) {
             c.update();
         }
-
     }
 
     @Override

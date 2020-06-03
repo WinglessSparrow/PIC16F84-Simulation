@@ -3,7 +3,7 @@ package Elements;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-public class InstructionRegister extends Element{
+public class InstructionRegister extends Element {
 
     private int command;
 

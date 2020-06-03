@@ -88,13 +88,11 @@ public class ProgramCounter extends Element {
             operation = null;
         }
 
-        //renew teh PCL value
+        //renew the PCL value
         pushOnRAM();
-
     }
 
     public void reset() {
         countedValue = 0;
-        System.out.println("PC Reset");
     }
 }

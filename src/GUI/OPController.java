@@ -158,13 +158,14 @@ public class OPController extends Controller {
         }
 
         moveProgramPointer();
+        tw_table.scrollTo(findPc(pc));
     }
 
     @Override
     public void update() {
         //TODO move pointer (visuals) according to PC value
         try {
-            pc = programCounter.getCountedValue();
+            pc = programCounter.getCountedValue() - 1;
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
