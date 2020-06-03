@@ -1,0 +1,27 @@
+                    00001  start
+0000 3011           00017           movlw 11h           ;in W steht nun 11h, Statusreg. unver�ndert
+0001 3930           00018           andlw 30h           ;W = 10h, C=x, DC=x, Z=0
+0002 380D           00019           iorlw 0Dh           ;W = 1Dh, C=x, DC=x, Z=0
+0003 3C3D           00020           sublw 3Dh           ;W = 20h, C=1, DC=1, Z=0
+0004 3A20           00021           xorlw 20h           ;W = 00h, C=1, DC=1, Z=1
+0005 3E25           00022           addlw 25h           ;W = 25h, C=0, DC=0, Z=0
+0000 3011           00017           movlw 11h           ;in W steht nun 11h, Statusreg. unver�ndert
+0001 3930           00018           andlw 30h           ;W = 10h, C=x, DC=x, Z=0
+0002 380D           00019           iorlw 0Dh           ;W = 1Dh, C=x, DC=x, Z=0
+0003 3C3D           00020           sublw 3Dh           ;W = 20h, C=1, DC=1, Z=0
+0004 3A20           00021           xorlw 20h           ;W = 00h, C=1, DC=1, Z=1
+0005 3E25           00022           addlw 25h           ;W = 25h, C=0, DC=0, Z=0
+0000 3011           00017           movlw 11h           ;in W steht nun 11h, Statusreg. unver�ndert
+0001 3930           00018           andlw 30h           ;W = 10h, C=x, DC=x, Z=0
+0002 380D           00019           iorlw 0Dh           ;W = 1Dh, C=x, DC=x, Z=0
+0003 3C3D           00020           sublw 3Dh           ;W = 20h, C=1, DC=1, Z=0
+0004 3A20           00021           xorlw 20h           ;W = 00h, C=1, DC=1, Z=1
+0005 3E25           00022           addlw 25h           ;W = 25h, C=0, DC=0, Z=0
+0000 3011           00017           movlw 11h           ;in W steht nun 11h, Statusreg. unver�ndert
+0001 3930           00018           andlw 30h           ;W = 10h, C=x, DC=x, Z=0
+0002 380D           00019           iorlw 0Dh           ;W = 1Dh, C=x, DC=x, Z=0
+0003 3C3D           00020           sublw 3Dh           ;W = 20h, C=1, DC=1, Z=0
+0004 3A20           00021           xorlw 20h           ;W = 00h, C=1, DC=1, Z=1
+0005 3E25           00022           addlw 25h           ;W = 25h, C=0, DC=0, Z=0
+                    00025  ende
+0006 2806           00026           goto ende           ;Endlosschleife, verhindert Nirwana

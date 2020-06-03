@@ -18,6 +18,7 @@ public class Simulation implements Runnable {
     private boolean standby;
     private boolean flagWatchdog;
     private boolean pause;
+    private boolean breakPointTrigger;
 
     private long runTime;
     private long hzRate;
@@ -25,9 +26,10 @@ public class Simulation implements Runnable {
 
     private StartingWController centralController;
 
-    Runnable updater;
-    RuntimeCounter timeCounter;
+    private Runnable updater;
+    private RuntimeCounter timeCounter;
 
+    private Integer breakpointLine = -1;
     private Element[] elements;
     private Watchdog watchdog;
     private Prescaler prescaler;
@@ -43,6 +45,7 @@ public class Simulation implements Runnable {
         flagWatchdog = false;
         standby = false;
         pause = true;
+        breakPointTrigger = false;
 
         //how many buses are there
         Bus[] buses = new Bus[6];
@@ -108,6 +111,11 @@ public class Simulation implements Runnable {
         System.out.println("Boot up and ready to go");
     }
 
+    public void setBreakpointLine(int bp) {
+        breakpointLine = bp;
+        breakPointTrigger = false;
+    }
+
     public long getRunTime() {
         return runTime;
     }
@@ -126,12 +134,12 @@ public class Simulation implements Runnable {
         this.pause = pause;
     }
 
-    public void enableStandBy(boolean standby) {
-        this.standby = standby;
-    }
-
     public boolean isPause() {
         return pause;
+    }
+
+    public void enableStandBy(boolean standby) {
+        this.standby = standby;
     }
 
     public boolean isStandby() {
@@ -251,6 +259,17 @@ public class Simulation implements Runnable {
 
             runTime = timeCounter.getRuntime();
 
+            //breakpoint check
+            // -1 is the offset, so that the break point is on the next command
+            if (breakpointLine != -1 && !breakPointTrigger) {
+                if ((((ProgramCounter) elements[PC]).getCountedValue() - 1) == breakpointLine) {
+                    pauseSimulation(true);
+                    breakPointTrigger = true;
+                    updateGUI();
+                }
+            }
+
+            //slowing down
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {

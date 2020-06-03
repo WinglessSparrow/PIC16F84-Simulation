@@ -138,13 +138,7 @@ public class CPController extends Controller {
     private void stop() {
         simGUI.getSim().pauseSimulation(true);
 
-        drpd_hz.setDisable(false);
-        chk_watchdog.setDisable(false);
-        btn_run.setDisable(false);
-        btn_step.setDisable(false);
-        btn_reset.setDisable(false);
-
-        btn_stop.setDisable(true);
+        disableButtonsOnStop();
     }
 
     @FXML
@@ -158,6 +152,10 @@ public class CPController extends Controller {
         simGUI.getSim().softReset();
         simGUI.getSim().updateGUI();
 
+        disableButtonsOnStop();
+    }
+
+    private void disableButtonsOnStop() {
         drpd_hz.setDisable(false);
         chk_watchdog.setDisable(false);
         btn_run.setDisable(false);
@@ -173,13 +171,9 @@ public class CPController extends Controller {
         this.wReg = wReg;
         this.watchdog = watchdog;
 
-        drpd_hz.setDisable(false);
-        chk_watchdog.setDisable(false);
-        btn_run.setDisable(false);
-        btn_step.setDisable(false);
-        btn_reset.setDisable(false);
+        disableButtonsOnStop();
 
-        btn_stop.setDisable(true);
+        drpd_hz.getSelectionModel().select(0);
     }
 
     private void renewData() {
@@ -195,5 +189,8 @@ public class CPController extends Controller {
         simGUI.getSim().setWatchdog(chk_watchdog.isSelected());
         setStatus();
         renewData();
+        if (simGUI.getSim().isPause()) {
+            disableButtonsOnStop();
+        }
     }
 }

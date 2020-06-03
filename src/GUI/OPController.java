@@ -35,8 +35,6 @@ public class OPController extends Controller {
     private boolean[] pcPresenceData;
     private ProgramCounter programCounter;
 
-    public OPController() {
-    }
 
     public void initialize() {
         //linking the data with columns
@@ -55,7 +53,6 @@ public class OPController extends Controller {
 
         tc_BreakPoint.setStyle("-fx-text-fill: red");
 
-
         //creating the list
         list = FXCollections.observableArrayList();
 
@@ -66,30 +63,38 @@ public class OPController extends Controller {
         tw_table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //setting/resetting the breakpoint
                 try {
-                    //getting the line number from the cell
-                    int chosenLine = tw_table.getFocusModel().getFocusedCell().getRow();
-                    int chosenPC = Integer.parseInt(tc_PC.getCellData(chosenLine));
+                    if (simGUI.getSim().isPause()) {
+                        //setting/resetting the breakpoint
+                        try {
+                            //getting the line number from the cell
+                            int chosenLine = tw_table.getFocusModel().getFocusedCell().getRow();
+                            int chosenPC = Integer.parseInt(tc_PC.getCellData(chosenLine));
 
-                    //this is a Program Code line (not Blank or a comment)
-                    if (pcPresenceData[chosenLine]) {
-                        int prevBrP = breakPointLine;
-                        //clearing the old break point
-                        clearBreakPoint();
+                            //this is a Program Code line (not Blank or a comment)
+                            if (pcPresenceData[chosenLine]) {
+                                int prevBrP = breakPointLine;
+                                //clearing the old break point
+                                clearBreakPoint();
 
-                        //if not the same line, create new breakpoint
-                        if (chosenPC != prevBrP) {
-                            breakPointLine = chosenPC;
-                            list.get(findPc(breakPointLine)).setBreakPoint(true);
+                                //if not the same line, create new breakpoint
+                                if (chosenPC != prevBrP) {
+                                    breakPointLine = chosenPC;
+                                    list.get(findPc(breakPointLine)).setBreakPoint(true);
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            //nothing to parse, which means it's not on the program part
+                            clearBreakPoint();
                         }
-                    }
-                } catch (NumberFormatException e) {
-                    //nothing to parse, which means it's not on the program part
-                    clearBreakPoint();
-                }
 
-                moveProgramPointer();
+                        simGUI.getSim().setBreakpointLine(breakPointLine);
+
+                        moveProgramPointer();
+                    }
+                } catch (NullPointerException e) {
+                    System.out.println("No simulation");
+                }
             }
         });
     }
@@ -108,6 +113,10 @@ public class OPController extends Controller {
         tw_table.getSelectionModel().select(findPc(pc));
         tw_table.getFocusModel().focus(findPc(pc));
 
+        //bp has been reached, no need for one anymore
+        if (pc == breakPointLine) {
+            clearBreakPoint();
+        }
     }
 
     /**
@@ -126,11 +135,6 @@ public class OPController extends Controller {
         return -1;
     }
 
-    /**
-     * //* @param data           OP Code
-     * //* @param pcPresenceData maps 1:1 where lines with ProgramCode
-     */
-    //public void setData(String[] data, boolean[] pcPresenceData) {
     public void setData(ProgramCodeParser parser, ProgramCounter programCounter) {
         pc = 0;
 
@@ -163,8 +167,8 @@ public class OPController extends Controller {
 
     @Override
     public void update() {
-        //TODO move pointer (visuals) according to PC value
         try {
+            //-1 one so the pointer always points on the the next command
             pc = programCounter.getCountedValue() - 1;
 
         } catch (NumberFormatException e) {
