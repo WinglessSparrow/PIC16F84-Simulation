@@ -35,7 +35,7 @@ public class StartingWController extends Controller {
         controllers.add(addNode("/GUI/FXML/OperationsPanel.fxml", grid, 1, 1));
         controllers.add(addNode("/GUI/FXML/HeapPanel.fxml", grid, 0, 1));
         controllers.add(addNode("/GUI/FXML/SFRPanel.fxml", grid, 0, 2));
-        controllers.add(addNode("/GUI/FXML/StackPanel.fxml", grid, 1, 2));
+        controllers.add(addNode("/GUI/FXML/StackMenu.fxml", grid, 1, 2));
 
 
         //TODO THIS HERE IS DUMMY DATA
@@ -105,7 +105,7 @@ public class StartingWController extends Controller {
         ((OPController) controllers.get(OP_CONTR)).setData(parser, (ProgramCounter) elements[Simulation.PC]);
 
         //Init stack view
-        ((SPController) controllers.get(SP_CONTR)).setData((ProgramCounter) elements[Simulation.PC]);
+        ((SMController) controllers.get(SP_CONTR)).setData((ProgramCounter) elements[Simulation.PC]);
 
         //Init the RAM view
         ((HPController) controllers.get(HP_CONTR)).setData((RAM) elements[Simulation.RAM_MEM]);

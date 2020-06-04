@@ -276,9 +276,9 @@ public class RAM extends Element {
     public boolean isInterruptTriggered() {
 
         //idx 7 is Global Enable
-        if (BitManipulator.getBit(GIE, getData(INTCON)) == 1) {
+        if (getSpecificBit(INTCON, GIE) == 1) {
             //EEIF = bit nr 4 & EEIE = 0x88
-            if ((BitManipulator.getBit(getData(INTCON), 6) == 1) && (BitManipulator.getBit(getData(0x88), 4) == 1)) {
+            if (getSpecificBit(INTCON, 6) == 1 && getSpecificBit(INTCON, 4) == 1) {
                 return true;
             }
             /*
@@ -291,6 +291,7 @@ public class RAM extends Element {
              */
             int mask = 0b00100100;
             for (int i = 0; i < 3; i++) {
+                //mask the register and compare
                 if ((getData(INTCON) & mask) == mask) {
                     if (i != 0) {
                         //resetting the interrupt bits

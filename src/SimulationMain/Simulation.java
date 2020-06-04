@@ -7,6 +7,8 @@ import GUI.StartingWController;
 import Helpers.*;
 import javafx.application.Platform;
 
+import java.util.concurrent.TimeUnit;
+
 public class Simulation implements Runnable {
 
     //here idxes off all buses and elements
@@ -98,12 +100,7 @@ public class Simulation implements Runnable {
         //setting the hz Rate
         changeHz(1);
 
-        updater = new Runnable() {
-            @Override
-            public void run() {
-                centralController.update();
-            }
-        };
+        updater = centralController::update;
 
         initGuiSettings();
 
@@ -117,7 +114,7 @@ public class Simulation implements Runnable {
     }
 
     public long getRunTime() {
-        return runTime;
+        return TimeUnit.MILLISECONDS.convert(runTime, TimeUnit.NANOSECONDS);
     }
 
     public void setWatchdog(boolean enable) {
@@ -148,7 +145,7 @@ public class Simulation implements Runnable {
 
     public void changeHz(long newHz) {
         //Could be made more precise with double
-        hzRate = 1000000000L / newHz;
+        hzRate = 4_000_000_000L / newHz;
     }
 
     public void step() {
@@ -157,7 +154,6 @@ public class Simulation implements Runnable {
         executing it
         checking for interrupts
          */
-
         CommandBase command = fetch();
         execute(command);
 
@@ -179,7 +175,6 @@ public class Simulation implements Runnable {
         for (int i = 0; i < 4; i++) {
             elements[i].step();
         }
-
         /*
         ControlUnit step
         decodes and returns the command
@@ -238,15 +233,19 @@ public class Simulation implements Runnable {
                 }
 
                 if (!standby) {
-                    //usual mode
-                    if (System.nanoTime() - prevTime >= hzRate) {
-                        prevTime = System.nanoTime();
+                    //hzRate check
+//                    System.out.println(runTime + "runtime");
+//                    System.out.println((prevTime) + "prev");
+//                    System.out.println(runTime - prevTime);
+
+                    if (runTime - prevTime >= hzRate) {
+                        prevTime = timeCounter.getRuntime();
                         step();
                     }
                 } else {
                     //on standby
                     interruptCheck();
-                    prevTime = System.nanoTime();
+                    prevTime = timeCounter.getRuntime();
 
                     if (flagWatchdog) {
                         standby = !watchdog.isOverflow();
@@ -257,7 +256,6 @@ public class Simulation implements Runnable {
                 timeCounter.pause();
             }
 
-            runTime = timeCounter.getRuntime();
 
             //breakpoint check
             // -1 is the offset, so that the break point is on the next command
@@ -268,6 +266,8 @@ public class Simulation implements Runnable {
                     updateGUI();
                 }
             }
+
+            runTime = timeCounter.getRuntime();
 
             //slowing down
             try {

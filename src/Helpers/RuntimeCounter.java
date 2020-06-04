@@ -19,7 +19,7 @@ public class RuntimeCounter extends Thread {
 
     public void resumeCounting() {
         count = true;
-        prevTime = System.currentTimeMillis();
+        prevTime = System.nanoTime();
     }
 
     public void pause() {
@@ -28,7 +28,7 @@ public class RuntimeCounter extends Thread {
 
     public void reset() {
         runtime = 0;
-        prevTime = System.currentTimeMillis();
+        prevTime = System.nanoTime();
     }
 
     public void killThread() {
@@ -44,12 +44,11 @@ public class RuntimeCounter extends Thread {
         while (running) {
 
             if (count) {
-                runtime += System.currentTimeMillis() - prevTime;
-                prevTime = System.currentTimeMillis();
+                runtime += System.nanoTime() - prevTime;
+                prevTime = System.nanoTime();
             }
 
             //waiting to not make it too fast
-
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {

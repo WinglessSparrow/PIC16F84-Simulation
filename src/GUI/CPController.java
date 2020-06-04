@@ -1,6 +1,7 @@
 package GUI;
 
 import Elements.ProgramCounter;
+import Elements.RAM;
 import Elements.WRegister;
 import Helpers.Prescaler;
 import Helpers.Watchdog;
@@ -16,7 +17,8 @@ import javafx.scene.control.Label;
 
 public class CPController extends Controller {
 
-
+    @FXML
+    private Label lbl_timer;
     @FXML
     private Label lbl_watchdogTime;
     @FXML
@@ -179,7 +181,7 @@ public class CPController extends Controller {
     private void renewData() {
         lbl_runtime.setText("Runtime:\t" + simGUI.getSim().getRunTime());
         lbl_pc.setText("PC:\t" + pc.getCountedValue());
-        lbl_prescaler.setText("Prescaler: 1 : " + ((chk_watchdog.isSelected()) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
+        lbl_prescaler.setText("Prescaler: 1 : " + ((RAM.getSpecificBit(RAM.OPTION, 4) == 1) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
         lbl_wReg.setText("W-Reg: 0x" + Integer.toHexString(wReg.getStoredValue()));
         lbl_watchdogTime.setText("WDT: " + ((chk_watchdog.isSelected()) ? watchdog.getCountedTime() : 0) + " / " + Watchdog.getTimeWait());
     }

@@ -9,7 +9,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.Stack;
 
-public class SPController extends Controller {
+public class SMController extends Controller {
     @FXML
     private Label lbl_stack1;
     @FXML
