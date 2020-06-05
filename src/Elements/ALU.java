@@ -81,7 +81,6 @@ public class ALU extends Element {
     public void setZeroBit(int value) {
         if (value == 0) {
             RAM.setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
-            RAM.setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
         }
     }
 

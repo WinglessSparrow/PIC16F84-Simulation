@@ -204,9 +204,9 @@ public class RAM extends Element {
 
     public static void setSpecificBits(boolean high, int register, int specificBit) {
         if (high) {
-            data[register] = BitManipulator.setBit(data[register], specificBit);
+            data[register] = BitManipulator.setBit(specificBit, data[register]) & 255;
         } else {
-            data[register] = BitManipulator.clearBit(data[register], specificBit);
+            data[register] = BitManipulator.clearBit(specificBit, data[register]) & 255;
         }
     }
 
@@ -232,6 +232,9 @@ public class RAM extends Element {
         //setting the carry bit, by looking what the ninth bit is up to
         boolean set = ((temp >> 8) & 1) == 1;
         System.out.println("carry : " + set);
+        if (ProgramCounter.getPC() == 9) {
+            System.out.println("yes");
+        }
         setSpecificBits(set, STATUS, CARRY_BIT);
         System.out.println("Register: " + Integer.toBinaryString(data[STATUS]));
         //masking the value back to 8 bits

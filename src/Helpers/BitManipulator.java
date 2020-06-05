@@ -8,20 +8,20 @@ public class BitManipulator {
      * @return binary String of appropriate length
      */
     public static String toNLongBinaryString(int length, int value) {
-        String temp;
+        StringBuilder temp;
 
-        temp = Integer.toBinaryString(value);
+        temp = new StringBuilder(Integer.toBinaryString(value));
         //if the binary String is shorter than length bits
         //it could be because toBinaryString cuts all redundant zeros
         //but I need them
         while (temp.length() < length) {
-            temp = "0" + temp;
+            temp.insert(0, "0");
         }
-        return temp;
+        return temp.toString();
     }
 
     public static int setBit(int idx, int value) {
-        return value = value | (1 << idx);
+        return value | (1 << idx);
     }
 
     public static int getBit(int idx, int value) {
@@ -29,6 +29,6 @@ public class BitManipulator {
     }
 
     public static int clearBit(int idx, int value) {
-        return value &= ~(1 << idx);
+        return value & ~(1 << idx);
     }
 }

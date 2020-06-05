@@ -56,6 +56,10 @@ public class ProgramCounter extends Element {
         System.out.println("new countedValue " + countedValue);
     }
 
+    public static int getPC() {
+        return countedValue;
+    }
+
     public static void assemblePCLATHPCLChange(int pcl, int pclath) {
         pcl = pcl & 0xff;
         pclath = (pclath & 0x1f) << 8;

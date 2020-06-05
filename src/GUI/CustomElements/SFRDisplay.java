@@ -149,6 +149,7 @@ class Register extends HBox {
                 lbls_bin[i].setStyle("-fx-background-color: #E1E5F2");
             } else {
                 lbls_bin[i].setText(valStr);
+
                 lbls_bin[i].setStyle("-fx-background-color: #c4c7f2");
             }
         }
