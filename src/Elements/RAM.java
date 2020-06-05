@@ -339,7 +339,6 @@ public class RAM extends Element {
     }
 
     public int[] getSfrData() {
-        sfrData = new int[15];
 
         sfrData[0] = data[TMR0];
         sfrData[1] = data[PCL];

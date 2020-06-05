@@ -1,5 +1,6 @@
 package GUI.CustomElements;
 
+import Elements.RAM;
 import Helpers.BitManipulator;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -10,8 +11,9 @@ import java.util.Arrays;
 
 public class SFRDisplay extends VBox {
 
-    private String names[];
+    private String[] names;
     private int maxWidth, minWidth;
+    private RAM ram;
     private int[] data;
 
     public SFRDisplay(int maxWidth, int minWidth) {
@@ -37,13 +39,15 @@ public class SFRDisplay extends VBox {
         }
     }
 
-    public void setData(int[] data) {
-        this.data = data;
+    public void setData(RAM ram) {
+        this.ram = ram;
         update();
     }
 
 
     public void update() {
+        data = ram.getSfrData();
+
         //iterates through data
         int count = 0;
 

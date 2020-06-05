@@ -10,7 +10,6 @@ public class SFRPController extends Controller {
     private ScrollPane scrl_pane;
 
     private SFRDisplay display;
-    private RAM ram;
 
     public void initialize() {
         display = new SFRDisplay(68, 35);
@@ -22,12 +21,12 @@ public class SFRPController extends Controller {
      * @see SFRDisplay for the rigth sequence
      */
     public void setData(RAM ram) {
-        this.ram = ram;
-        display.setData(ram.getSfrData());
+        display.setData(ram);
     }
 
     @Override
     public void update() {
+        display.update();
         //TODO call update on list and give it the values
         //through set data
     }
