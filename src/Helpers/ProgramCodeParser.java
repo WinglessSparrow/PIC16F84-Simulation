@@ -105,7 +105,7 @@ public class ProgramCodeParser {
         String[] tmpProgramData;
 
         for (int i = 0; i < programDataString.length; i++) {
-            if (pcPresenceData.get(i) == true) {
+            if (pcPresenceData.get(i)) {
                 tmpProgramData = programData.get(i).split(" ", 2);
                 programDataString[i] = tmpProgramData[1];
             } else {

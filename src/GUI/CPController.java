@@ -146,6 +146,7 @@ public class CPController extends Controller {
     @FXML
     private void step() {
         simGUI.getSim().step();
+        simGUI.getSim().stepRuntime();
         simGUI.getSim().updateGUI();
     }
 
@@ -179,7 +180,7 @@ public class CPController extends Controller {
     }
 
     private void renewData() {
-        lbl_runtime.setText("Runtime:\t" + simGUI.getSim().getRunTime());
+        lbl_runtime.setText("Runtime: " + simGUI.getSim().getRunTime());
         lbl_pc.setText("PC:\t" + pc.getCountedValue());
         lbl_prescaler.setText("Prescaler: 1 : " + ((RAM.getSpecificBit(RAM.OPTION, 4) == 1) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
         lbl_wReg.setText("W-Reg: 0x" + Integer.toHexString(wReg.getStoredValue()));

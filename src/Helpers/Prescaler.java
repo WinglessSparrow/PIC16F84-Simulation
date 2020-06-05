@@ -21,7 +21,7 @@ public class Prescaler {
     }
 
     public int getTimerScale() {
-        //the scale here is twice less than in WDT
+        //the scale here is twice bigger than in WDT
         return scales[idx] * 2;
     }
 

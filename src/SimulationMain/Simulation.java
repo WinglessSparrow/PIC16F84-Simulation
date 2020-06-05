@@ -22,14 +22,12 @@ public class Simulation implements Runnable {
     private boolean pause;
     private boolean breakPointTrigger;
 
-    private long runTime;
     private long hzRate;
-    private long prevTime = 0;
 
     private StartingWController centralController;
 
     private Runnable updater;
-    private RuntimeCounter timeCounter;
+    private RuntimeCounter runtimeCounter;
 
     private Integer breakpointLine = -1;
     private Element[] elements;
@@ -64,14 +62,11 @@ public class Simulation implements Runnable {
         parser = new ProgramCodeParser();
         programData = parser.parse(filePath);
 
-        timeCounter = new RuntimeCounter();
-        timeCounter.pause();
-        timeCounter.start();
-
+        runtimeCounter = new RuntimeCounter();
         //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
         prescaler = new Prescaler();
 
-        watchdog = new Watchdog(prescaler, timeCounter);
+        watchdog = new Watchdog(prescaler, runtimeCounter);
         elements[TIMER] = new Timer(prescaler);
 
         //creating and connecting all the components
@@ -113,8 +108,18 @@ public class Simulation implements Runnable {
         breakPointTrigger = false;
     }
 
-    public long getRunTime() {
-        return TimeUnit.MILLISECONDS.convert(runTime, TimeUnit.NANOSECONDS);
+    public String getRunTime() {
+
+        long runtime = runtimeCounter.getRuntime();
+        if (hzRate < 1_000_000L) {
+            return ((TimeUnit.MICROSECONDS.convert(runtime, TimeUnit.NANOSECONDS) + " μ"));
+        } else {
+            return ((TimeUnit.MILLISECONDS.convert(runtime, TimeUnit.NANOSECONDS) + " ms"));
+        }
+    }
+
+    public void stepRuntime() {
+        runtimeCounter.update(hzRate);
     }
 
     public void setWatchdog(boolean enable) {
@@ -190,6 +195,7 @@ public class Simulation implements Runnable {
             if (!(command instanceof SLEEP)) {
                 //setting flags
                 command.setFlags(elements);
+
                 try {
                     //execute command in the right sequence
                     for (int idx : command.getExecutionSequence()) {
@@ -201,6 +207,7 @@ public class Simulation implements Runnable {
                 }
                 //actions after the sequence
                 command.cleanUpInstructions(elements);
+                System.out.println("carry: " + RAM.getSpecificBit(RAM.STATUS, RAM.CARRY_BIT));
             } else {
                 enableStandBy(true);
             }
@@ -216,6 +223,7 @@ public class Simulation implements Runnable {
             RAM.setSpecificBits(false, RAM.INTCON, RAM.GIE);
             //Call subroutine, it's on the fourth place in the ROM
             execute(CommandAtlas.getCommand(0x2004));
+            //waking up the controller
             if (standby) standby = false;
         }
     }
@@ -226,58 +234,47 @@ public class Simulation implements Runnable {
         while (isRunning) {
             if (!pause) {
                 updateGUI();
-                timeCounter.resumeCounting();
 
                 if (flagWatchdog) {
                     watchdog.update();
                 }
 
                 if (!standby) {
-                    //hzRate check
-//                    System.out.println(runTime + "runtime");
-//                    System.out.println((prevTime) + "prev");
-//                    System.out.println(runTime - prevTime);
-
-                    if (runTime - prevTime >= hzRate) {
-                        prevTime = timeCounter.getRuntime();
-                        step();
-                    }
+                    step();
                 } else {
+                    //step the timer
+                    if (RAM.getSpecificBit(RAM.OPTION, 5) == 0) {
+                        elements[TIMER].step();
+                    }
                     //on standby
                     interruptCheck();
-                    prevTime = timeCounter.getRuntime();
 
                     if (flagWatchdog) {
                         standby = !watchdog.isOverflow();
+                        softReset();
+                    }
+                }
+                //breakpoint check
+                // -1 is the offset, so that the break point is on the next command
+                if (breakpointLine != -1 && !breakPointTrigger) {
+                    if ((((ProgramCounter) elements[PC]).getCountedValue() - 1) == breakpointLine) {
+                        pauseSimulation(true);
+                        breakPointTrigger = true;
+                        updateGUI();
                     }
                 }
 
-            } else {
-                timeCounter.pause();
+                //runtime always updated, unless pause
+                runtimeCounter.update(hzRate);
             }
-
-
-            //breakpoint check
-            // -1 is the offset, so that the break point is on the next command
-            if (breakpointLine != -1 && !breakPointTrigger) {
-                if ((((ProgramCounter) elements[PC]).getCountedValue() - 1) == breakpointLine) {
-                    pauseSimulation(true);
-                    breakPointTrigger = true;
-                    updateGUI();
-                }
-            }
-
-            runTime = timeCounter.getRuntime();
 
             //slowing down
             try {
-                Thread.sleep(1);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
-        timeCounter.killThread();
     }
 
     //god knows I hate threading in UI applications
@@ -310,8 +307,7 @@ public class Simulation implements Runnable {
         ((InstructionRegister) elements[I_REG]).clear();
 
         //TODO ask if soft reset the internal timer resetted
-        timeCounter.pause();
-        timeCounter.reset();
+        runtimeCounter.reset();
 
         Watchdog.clear();
     }

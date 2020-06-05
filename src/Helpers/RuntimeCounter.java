@@ -1,59 +1,18 @@
 package Helpers;
 
-public class RuntimeCounter extends Thread {
+public class RuntimeCounter {
 
-    private long runtime = 0;
-    private boolean count;
-    private boolean running;
-    private long prevTime;
+    long runtime = 0;
 
-    public RuntimeCounter() {
-        setDaemon(true);
-        count = false;
-        running = true;
+    public void reset() {
+        runtime = 0;
     }
 
     public long getRuntime() {
         return runtime;
     }
 
-    public void resumeCounting() {
-        count = true;
-        prevTime = System.nanoTime();
-    }
-
-    public void pause() {
-        count = false;
-    }
-
-    public void reset() {
-        runtime = 0;
-        prevTime = System.nanoTime();
-    }
-
-    public void killThread() {
-        running = false;
-    }
-
-    @Override
-    public void run() {
-
-        reset();
-        running = true;
-
-        while (running) {
-
-            if (count) {
-                runtime += System.nanoTime() - prevTime;
-                prevTime = System.nanoTime();
-            }
-
-            //waiting to not make it too fast
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public void update(long hzRate) {
+        runtime += hzRate;
     }
 }

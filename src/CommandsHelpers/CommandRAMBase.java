@@ -25,8 +25,10 @@ public abstract class CommandRAMBase extends CommandBase {
         //getting the destination bit
         if (((InstructionDecoder) elements[Simulation.I_DECODER]).isDestinationBitSet()) {
             temp = Destinations.RAM;
+            System.out.println("Goes to RAM");
         } else {
             temp = Destinations.W_REG;
+            System.out.println("Goes to WReg");
         }
         ((RAM) elements[Simulation.RAM_MEM]).setMode(temp);
     }

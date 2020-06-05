@@ -91,7 +91,13 @@ class Cell extends Label {
     public boolean update(String value) {
         //the boolean flag is here because everything is a Cell, and it should't update describing cells
         if (change) {
-            setText(prefix + value);
+            if (getText().equals(prefix + value)) {
+                setStyle("-fx-background-color: #E1E5F2; -fx-border-color: white");
+            } else {
+                setText(prefix + value);
+                setStyle("-fx-background-color: #c4c7f2; -fx-border-color: white");
+            }
+
         }
         return change;
     }

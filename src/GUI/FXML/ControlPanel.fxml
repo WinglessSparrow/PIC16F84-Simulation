@@ -1,114 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<AnchorPane id="control-pane" prefHeight="387.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CPController">
-    <HBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="control-pane" prefHeight="387.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CPController">
+    <HBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox alignment="TOP_CENTER" prefHeight="357.0" prefWidth="160.0">
             <Label alignment="CENTER" prefHeight="40.0" prefWidth="159.0" text="Execution">
                 <font>
-                    <Font size="25.0"/>
+                    <Font size="25.0" />
                 </font>
             </Label>
             <VBox id="lbl-status" alignment="CENTER">
                 <children>
-                    <Label fx:id="lbl_status" prefHeight="30.0" prefWidth="150.0" text="Status: Standby">
-                        <font>
-                            <Font size="20.0"/>
-                        </font>
-                    </Label>
                     <Label fx:id="lbl_pc" prefHeight="30.0" prefWidth="150.0" text="PC: XX">
                         <font>
-                            <Font size="20.0"/>
+                            <Font size="20.0" />
                         </font>
                     </Label>
                     <Label fx:id="lbl_wReg" prefHeight="30.0" prefWidth="150.0" text="W-Reg: xxx">
                         <font>
-                            <Font size="20.0"/>
+                            <Font size="20.0" />
                         </font>
                     </Label>
+                   <Label fx:id="lbl_timer" prefHeight="35.0" prefWidth="148.0" text="TMR0: xx">
+                       <font>
+                           <Font size="20.0" />
+                       </font>
+                   </Label>
                 </children>
             </VBox>
             <VBox alignment="CENTER" spacing="5.0">
                 <children>
-                    <Button fx:id="btn_run" mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0"
-                            style="-fx-font-size: 20px" text="Run">
+                    <Button fx:id="btn_run" mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Run">
                         <font>
-                            <Font size="13.0"/>
+                            <Font size="13.0" />
                         </font>
                     </Button>
-                    <Button fx:id="btn_stop" mnemonicParsing="false" onAction="#stop" prefHeight="45.0"
-                            prefWidth="155.0" style="-fx-font-size: 20px" text="Stop">
+                    <Button fx:id="btn_stop" mnemonicParsing="false" onAction="#stop" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Stop">
                         <font>
-                            <Font size="13.0"/>
+                            <Font size="13.0" />
                         </font>
                     </Button>
-                    <Button fx:id="btn_step" mnemonicParsing="false" onAction="#step" prefHeight="45.0"
-                            prefWidth="155.0" style="-fx-font-size: 20px" text="Step">
+                    <Button fx:id="btn_step" mnemonicParsing="false" onAction="#step" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Step">
                         <font>
-                            <Font size="13.0"/>
+                            <Font size="13.0" />
                         </font>
                     </Button>
-                    <Button fx:id="btn_reset" mnemonicParsing="false" onAction="#reset" prefHeight="45.0"
-                            prefWidth="155.0" style="-fx-font-size: 20px" text="Reset">
+                    <Button fx:id="btn_reset" mnemonicParsing="false" onAction="#reset" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Reset">
                         <font>
-                            <Font size="13.0"/>
+                            <Font size="13.0" />
                         </font>
                     </Button>
                 </children>
                 <VBox.margin>
-                    <Insets/>
+                    <Insets />
                 </VBox.margin>
                 <padding>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </padding>
             </VBox>
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
         </VBox>
         <VBox alignment="TOP_CENTER" prefHeight="313.0">
             <Label alignment="CENTER" prefHeight="40.0" prefWidth="108.0" text="Timing">
                 <font>
-                    <Font size="25.0"/>
+                    <Font size="25.0" />
                 </font>
             </Label>
             <VBox id="timing-panel" prefHeight="300.0" prefWidth="160.0" spacing="15.0">
+                 <Label fx:id="lbl_status" prefHeight="30.0" prefWidth="150.0" text="Status: Standby">
+                     <font>
+                         <Font size="20.0" />
+                     </font>
+                 </Label>
                 <Label fx:id="lbl_runtime" prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms">
                     <font>
-                        <Font size="15.0"/>
+                        <Font size="15.0" />
                     </font>
                 </Label>
                 <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="149.0" spacing="5.0">
                     <Label prefHeight="35.0" prefWidth="52.0" text="Quarz: ">
                         <font>
-                            <Font size="15.0"/>
+                            <Font size="15.0" />
                         </font>
                     </Label>
-                    <ComboBox fx:id="drpd_hz" prefHeight="25.0" prefWidth="94.0" promptText="xx Hz"/>
+                    <ComboBox fx:id="drpd_hz" prefHeight="25.0" prefWidth="94.0" promptText="xx Hz" />
                 </HBox>
-                <Label fx:id="lbl_prescaler" contentDisplay="CENTER" prefHeight="35.0" prefWidth="153.0"
-                       text="Prescaler: x : x" textAlignment="CENTER">
+                <Label fx:id="lbl_prescaler" contentDisplay="CENTER" prefHeight="35.0" prefWidth="153.0" text="Prescaler: x : x" textAlignment="CENTER">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
-                <CheckBox fx:id="chk_watchdog" mnemonicParsing="false" onAction="#onCheckBoxTrigger" prefHeight="35.0"
-                          prefWidth="149.0" style="-fx-font-size: 16px" text="Enable WDT">
+                <CheckBox fx:id="chk_watchdog" mnemonicParsing="false" onAction="#onCheckBoxTrigger" prefHeight="35.0" prefWidth="149.0" style="-fx-font-size: 16px" text="Enable WDT">
 
                 </CheckBox>
                 <Label fx:id="lbl_watchdogTime" prefHeight="35.0" prefWidth="148.0" text="WDT: xxx / xxx">
                     <font>
-                        <Font size="15.0"/>
-                    </font>
-                </Label>
-                <Label fx:id="lbl_timer" prefHeight="35.0" prefWidth="148.0" text="Timer: xxx / xxx">
-                    <font>
-                        <Font size="15.0"/>
+                        <Font size="15.0" />
                     </font>
                 </Label>
             </VBox>

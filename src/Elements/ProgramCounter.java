@@ -37,12 +37,22 @@ public class ProgramCounter extends Element {
     }
 
     private void assemblePCLATHGOTO(int literal, int pclath) {
+        int pca = pclath, laa = literal;
+
         //mask first 5 bits and move 8 positions left
         pclath = (pclath & 0x18) << 8;
         //mask first 11 bits
         literal = literal & 0x7ff;
         //assemble them
         countedValue = pclath | literal;
+
+        if (countedValue > 2000) {
+            pca = (pca & 0x18) << 8;
+            //mask first 11 bits
+            laa = laa & 0x7ff;
+            //assemble them
+            int test = pclath | literal;
+        }
         System.out.println("new countedValue " + countedValue);
     }
 

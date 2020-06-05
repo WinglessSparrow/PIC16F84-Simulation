@@ -111,7 +111,7 @@ public class StartingWController extends Controller {
         ((HPController) controllers.get(HP_CONTR)).setData((RAM) elements[Simulation.RAM_MEM]);
 
         //Init SFR view
-        ((SFRPController) controllers.get(SFR_CONTR)).setData((RAM) elements[Simulation.RAM_MEM]);
+        ((SFRController) controllers.get(SFR_CONTR)).setData((RAM) elements[Simulation.RAM_MEM]);
 
         //Init timing view
 

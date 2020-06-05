@@ -18,7 +18,7 @@ public class WRegister extends Element {
     }
 
     public void setStoredValue(int storedValue) {
-        this.storedValue = storedValue;
+        this.storedValue = storedValue & 255;
         System.out.println("Storing in W_Register: 0x" + Integer.toHexString(storedValue) + " was set");
     }
 
@@ -27,7 +27,7 @@ public class WRegister extends Element {
     }
 
     public void getFromInternalBus() {
-        storedValue = getFromBus(Simulation.BUS_INTERN_FILE);
+        storedValue = getFromBus(Simulation.BUS_INTERN_FILE) & 255;
         System.out.println("Storing in W_Register: 0x" + Integer.toHexString(storedValue) + " from Intern 8Bit Bus");
     }
 

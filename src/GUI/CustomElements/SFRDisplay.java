@@ -6,19 +6,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.Arrays;
-
 public class SFRDisplay extends VBox {
 
-    private String names[];
-    private int maxWidth, minWidth;
     private int[] data;
 
     public SFRDisplay(int maxWidth, int minWidth) {
-        this.maxWidth = maxWidth;
-        this.minWidth = minWidth;
 
-        names = new String[]{
+        String[] names = new String[]{
                 "TMR0", "PCL", "STATUS", "FSR", "PORT-A", "PORT-B", "EEDATA", "EEADR", "PCLATH",
                 "INTCON", "OPTION", "TRISA", "TRISB", "EECON1", "EECON2"
         };

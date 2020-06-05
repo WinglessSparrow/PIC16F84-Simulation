@@ -44,6 +44,7 @@ public class RAM extends Element {
     public void step() {
         if (mode == Destinations.PC) {
             //if the program jumps
+            System.out.println(" pclath is being moved: " + data[PCLATH]);
             putOnBus(data[PCLATH]);
         } else {
             //getting the correct idx
@@ -189,7 +190,8 @@ public class RAM extends Element {
     }
 
     public static void renewPCL(int value) {
-        data[PCL] = value;
+        //mask to 8 bit
+        data[PCL] = value & 255;
     }
 
     public static void increaseTMR0() {
@@ -223,17 +225,26 @@ public class RAM extends Element {
     }
 
     private int rotateLeft(int value) {
-        int temp = value;
-        temp = (temp << 1) | (temp & 0x80 >> 7);
-        setCarry(value, temp);
-        return temp;
+        //getting the carry bit and putting it as the ninth bit
+        int temp = value | (getSpecificBit(STATUS, CARRY_BIT) << 8);
+        //rotate with !9! bits (because with carry)
+        temp = (temp << 1) | (temp >> 8);
+        //setting the carry bit, by looking what the ninth bit is up to
+        boolean set = ((temp >> 8) & 1) == 1;
+        System.out.println("carry : " + set);
+        setSpecificBits(set, STATUS, CARRY_BIT);
+        System.out.println("Register: " + Integer.toBinaryString(data[STATUS]));
+        //masking the value back to 8 bits
+        System.out.println("carry in RAM: " + getSpecificBit(STATUS, CARRY_BIT));
+        return temp & 255;
     }
 
     private int rotateRight(int value) {
-        int temp = value;
-        temp = (temp >> 1) | ((temp & 1) << 7);
-        setCarry(value, temp);
-        return temp;
+        //see rotateLeft()
+        int temp = value | (getSpecificBit(STATUS, CARRY_BIT) << 8);
+        temp = (temp >> 1) | (temp << 8);
+        setSpecificBits((((temp >> 8) & 1) == 1), STATUS, CARRY_BIT);
+        return temp & 255;
     }
 
     private int swap(int value) {
@@ -308,7 +319,10 @@ public class RAM extends Element {
     }
 
     private void init() {
+        //TODO SUICIDE, WHY ARE YOU SUCH A BITCH
+        //for some reason if status is not 0 can't move things to right locations in memory
         setData(STATUS, 0b11000);
+//        setData(STATUS, 0);
         setData(OPTION, 255);
         setData(TRIS_A, 255);
         setData(TRIS_B, 255);
