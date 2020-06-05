@@ -7,20 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.Arrays;
-
 public class SFRDisplay extends VBox {
 
-    private String[] names;
-    private int maxWidth, minWidth;
     private RAM ram;
-    private int[] data;
 
     public SFRDisplay(int maxWidth, int minWidth) {
-        this.maxWidth = maxWidth;
-        this.minWidth = minWidth;
 
-        names = new String[]{
+        String[] names = new String[]{
                 "TMR0", "PCL", "STATUS", "FSR", "PORT-A", "PORT-B", "EEDATA", "EEADR", "PCLATH",
                 "INTCON", "OPTION", "TRISA", "TRISB", "EECON1", "EECON2"
         };
@@ -32,8 +25,8 @@ public class SFRDisplay extends VBox {
         getChildren().add(temp);
 
         //all the other rows
-        for (int i = 0; i < names.length; i++) {
-            temp = new Register(names[i], 0, maxWidth, minWidth, true);
+        for (String name : names) {
+            temp = new Register(name, 0, maxWidth, minWidth, true);
 
             getChildren().add(temp);
         }
@@ -46,7 +39,7 @@ public class SFRDisplay extends VBox {
 
 
     public void update() {
-        data = ram.getSfrData();
+        int[] data = ram.getSfrData();
 
         //iterates through data
         int count = 0;
@@ -151,7 +144,13 @@ class Register extends HBox {
 
     private void setBinary(int value) {
         for (int i = 7; i > -1; i--) {
-            lbls_bin[i].setText(BitManipulator.getBit(i, value) + "");
+            String valStr = BitManipulator.getBit(i, value) + "";
+            if (lbls_bin[i].getText().equals(valStr)) {
+                lbls_bin[i].setStyle("-fx-background-color: #E1E5F2");
+            } else {
+                lbls_bin[i].setText(valStr);
+                lbls_bin[i].setStyle("-fx-background-color: #c4c7f2");
+            }
         }
     }
 
@@ -160,7 +159,13 @@ class Register extends HBox {
     }
 
     public void update(int value) {
-        lbl_value.setText(value + "");
+        String valStr = value + "";
+        if (lbl_value.getText().equals(valStr)) {
+            lbl_value.setStyle("-fx-background-color: #E1E5F2");
+        } else {
+            lbl_value.setStyle("-fx-background-color: #c4c7f2");
+            lbl_value.setText(valStr);
+        }
         setBinary(value);
     }
 }

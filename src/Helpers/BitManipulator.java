@@ -21,7 +21,7 @@ public class BitManipulator {
     }
 
     public static int setBit(int idx, int value) {
-        return value |= (1 << idx);
+        return value = value | (1 << idx);
     }
 
     public static int getBit(int idx, int value) {
