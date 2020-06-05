@@ -5,7 +5,7 @@ import GUI.CustomElements.SFRDisplay;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 
-public class SFRController extends Controller {
+public class SFRPController extends Controller {
     @FXML
     private ScrollPane scrl_pane;
 
@@ -16,8 +16,12 @@ public class SFRController extends Controller {
         scrl_pane.setContent(display);
     }
 
+    /**
+     //* @param data must be presorted
+     * @see SFRDisplay for the rigth sequence
+     */
     public void setData(RAM ram) {
-        display.setData(ram.getSfrData());
+        display.setData(ram);
     }
 
     @Override
