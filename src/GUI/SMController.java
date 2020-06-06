@@ -3,6 +3,7 @@ package GUI;
 import Elements.ProgramCounter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 
@@ -30,7 +31,7 @@ public class SMController extends Controller {
     private Label[] labels;
 
     private Simulation_GUI simGUI;
-    private ProgramCounter programCounter;
+    private Stack<Integer> stack;
 
     public void initialize() {
         //javaFX forces me to do war crimes
@@ -74,12 +75,18 @@ public class SMController extends Controller {
         }
     }
 
-    public void breakPointRem() {
-        //TODO make breakPoint
+    public void powerReset() {
+        simGUI.powerReset();
     }
 
     public void help() {
-        //TODO make help
+        //TODO proper HELP window
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Help");
+        alert.setHeaderText("Keep it strong fam");
+        alert.setContentText("We believe in you");
+
+        alert.showAndWait();
     }
 
     public void exit() {
@@ -91,38 +98,29 @@ public class SMController extends Controller {
     private void updateStack(Stack<Integer> stack) {
 
         Stack<?> stackTemp = (Stack<?>) stack.clone();
-//        stackTemp = reverseStack(stackTemp);
 
-        int count = 1;
-        for (Label l : labels) {
-            if (stackTemp.isEmpty()) {
-                l.setText(count + "\t:\txxxx");
-            } else {
-                l.setText(count + "\t:\t" + String.format("%04d", (Integer) stackTemp.pop()));
+        if (stack.size() <= labels.length) {
+            int count = 1;
+            for (Label l : labels) {
+                if (stackTemp.isEmpty()) {
+                    l.setText(count + "\t:\txxxx");
+                } else {
+                    l.setText(count + "\t:\t" + String.format("%04d", (Integer) stackTemp.pop()));
+                }
+                count++;
             }
-            count++;
+        } else {
+            System.err.println("SIMULATION : STACK OVERFLOW");
         }
-    }
-
-    private <T> Stack<T> reverseStack(Stack<T> stack) {
-
-        Stack<T> stackTemp = new Stack<>();
-        //reversing the stack
-        while (!stack.isEmpty()) {
-            stackTemp.push(stack.pop());
-        }
-
-        return stackTemp;
     }
 
     @Override
     public void update() {
-        //TODO DUMMY STACK
-        updateStack(new Stack<>());
+        updateStack(stack);
     }
 
     public void setData(ProgramCounter programCounter) {
-        this.programCounter = programCounter;
+        stack = programCounter.handItOverThatThingYourStack();
     }
 
     public void setSimGUI(Simulation_GUI simGUI) {

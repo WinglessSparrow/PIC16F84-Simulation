@@ -79,7 +79,7 @@
                 </Label>
                 <Button mnemonicParsing="false" onAction="#load" prefHeight="45.0" prefWidth="160.0" style="-fx-font-size: 18px" text="Load program">
                 </Button>
-                <Button mnemonicParsing="false" onAction="#breakPointRem" prefHeight="45.0" prefWidth="160.0" style="-fx-font-size: 20px" text="Power reset">
+                <Button mnemonicParsing="false" onAction="#powerReset" prefHeight="45.0" prefWidth="160.0" style="-fx-font-size: 20px" text="Power reset">
                 </Button>
                 <Button mnemonicParsing="false" onAction="#help" prefHeight="45.0" prefWidth="160.0" style="-fx-font-size: 20px" text="Help">
                 </Button>

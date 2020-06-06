@@ -22,6 +22,10 @@ public class ProgramCounter extends Element {
         stack = new Stack<>();
     }
 
+    public Stack<Integer> handItOverThatThingYourStack() {
+        return stack;
+    }
+
     private void pushOnStack() {
         //-1 because it's first counted up and then pushed
         stack.push(countedValue - 1);
@@ -54,10 +58,6 @@ public class ProgramCounter extends Element {
             int test = pclath | literal;
         }
         System.out.println("new countedValue " + countedValue);
-    }
-
-    public static int getPC() {
-        return countedValue;
     }
 
     public static void assemblePCLATHPCLChange(int pcl, int pclath) {

@@ -270,7 +270,7 @@ public class Simulation implements Runnable {
 
             //slowing down
             try {
-                Thread.sleep(20);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

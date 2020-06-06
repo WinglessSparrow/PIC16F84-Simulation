@@ -114,7 +114,37 @@ public class ProgramCodeParser {
             //System.out.println(pcPresenceData.get(i) + "    " + programDataString[i]);
         }
 
+        cutUseless(programDataString);
+
         return programDataString;
+    }
+
+    private void cutUseless(String[] lines) {
+        for (int i = 0; i < lines.length; i++) {
+            int count = 0;
+            //search for the begin of the important part
+            try {
+                //goes through string until it encounters lower case character (ASCII from 97 to 122) or ';'
+                //!WARNING! only works good with lst given by our Prof
+                while (!((lines[i].charAt(count) >= 97 && lines[i].charAt(count) <= 122) || (lines[i].charAt(count) == ';'))) {
+                    count++;
+                }
+
+                //using the count index to get the needed String
+                lines[i] = lines[i].substring(count);
+
+                //inserts a TAB if it not a jump point
+                boolean insertTab = !(lines[i].contains("loop") || lines[i].contains("start") || lines[i].contains("ende") && !(lines[i].contains("goto") || lines[i].contains("call")));
+
+                //tabs on places where it matters
+                if (insertTab) {
+                    lines[i] = "\t" + lines[i];
+                }
+            } catch (StringIndexOutOfBoundsException ignored) {
+                //has no information
+                lines[i] = "";
+            }
+        }
     }
 
     public boolean[] getPcPresenceData() {

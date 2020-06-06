@@ -230,15 +230,8 @@ public class RAM extends Element {
         //rotate with !9! bits (because with carry)
         temp = (temp << 1) | (temp >> 8);
         //setting the carry bit, by looking what the ninth bit is up to
-        boolean set = ((temp >> 8) & 1) == 1;
-        System.out.println("carry : " + set);
-        if (ProgramCounter.getPC() == 9) {
-            System.out.println("yes");
-        }
-        setSpecificBits(set, STATUS, CARRY_BIT);
-        System.out.println("Register: " + Integer.toBinaryString(data[STATUS]));
+        setSpecificBits(((temp >> 8) & 1) == 1, STATUS, CARRY_BIT);
         //masking the value back to 8 bits
-        System.out.println("carry in RAM: " + getSpecificBit(STATUS, CARRY_BIT));
         return temp & 255;
     }
 
