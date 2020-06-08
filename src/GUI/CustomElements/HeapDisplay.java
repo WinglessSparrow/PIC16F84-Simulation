@@ -56,7 +56,7 @@ public class HeapDisplay extends GridPane {
         //Count goes through the whole list, and idx is only for the cell which should be changed
         int count = 0, idx = 0;
 
-        while (count < data.length) {
+        while (idx < data.length) {
             //update returns true if the Cell should be updated
             if (((Cell) getChildren().get(count)).update(Integer.toHexString(data[idx]))) {
                 idx++;

@@ -7,6 +7,11 @@ import SimulationMain.Simulation;
 
 public class BTFSS extends CommandBitSkipBase {
 
+    public BTFSS(){
+        super();
+        skip = true;
+    }
+
     @Override
     public void setFlags(Element[] elements) {
         super.setFlags(elements);

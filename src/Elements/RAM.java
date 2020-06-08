@@ -101,6 +101,9 @@ public class RAM extends Element {
             if (mode == Destinations.RAM) {
                 //if the data is coming after the operation within the RAM
                 if (rOperation != RegisterOperation.NONE) {
+                    if (idx == 0x83 || idx == STATUS) {
+                        System.out.println(":as");
+                    }
                     setData(idx, temp);
                 } else {
                     setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));
@@ -205,7 +208,9 @@ public class RAM extends Element {
             ProgramCounter.assemblePCLATHPCLChange(data[PCL], data[PCLATH]);
         } else if (idx == STATUS || idx == 0x83) {
             data[STATUS] = value;
+            System.out.println(data[STATUS] + " STA 1");
             data[0x83] = value;
+            System.out.println(data[0x83] + " STA 2");
         } else if (idx == PCLATH || idx == 0x8a) {
             //0x1f mask first 5 bits
             data[PCLATH] = value & 0x1f;
@@ -410,6 +415,10 @@ public class RAM extends Element {
         return bitSet;
     }
 
+    public EEPROM getEeprom() {
+        return eeprom;
+    }
+
     public int[] getRegisterData() {
         return data;
     }
@@ -430,7 +439,6 @@ public class RAM extends Element {
         sfrData[11] = data[TRIS_A];
         sfrData[12] = data[TRIS_B];
         sfrData[13] = data[EECON_1];
-        sfrData[14] = data[EECON_2];
 
         return sfrData;
     }

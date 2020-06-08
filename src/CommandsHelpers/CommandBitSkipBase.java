@@ -12,7 +12,7 @@ import SimulationMain.Simulation;
 
 public abstract class CommandBitSkipBase extends CommandBase {
 
-    protected boolean isSetting = false;
+    protected boolean skip = false;
 
     public CommandBitSkipBase() {
         super(new int[]{
@@ -29,7 +29,7 @@ public abstract class CommandBitSkipBase extends CommandBase {
 
     @Override
     public void cleanUpInstructions(Element[] elements) {
-        if (((RAM) elements[Simulation.RAM_MEM]).isBitSet() && !isSetting) {
+        if (((RAM) elements[Simulation.RAM_MEM]).isBitSet() && skip) {
             ((InstructionRegister) elements[Simulation.I_REG]).clear();
         }
     }

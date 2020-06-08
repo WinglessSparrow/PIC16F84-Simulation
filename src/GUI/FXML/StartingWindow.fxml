@@ -20,7 +20,7 @@
             <RowConstraints maxHeight="410.0" minHeight="10.0" prefHeight="375.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <AnchorPane id="memory-lbl" prefHeight="200.0" prefWidth="200.0">
-            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="442.0" text="Heap" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="442.0" text="DATA Memory" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <font>
                     <Font size="25.0" />
                 </font>

@@ -23,11 +23,9 @@ public class EEPROM {
                 System.out.println("no int array");
             }
 
-            //TODO debug
             if (temp != null) {
                 for (int i = 0; i < temp.length; i++) {
                     data[i] = temp[i];
-                    System.out.println(data[i]);
                 }
             }
 
@@ -45,8 +43,8 @@ public class EEPROM {
         try {
             serialize();
         } catch (IOException e) {
+            System.out.println("well, shit. (Serialization says no)");
             e.printStackTrace();
-            System.out.println("boy do I love when things are going to shit");
         }
     }
 

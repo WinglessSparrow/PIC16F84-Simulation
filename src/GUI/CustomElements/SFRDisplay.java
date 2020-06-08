@@ -15,7 +15,7 @@ public class SFRDisplay extends VBox {
 
         String[] names = new String[]{
                 "TMR0", "PCL", "STATUS", "FSR", "PORT-A", "PORT-B", "EEDATA", "EEADR", "PCLATH",
-                "INTCON", "OPTION", "TRISA", "TRISB", "EECON1", "EECON2"
+                "INTCON", "OPTION", "TRISA", "TRISB", "EECON1"
         };
 
         setSpacing(5);
