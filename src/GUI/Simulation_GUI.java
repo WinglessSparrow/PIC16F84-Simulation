@@ -56,6 +56,10 @@ public class Simulation_GUI extends Application {
                 //Closes the JavaFX application and all the Other running threads
                 //second one should be sufficient, but to make sure first kill FX thread
                 Platform.exit();
+                try {
+                    sim.cleanUp();
+                } catch (NullPointerException ignored) {
+                }
                 System.out.println("see you space cowboy");
                 System.exit(0);
             }

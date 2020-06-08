@@ -91,6 +91,10 @@ public class SMController extends Controller {
 
     public void exit() {
         Platform.exit();
+        try {
+            simGUI.getSim().cleanUp();
+        } catch (NullPointerException ignored) {
+        }
         System.out.println("see you space cowboy");
         System.exit(0);
     }

@@ -312,4 +312,9 @@ public class Simulation implements Runnable {
         Watchdog.clear();
     }
 
+    public void cleanUp() {
+        ((RAM) elements[RAM_MEM]).cleanUp();
+        killThread();
+    }
+
 }

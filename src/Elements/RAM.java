@@ -14,6 +14,9 @@ public class RAM extends Element {
     private boolean bitSet;
     private int bitIdxFromOP = 0;
 
+    private Ringbuffer<Integer> eecon2Buffer;
+    private EEPROM eeprom;
+
     private Multiplexer multiplexer;
     private Destinations mode;
     private RegisterOperation rOperation = RegisterOperation.NONE;
@@ -22,22 +25,18 @@ public class RAM extends Element {
         NONE, INCREASE, DECREASE, ROTATE_LEFT, ROTATE_RIGHT, COMPLEMENT, SWAP, BIT_SET, BIT_CLR, BIT_TEST_SET, BIT_TEST_CLR, CLR, MOVF
     }
 
+    public enum EepromStatus {
+        WRITE, READ, NONE
+    }
+
     public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer) {
         super(busOut, busesIn);
         this.multiplexer = multiplexer;
 
+        eeprom = new EEPROM();
+        eecon2Buffer = new Ringbuffer<>(2);
+
         init();
-    }
-
-    private int setOffsetIdx(int idx) {
-        //getting the 5th bit, because it's the offset of the banks, and shift it 7 positions to the left
-        //so we could get the offset, to offset the input idx
-        //so the bx1 will be bx10000000
-        // 48 is the ASCII   offset fro decimal numbers
-        int RP0 = BitManipulator.toNLongBinaryString(8, data[STATUS]).charAt(4) - 48;
-        int mask = (RP0 == 0) ? 0 : RP0 << 7;
-
-        return idx | mask;
     }
 
     @Override
@@ -56,43 +55,45 @@ public class RAM extends Element {
                 case NONE:
                     break;
                 case INCREASE:
-                    temp = increase(getData(idx));
+                    temp = increase(getRegisterData(idx));
                     break;
                 case DECREASE:
-                    temp = decrease(getData(idx));
+                    temp = decrease(getRegisterData(idx));
                     break;
                 case ROTATE_LEFT:
-                    temp = rotateLeft(getData(idx));
+                    temp = rotateLeft(getRegisterData(idx));
                     break;
                 case ROTATE_RIGHT:
-                    temp = rotateRight(getData(idx));
+                    temp = rotateRight(getRegisterData(idx));
                     break;
                 case COMPLEMENT:
-                    temp = complement(getData(idx));
+                    temp = complement(getRegisterData(idx));
                     break;
                 case SWAP:
-                    temp = swap(getData(idx));
+                    temp = swap(getRegisterData(idx));
                     break;
                 case BIT_SET:
-                    temp = BitManipulator.setBit(getData(idx), bitIdxFromOP);
+                    setSpecificBits(true, idx, bitIdxFromOP);
+                    temp = getRegisterData(idx);
                     break;
                 case BIT_CLR:
-                    temp = BitManipulator.clearBit(getData(idx), bitIdxFromOP);
+                    setSpecificBits(false, idx, bitIdxFromOP);
+                    temp = getRegisterData(idx);
                     break;
                 case BIT_TEST_SET:
                     bitSet = (getSpecificBit(idx, bitIdxFromOP) == 1);
-                    temp = getData(idx);
+                    temp = getRegisterData(idx);
                     break;
                 case BIT_TEST_CLR:
                     bitSet = (getSpecificBit(idx, bitIdxFromOP) == 0);
-                    temp = getData(idx);
+                    temp = getRegisterData(idx);
                     break;
                 case CLR:
                     temp = 0;
                     setZeroBit(0);
                     break;
                 case MOVF:
-                    temp = getData(idx);
+                    temp = getRegisterData(idx);
                     break;
             }
 
@@ -109,18 +110,48 @@ public class RAM extends Element {
                 if (rOperation != RegisterOperation.NONE) {
                     putOnBus(temp);
                 } else {
-                    putOnBus(getData(idx));
+                    putOnBus(getRegisterData(idx));
                 }
             }
+
             //resetting the operation type
             rOperation = RegisterOperation.NONE;
 
             printChanges(idx);
         }
+
+        //TODO test
+        //TODO WD RD CLEAR ONLY IN HARDWARE!!<<
+        switch (checkEeprom()) {
+            case WRITE:
+                eeprom.setData(getRegisterData(EEADR), getRegisterData(EEDATA));
+                //resetting, not with getSpecificBit, since I made impossible
+                setData(EECON_1, getRegisterData(EECON_1) & 0b11111101);
+                //resetting EEIF
+                setSpecificBits(true, EECON_1, 4);
+                break;
+            case READ:
+                setData(EEDATA, eeprom.getSpecificData(getRegisterData(EEADR)));
+                setData(EECON_1, getRegisterData(EECON_1) & 0b11111110);
+                break;
+        }
     }
 
+    private int setOffsetIdx(int idx) {
+        //getting the 5th bit, because it's the offset of the banks, and shift it 7 positions to the left
+        //so we could get the offset, to offset the input idx
+        //so the bx1 will be bx10000000
+        // 48 is the ASCII   offset for decimal numbers
+//        int RP0 = BitManipulator.toNLongBinaryString(8, data[STATUS]).charAt(4) - 48;
+        int RP0 = getSpecificBit(STATUS, 5);
+        int mask = (RP0 == 0) ? 0 : RP0 << 7;
+
+        return idx | mask;
+    }
+
+
     public int getLastRegisterInUse() {
-        return getData(setOffsetIdx(multiplexer.getStoredValue()));
+        return getRegisterData(setOffsetIdx(multiplexer.getStoredValue()));
     }
 
     public void setMode(Destinations mode) {
@@ -131,12 +162,17 @@ public class RAM extends Element {
         this.rOperation = rOperation;
     }
 
-    private int getData(int idx) {
-        //just remember >> indirect addressing
+    private int getRegisterData(int idx) {
+        //just remember* = &indirect addressing
         if (idx == 0 || idx == 0x80) {
-            return data[getData(FSR)];
+            return data[getRegisterData(FSR)];
         } else {
-            return data[idx];
+            //some registers are not implemented
+            if (idx == EECON_2 || idx == 0x07 || idx == 0x87) {
+                return 0;
+            } else {
+                return data[idx];
+            }
         }
     }
 
@@ -180,6 +216,8 @@ public class RAM extends Element {
         } else if (idx == TRIS_A) {
             //first 5 bits
             data[TRIS_A] = value & 0b11111;
+        } else if (idx == EECON_2) {
+            eecon2Buffer.push(value);
         } else {
             data[idx] = value;
             if (idx == OPTION) {
@@ -224,6 +262,18 @@ public class RAM extends Element {
         }
     }
 
+    public void setZeroBit(int value) {
+        if (value == 0) {
+            setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
+        }
+    }
+
+    public void setCarry(int value, int temp) {
+        if (temp <= value) {
+            setSpecificBits(true, RAM.STATUS, RAM.CARRY_BIT);
+        }
+    }
+
     private int rotateLeft(int value) {
         //getting the carry bit and putting it as the ninth bit
         int temp = value | (getSpecificBit(STATUS, CARRY_BIT) << 8);
@@ -233,6 +283,32 @@ public class RAM extends Element {
         setSpecificBits(((temp >> 8) & 1) == 1, STATUS, CARRY_BIT);
         //masking the value back to 8 bits
         return temp & 255;
+    }
+
+    private EepromStatus checkEeprom() {
+        EepromStatus status = EepromStatus.NONE;
+
+        //WREN ON
+        if (getSpecificBit(EECON_1, 2) == 1) {
+            //WR ON
+            if (getSpecificBit(EECON_1, 1) == 1) {
+                if (bufferSequence()) {
+                    status = EepromStatus.WRITE;
+                }
+            }
+        } else if (getSpecificBit(EECON_1, 0) == 1) {
+            status = EepromStatus.READ;
+        }
+
+        return status;
+    }
+
+    private boolean bufferSequence() {
+        int[] temp = eecon2Buffer.getData();
+        if (temp[0] == 0x55) {
+            return temp[1] == 0xAA;
+        }
+        return false;
     }
 
     private int rotateRight(int value) {
@@ -268,18 +344,6 @@ public class RAM extends Element {
         return value;
     }
 
-    public void setZeroBit(int value) {
-        if (value == 0) {
-            setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
-        }
-    }
-
-    public void setCarry(int value, int temp) {
-        if (temp <= value) {
-            setSpecificBits(true, RAM.STATUS, RAM.CARRY_BIT);
-        }
-    }
-
     public boolean isInterruptTriggered() {
 
         //idx 7 is Global Enable
@@ -299,7 +363,7 @@ public class RAM extends Element {
             int mask = 0b00100100;
             for (int i = 0; i < 3; i++) {
                 //mask the register and compare
-                if ((getData(INTCON) & mask) == mask) {
+                if ((getRegisterData(INTCON) & mask) == mask) {
                     if (i != 0) {
                         //resetting the interrupt bits
                         //except for the timer
@@ -315,10 +379,7 @@ public class RAM extends Element {
     }
 
     private void init() {
-        //TODO SUICIDE, WHY ARE YOU SUCH A BITCH
-        //for some reason if status is not 0 can't move things to right locations in memory
         setData(STATUS, 0b11000);
-//        setData(STATUS, 0);
         setData(OPTION, 255);
         setData(TRIS_A, 255);
         setData(TRIS_B, 255);
@@ -337,6 +398,10 @@ public class RAM extends Element {
         setData(OPTION, 255);
     }
 
+    public void cleanUp() {
+        eeprom.cleanUp();
+    }
+
     public void setBitIdxFromOP(int bitIdxFromOP) {
         this.bitIdxFromOP = bitIdxFromOP;
     }
@@ -345,7 +410,7 @@ public class RAM extends Element {
         return bitSet;
     }
 
-    public int[] getData() {
+    public int[] getRegisterData() {
         return data;
     }
 
