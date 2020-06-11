@@ -53,6 +53,7 @@ public class CPController extends Controller {
     private int selectedIdx = 0;
     private WRegister wReg;
     private Watchdog watchdog;
+    private RAM ram;
 
     public void initialize() {
 
@@ -170,11 +171,12 @@ public class CPController extends Controller {
         btn_stop.setDisable(true);
     }
 
-    public void setData(ProgramCounter pc, Prescaler prescaler, Watchdog watchdog, WRegister wReg) {
+    public void setData(ProgramCounter pc, Prescaler prescaler, Watchdog watchdog, WRegister wReg, RAM ram) {
         this.pc = pc;
         this.prescaler = prescaler;
         this.wReg = wReg;
         this.watchdog = watchdog;
+        this.ram = ram;
 
         disableButtonsOnStop();
 
@@ -184,10 +186,10 @@ public class CPController extends Controller {
     private void renewData() {
         lbl_runtime.setText("Runtime: " + simGUI.getSim().getRunTime());
         lbl_pc.setText("PC:\t" + pc.getCountedValue());
-        lbl_prescaler.setText("Prescaler: 1 : " + ((RAM.getSpecificBit(RAM.OPTION, 4) == 1) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
+        lbl_prescaler.setText("Prescaler: 1 : " + ((ram.getSpecificBit(RAM.OPTION, 4) == 1) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
         lbl_wReg.setText("W-Reg: 0x" + Integer.toHexString(wReg.getStoredValue()));
 
-        long wdtMaxNano = Watchdog.getTimeWait();
+        long wdtMaxNano = watchdog.getTimeWait();
         long wdtCurrNano = watchdog.getCountedTime();
 
         lbl_watchdogTime.setText("WDT: " + ((chk_watchdog.isSelected()) ? TimeUnit.MILLISECONDS.convert(wdtCurrNano, TimeUnit.NANOSECONDS) : 0) +

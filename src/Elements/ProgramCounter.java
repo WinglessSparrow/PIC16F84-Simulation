@@ -15,6 +15,7 @@ public class ProgramCounter extends Element {
     private Operations operation;
     private Stack<Integer> stack;
     private static boolean flagChangePCL;
+    private RAM ram;
 
     public ProgramCounter(Bus[] busesIn, int countedValue) {
         super(null, busesIn);
@@ -37,7 +38,7 @@ public class ProgramCounter extends Element {
     }
 
     private void pushOnRAM() {
-        RAM.renewPCL(countedValue);
+        ram.renewPCL(countedValue);
     }
 
     private void assemblePCLATHGOTO(int literal, int pclath) {
@@ -103,6 +104,10 @@ public class ProgramCounter extends Element {
 
         //renew the PCL value
         pushOnRAM();
+    }
+
+    public void setRam(RAM ram) {
+        this.ram = ram;
     }
 
     public void reset() {

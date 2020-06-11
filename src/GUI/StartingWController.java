@@ -117,7 +117,7 @@ public class StartingWController extends Controller {
 
         //Ports not ready now
         //Init Control panel
-        ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler, watchdog, ((WRegister) elements[Simulation.W_REGISTER]));
+        ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler, watchdog, ((WRegister) elements[Simulation.W_REGISTER]), (RAM) elements[Simulation.RAM_MEM]);
     }
 
     @Override

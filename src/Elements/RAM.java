@@ -10,16 +10,20 @@ public class RAM extends Element {
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2, GIE = 7;
 
     private int[] data = new int[256];
-
     private int[] sfrData = new int[15];
+
     private boolean bitSet;
     private boolean fileZero;
+
     private int bitIdxFromOP = 0;
 
     private Ringbuffer<Integer> eecon2Buffer;
     private EEPROM eeprom;
 
+    private Prescaler prescaler;
+    private Watchdog watchdog;
     private Multiplexer multiplexer;
+
     private Destinations mode;
     private RegisterOperation rOperation = RegisterOperation.NONE;
 
@@ -31,9 +35,11 @@ public class RAM extends Element {
         WRITE, READ, NONE
     }
 
-    public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer) {
+    public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer, Watchdog watchdog, Prescaler prescaler) {
         super(busOut, busesIn);
         this.multiplexer = multiplexer;
+        this.prescaler = prescaler;
+        this.watchdog = watchdog;
 
         eeprom = new EEPROM();
         eecon2Buffer = new Ringbuffer<>(2);
@@ -232,8 +238,8 @@ public class RAM extends Element {
         } else {
             data[idx] = value;
             if (idx == OPTION) {
-                Prescaler.renewIdx();
-                Watchdog.renewWaitingTime();
+                prescaler.renewIdx((getSpecificBit(OPTION, 0)) | (getSpecificBit(OPTION, 1) << 1) | (getSpecificBit(OPTION, 2) << 2));
+                watchdog.renewWaitingTime(getSpecificBit(OPTION, 3) == 1);
             }
         }
     }
@@ -269,7 +275,6 @@ public class RAM extends Element {
     }
 
     public int getSpecificBit(int register, int idx) {
-
         //accounting for the indirect addressing
         int registerIdx = (register == 0) ? data[FSR] : register;
 

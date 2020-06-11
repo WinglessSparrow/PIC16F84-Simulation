@@ -15,7 +15,7 @@ public class CLRW extends CommandBase {
     @Override
     public void setFlags(Element[] elements) {
         ((WRegister) elements[Simulation.W_REGISTER]).setStoredValue(0);
-        RAM.setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
+        ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
     }
 
     @Override

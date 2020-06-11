@@ -3,6 +3,7 @@ package Commands;
 import CommandsHelpers.CommandBase;
 import Helpers.Element;
 import Helpers.Watchdog;
+import SimulationMain.Simulation;
 
 public class CLRWDT extends CommandBase {
 
@@ -14,7 +15,7 @@ public class CLRWDT extends CommandBase {
 
     @Override
     public void setFlags(Element[] elements) {
-        Watchdog.clear();
+        ((Watchdog) elements[Simulation.WATCHDOG]).clear();
     }
 
     @Override

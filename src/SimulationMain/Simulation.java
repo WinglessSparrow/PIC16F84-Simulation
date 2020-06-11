@@ -14,7 +14,7 @@ public class Simulation implements Runnable {
     //here idxes off all buses and elements
     public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_PROM = 4, BUS_JUMPS = 5;
     public static final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_8BUS = 4, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8,
-            ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13;
+            ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13, WATCHDOG = 14;
     //flags
     private boolean flagRunning;
     private boolean flagStandby;
@@ -31,7 +31,6 @@ public class Simulation implements Runnable {
 
     private Integer breakpointLine = -1;
     private Element[] elements;
-    private Watchdog watchdog;
     private Prescaler prescaler;
 
     private ProgramCodeParser parser;
@@ -54,7 +53,7 @@ public class Simulation implements Runnable {
         }
 
         //this array must be field by hand
-        elements = new Element[14];
+        elements = new Element[15];
 
         //create a bunch of dummy data
         int[] programData;
@@ -66,7 +65,7 @@ public class Simulation implements Runnable {
         //prescaler and timer init, must be earlier then the rest, because some objects might use an instance of them while init
         prescaler = new Prescaler();
 
-        watchdog = new Watchdog(prescaler, runtimeCounter);
+        elements[WATCHDOG] = new Watchdog(prescaler, runtimeCounter);
         elements[TIMER] = new Timer(prescaler);
 
         //creating and connecting all the components
@@ -75,7 +74,7 @@ public class Simulation implements Runnable {
         elements[I_REG] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[I_DECODER] = new InstructionDecoder(buses);
         elements[PC] = new ProgramCounter(buses, 0);
-        elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], programData, (ProgramCounter) elements[3]);
+        elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], programData, (ProgramCounter) elements[PC]);
 
         //mask last 8 bits
         elements[GATE_8BUS] = new BusGate(buses[BUS_LITERAL], buses, 0xFF);
@@ -89,7 +88,12 @@ public class Simulation implements Runnable {
         elements[ALU_MULTIPLEXER] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
         elements[ALU] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[W_REGISTER], (Multiplexer) elements[ALU_MULTIPLEXER]);
         elements[RAM_MULTIPLEXER] = new Multiplexer(buses, BUS_DIR_ADDR, BUS_INTERN_FILE);
-        elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER]);
+        elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER], ((Watchdog) elements[WATCHDOG]), prescaler);
+
+        ((ALU) elements[ALU]).setRam((RAM) elements[RAM_MEM]);
+        ((Timer) elements[TIMER]).setRam((RAM) elements[RAM_MEM]);
+        ((ProgramCounter) elements[PC]).setRam((RAM) elements[RAM_MEM]);
+
         elements[CU] = new ControlUnit(elements);
 
         //setting the hz Rate
@@ -125,7 +129,7 @@ public class Simulation implements Runnable {
     public void setWatchdog(boolean enable) {
         flagWatchdog = enable;
         if (!flagWatchdog) {
-            Watchdog.clear();
+            ((Watchdog) elements[WATCHDOG]).clear();
         }
     }
 
@@ -166,7 +170,7 @@ public class Simulation implements Runnable {
         //step timer if necessary
         //TODO stepping with the GUI T0CS
         //TODO check for low or high in GUI T0SE
-        if (RAM.getSpecificBit(RAM.OPTION, 5) == 0) {
+        if (((RAM) elements[RAM_MEM]).getSpecificBit(RAM.OPTION, 5) == 0) {
             elements[TIMER].step();
         }
 
@@ -208,7 +212,7 @@ public class Simulation implements Runnable {
                 }
                 //actions after the sequence
                 command.cleanUpInstructions(elements);
-                System.out.println("carry: " + RAM.getSpecificBit(RAM.STATUS, RAM.CARRY_BIT));
+                System.out.println("carry: " + ((RAM) elements[RAM_MEM]).getSpecificBit(RAM.STATUS, RAM.CARRY_BIT));
             } else {
                 enableStandBy(true);
             }
@@ -221,7 +225,7 @@ public class Simulation implements Runnable {
     private void interruptCheck() {
         if (((RAM) elements[RAM_MEM]).isInterruptTriggered()) {
             //disabling global interrupts, for the time of execution
-            RAM.setSpecificBits(false, RAM.INTCON, RAM.GIE);
+            ((RAM) elements[RAM_MEM]).setSpecificBits(false, RAM.INTCON, RAM.GIE);
             //Call subroutine, it's on the fourth place in the ROM
             execute(CommandAtlas.getCommand(0x2004));
             //waking up the controller
@@ -237,14 +241,14 @@ public class Simulation implements Runnable {
                 updateGUI();
 
                 if (flagWatchdog) {
-                    watchdog.update();
+                    ((Watchdog) elements[WATCHDOG]).update();
                 }
 
                 if (!flagStandby) {
                     step();
                 } else {
                     //step the timer
-                    if (RAM.getSpecificBit(RAM.OPTION, 5) == 0) {
+                    if (((RAM) elements[RAM_MEM]).getSpecificBit(RAM.OPTION, 5) == 0) {
                         elements[TIMER].step();
                     }
                     //on standby
@@ -252,7 +256,7 @@ public class Simulation implements Runnable {
                 }
 
                 //WDT check
-                if (watchdog.isOverflow() && flagWatchdog) {
+                if (((Watchdog) elements[WATCHDOG]).isOverflow() && flagWatchdog) {
                     softReset();
                 }
 
@@ -296,7 +300,7 @@ public class Simulation implements Runnable {
         Program View
 
         */
-        centralController.setData(parser, elements, prescaler, watchdog);
+        centralController.setData(parser, elements, prescaler, ((Watchdog) elements[WATCHDOG]));
     }
 
     public void softReset() {
@@ -310,7 +314,7 @@ public class Simulation implements Runnable {
 
         runtimeCounter.reset();
 
-        Watchdog.clear();
+        ((Watchdog) elements[WATCHDOG]).clear();
     }
 
     public void cleanUp() {

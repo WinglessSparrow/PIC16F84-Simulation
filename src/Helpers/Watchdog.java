@@ -1,33 +1,33 @@
 package Helpers;
 
-import Elements.RAM;
+public class Watchdog extends Element {
 
-public class Watchdog {
-
-    private static long minTime = 18_000_000L;
-    private static Prescaler prescaler;
-    private static long timeStart;
+    private long minTime = 18_000_000L;
+    private long timeStart;
     //min time to wait is 18 millis
-    private static long timeWait;
+    private long timeWait;
     private long wdtRunTime;
     private boolean overflow;
 
-    private static RuntimeCounter runtimeCounter;
+    private RuntimeCounter runtimeCounter;
+    private Prescaler prescaler;
 
     public Watchdog(Prescaler prescaler, RuntimeCounter runtimeCounter) {
+        super(null, null);
+        this.prescaler = prescaler;
+        this.runtimeCounter = runtimeCounter;
+
         //18 ms in nano
         timeWait = minTime;
         overflow = false;
-        Watchdog.prescaler = prescaler;
-        Watchdog.runtimeCounter = runtimeCounter;
     }
 
-    public static void clear() {
+    public void clear() {
         timeStart = runtimeCounter.getRuntime();
     }
 
-    public static void renewWaitingTime() {
-        if (RAM.getSpecificBit(RAM.OPTION, 3) == 1) {
+    public void renewWaitingTime(boolean flag) {
+        if (flag) {
             timeWait = minTime * prescaler.getWDTScale();
         } else {
             timeWait = minTime;
@@ -46,11 +46,15 @@ public class Watchdog {
         return wdtRunTime;
     }
 
-    public static long getTimeWait() {
+    public long getTimeWait() {
         return timeWait;
     }
 
     public boolean isOverflow() {
         return overflow;
+    }
+
+    @Override
+    public void step() {
     }
 }

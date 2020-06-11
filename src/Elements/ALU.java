@@ -7,6 +7,7 @@ public class ALU extends Element {
 
     private WRegister accumulator;
     private Multiplexer multiplexer;
+    private RAM ram;
 
     public enum Actions {
         ADD, SUB, AND, OR, XOR
@@ -78,7 +79,7 @@ public class ALU extends Element {
 
     public void setZeroBit(int value) {
         if (value == 0) {
-            RAM.setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
+            ram.setSpecificBits(true, RAM.STATUS, RAM.ZERO_BIT);
         }
     }
 
@@ -112,9 +113,13 @@ public class ALU extends Element {
         setBits(carry, dcarry, zero);
     }
 
+    public void setRam(RAM ram) {
+        this.ram = ram;
+    }
+
     private void setBits(boolean carry, boolean dcarry, boolean zero) {
-        RAM.setSpecificBits(carry, RAM.STATUS, RAM.CARRY_BIT);
-        RAM.setSpecificBits(dcarry, RAM.STATUS, RAM.DIGIT_CARRY_BIT);
-        RAM.setSpecificBits(zero, RAM.STATUS, RAM.ZERO_BIT);
+        ram.setSpecificBits(carry, RAM.STATUS, RAM.CARRY_BIT);
+        ram.setSpecificBits(dcarry, RAM.STATUS, RAM.DIGIT_CARRY_BIT);
+        ram.setSpecificBits(zero, RAM.STATUS, RAM.ZERO_BIT);
     }
 }

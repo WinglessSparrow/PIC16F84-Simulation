@@ -18,6 +18,6 @@ public class RETFIE extends CommandReturnBase {
     public void setFlags(Element[] elements) {
         super.setFlags(elements);
         //setting the Global Interrupt
-        RAM.setSpecificBits(true, RAM.INTCON, RAM.GIE);
+        ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(true, RAM.INTCON, RAM.GIE);
     }
 }

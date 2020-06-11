@@ -1,7 +1,5 @@
 package Helpers;
 
-import Elements.RAM;
-
 public class Prescaler {
     private int[] scales = new int[8];
     private static int idx = 0;
@@ -29,8 +27,8 @@ public class Prescaler {
         return scales[idx];
     }
 
-    public static void renewIdx() {
+    public void renewIdx(int value) {
         //assembling the idx out of 3 bits in the Option register
-        idx = (RAM.getSpecificBit(RAM.OPTION, 0)) | (RAM.getSpecificBit(RAM.OPTION, 1) << 1) | (RAM.getSpecificBit(RAM.OPTION, 2) << 2);
+        idx = value;
     }
 }
