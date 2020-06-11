@@ -6,7 +6,7 @@ import Elements.WRegister;
 import Helpers.Element;
 import Helpers.Prescaler;
 import Helpers.ProgramCodeParser;
-import Helpers.Watchdog;
+import Elements.Watchdog;
 import SimulationMain.Simulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

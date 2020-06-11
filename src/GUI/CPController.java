@@ -4,7 +4,7 @@ import Elements.ProgramCounter;
 import Elements.RAM;
 import Elements.WRegister;
 import Helpers.Prescaler;
-import Helpers.Watchdog;
+import Elements.Watchdog;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

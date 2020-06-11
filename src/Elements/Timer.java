@@ -16,23 +16,21 @@ public class Timer extends Element {
 
     @Override
     public void step() {
-        if (ram.getSpecificBit(RAM.INTCON, RAM.TMR0) == 1) {
-            //Bit T0CS set - count with RA4
-            if (ram.getSpecificBit(RAM.OPTION, 5) == 1) {
-                //TODO rising/falling pin trigger
-                System.out.println("'please code me Senpai' - (c) TMR0");
+        //Bit T0CS set - count with RA4
+        if (ram.getSpecificBit(RAM.OPTION, 5) == 1) {
+            //TODO rising/falling pin trigger
+            System.out.println("'please code me Senpai' - (c) TMR0");
 
+        } else {
+            //check for prescaler
+            if (ram.getSpecificBit(RAM.OPTION, 3) == 1) {
+                //no prescaler
+                ram.increaseTMR0();
             } else {
-                //check for prescaler
-                if (ram.getSpecificBit(RAM.OPTION, 3) == 1) {
-                    //no prescaler
+                //prescaler
+                count++;
+                if (count % prescaler.getTimerScale() == 0) {
                     ram.increaseTMR0();
-                } else {
-                    //prescaler
-                    count++;
-                    if (count % prescaler.getTimerScale() == 0) {
-                        ram.increaseTMR0();
-                    }
                 }
             }
         }

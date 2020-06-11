@@ -11,15 +11,15 @@ public class ProgramCounter extends Element {
         JUMP, CALL, RETURN
     }
 
-    private static int countedValue;
+    private int countedValue;
     private Operations operation;
     private Stack<Integer> stack;
-    private static boolean flagChangePCL;
+    private boolean flagChangePCL;
     private RAM ram;
 
     public ProgramCounter(Bus[] busesIn, int countedValue) {
         super(null, busesIn);
-        ProgramCounter.countedValue = countedValue;
+        this.countedValue = countedValue;
         stack = new Stack<>();
     }
 
@@ -51,7 +51,7 @@ public class ProgramCounter extends Element {
         System.out.println("GOTO : new countedValue " + countedValue);
     }
 
-    public static void assemblePCLATHPCLChange(int pcl, int pclath) {
+    public void assemblePCLATHPCLChange(int pcl, int pclath) {
         pcl = pcl & 0xff;
         pclath = (pclath & 0x1f) << 8;
         countedValue = pcl | pclath;
@@ -61,7 +61,7 @@ public class ProgramCounter extends Element {
         System.out.println("Change PCL : new countedValue " + countedValue);
     }
 
-    public static boolean isFlagChangePCL() {
+    public boolean isFlagChangePCL() {
         boolean temp = flagChangePCL;
         flagChangePCL = false;
         return temp;

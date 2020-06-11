@@ -97,6 +97,11 @@ public class ProgramCodeParser {
         for (int i = 0; i < retData.length; i++) {
             retData[i] = Integer.parseInt(data.get(i), 16);
         }
+
+        for (int i = 0; i < retData.length; i++) {
+            System.out.println(i + " : " + retData[i]);
+        }
+
         return retData;
     }
 
@@ -134,7 +139,10 @@ public class ProgramCodeParser {
                 lines[i] = lines[i].substring(count);
 
                 //inserts a TAB if it not a jump point
-                boolean insertTab = !(lines[i].contains("loop") || lines[i].contains("start") || lines[i].contains("ende") && !(lines[i].contains("goto") || lines[i].contains("call")));
+                boolean insertTab = !(lines[i].contains("loop") || lines[i].contains("start") || lines[i].contains("ende")
+                        || lines[i].contains("tabelle") || lines[i].contains("links") || lines[i].contains("rechts")
+                        || lines[i].contains("screien") || lines[i].contains("lesen") || lines[i].contains("warte")
+                        && !(lines[i].contains("goto") || lines[i].contains("call")));
 
                 //tabs on places where it matters
                 if (insertTab) {

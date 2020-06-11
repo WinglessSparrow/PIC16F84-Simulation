@@ -71,9 +71,9 @@ public class Simulation implements Runnable {
         //creating and connecting all the components
         //each element MUST have a static idx
         //Fetch cycle
-        elements[I_REG] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[I_DECODER] = new InstructionDecoder(buses);
         elements[PC] = new ProgramCounter(buses, 0);
+        elements[I_REG] = new InstructionRegister(buses[Simulation.BUS_I_REG], buses);
         elements[PROM] = new ProgramMem(buses[Simulation.BUS_PROM], programData, (ProgramCounter) elements[PC]);
 
         //mask last 8 bits
@@ -88,7 +88,8 @@ public class Simulation implements Runnable {
         elements[ALU_MULTIPLEXER] = new Multiplexer(buses, BUS_LITERAL, BUS_INTERN_FILE);
         elements[ALU] = new ALU(buses[BUS_INTERN_FILE], buses, (WRegister) elements[W_REGISTER], (Multiplexer) elements[ALU_MULTIPLEXER]);
         elements[RAM_MULTIPLEXER] = new Multiplexer(buses, BUS_DIR_ADDR, BUS_INTERN_FILE);
-        elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER], ((Watchdog) elements[WATCHDOG]), prescaler);
+        elements[RAM_MEM] = new RAM(buses[BUS_INTERN_FILE], buses, (Multiplexer) elements[RAM_MULTIPLEXER],
+                ((Watchdog) elements[WATCHDOG]), prescaler, ((ProgramCounter) elements[PC]));
 
         ((ALU) elements[ALU]).setRam((RAM) elements[RAM_MEM]);
         ((Timer) elements[TIMER]).setRam((RAM) elements[RAM_MEM]);
@@ -177,6 +178,10 @@ public class Simulation implements Runnable {
         //TODO check for low or high in GUI INTEDG
         interruptCheck();
 
+        if (((ProgramCounter) elements[PC]).isFlagChangePCL()) {
+            fetch();
+        }
+
         System.out.println(" ");
     }
 
@@ -244,13 +249,14 @@ public class Simulation implements Runnable {
                     ((Watchdog) elements[WATCHDOG]).update();
                 }
 
+                //step the timer
+                if (((RAM) elements[RAM_MEM]).getSpecificBit(RAM.INTCON, 5) == 0) {
+                    elements[TIMER].step();
+                }
+
                 if (!flagStandby) {
                     step();
                 } else {
-                    //step the timer
-                    if (((RAM) elements[RAM_MEM]).getSpecificBit(RAM.OPTION, 5) == 0) {
-                        elements[TIMER].step();
-                    }
                     //on standby
                     interruptCheck();
                 }

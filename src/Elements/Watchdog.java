@@ -1,4 +1,8 @@
-package Helpers;
+package Elements;
+
+import Helpers.Element;
+import Helpers.Prescaler;
+import Helpers.RuntimeCounter;
 
 public class Watchdog extends Element {
 

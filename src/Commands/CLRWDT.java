@@ -2,7 +2,7 @@ package Commands;
 
 import CommandsHelpers.CommandBase;
 import Helpers.Element;
-import Helpers.Watchdog;
+import Elements.Watchdog;
 import SimulationMain.Simulation;
 
 public class CLRWDT extends CommandBase {

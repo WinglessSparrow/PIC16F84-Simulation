@@ -23,6 +23,7 @@ public class RAM extends Element {
     private Prescaler prescaler;
     private Watchdog watchdog;
     private Multiplexer multiplexer;
+    private ProgramCounter pc;
 
     private Destinations mode;
     private RegisterOperation rOperation = RegisterOperation.NONE;
@@ -35,11 +36,12 @@ public class RAM extends Element {
         WRITE, READ, NONE
     }
 
-    public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer, Watchdog watchdog, Prescaler prescaler) {
+    public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer, Watchdog watchdog, Prescaler prescaler, ProgramCounter pc) {
         super(busOut, busesIn);
         this.multiplexer = multiplexer;
         this.prescaler = prescaler;
         this.watchdog = watchdog;
+        this.pc = pc;
 
         eeprom = new EEPROM();
         eecon2Buffer = new Ringbuffer<>(2);
@@ -217,7 +219,7 @@ public class RAM extends Element {
             data[PCL] = value;
             data[0x82] = value;
             //Changing ProgramCounter
-            ProgramCounter.assemblePCLATHPCLChange(data[PCL], data[PCLATH]);
+            pc.assemblePCLATHPCLChange(data[PCL], data[PCLATH]);
         } else if (idx == STATUS || idx == 0x83) {
             data[STATUS] = value;
             System.out.println(data[STATUS] + " STA 1");
