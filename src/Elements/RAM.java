@@ -9,7 +9,8 @@ public class RAM extends Element {
             PORT_B = 0x06, EEDATA = 0x08, EEADR = 0x09, TRIS_A = 0x85, TRIS_B = 0x86, EECON_1 = 0x88, EECON_2 = 0x89;
     public static final int CARRY_BIT = 0, DIGIT_CARRY_BIT = 1, ZERO_BIT = 2, GIE = 7;
 
-    private static int[] data = new int[256];
+    private int[] data = new int[256];
+
     private int[] sfrData = new int[15];
     private boolean bitSet;
     private boolean fileZero;
@@ -44,7 +45,6 @@ public class RAM extends Element {
     public void step() {
         if (mode == Destinations.PC) {
             //if the program jumps
-            System.out.println(" pclath is being moved: " + data[PCLATH]);
             putOnBus(data[PCLATH]);
         } else {
             //getting the correct idx
@@ -233,21 +233,21 @@ public class RAM extends Element {
             data[idx] = value;
             if (idx == OPTION) {
                 Prescaler.renewIdx();
-                Watchdog.renewTimeWaitingTime();
+                Watchdog.renewWaitingTime();
             }
         }
     }
 
-    public static void renewPCL(int value) {
+    public void renewPCL(int value) {
         //mask to 8 bit
         data[PCL] = value & 255;
     }
 
-    public static void increaseTMR0() {
+    public void increaseTMR0() {
         data[TMR0]++;
         if (data[TMR0] > 255) {
             data[TMR0] = 0;
-            RAM.setSpecificBits(true, RAM.INTCON, RAM.TMR0);
+            setSpecificBits(true, RAM.INTCON, RAM.TMR0);
         }
     }
 
@@ -256,21 +256,19 @@ public class RAM extends Element {
      * @param register    register in the RAM  (if they are duplicated, then setData must be called to ensure both registers are set)
      * @param specificBit the bit to set from 0  to 7
      */
-    public static void setSpecificBits(boolean high, int register, int specificBit) {
+    public void setSpecificBits(boolean high, int register, int specificBit) {
         //does not allows to clr EECON_1 bits WD and RD Bits, because, well it's how the PIC is build
         if (!((register == EECON_1 && (specificBit == 0 || specificBit == 1)) && !high)) {
             //accounting for the indirect addressing
-            int idx = (register == 0) ? data[FSR] : register;
-
             if (high) {
-                data[idx] = BitManipulator.setBit(specificBit, data[idx]) & 255;
+                setData(register, BitManipulator.setBit(specificBit, getRegisterData(register)));
             } else {
-                data[idx] = BitManipulator.clearBit(specificBit, data[idx]) & 255;
+                setData(register, BitManipulator.clearBit(specificBit, getRegisterData(register)));
             }
         }
     }
 
-    public static int getSpecificBit(int register, int idx) {
+    public int getSpecificBit(int register, int idx) {
 
         //accounting for the indirect addressing
         int registerIdx = (register == 0) ? data[FSR] : register;
@@ -416,16 +414,16 @@ public class RAM extends Element {
     }
 
     public void reset() {
-        for (int i = 0; i < data.length; i++) {
-            if (i != TMR0 && i != FSR && i != 0x084 && i != PORT_A && i != PORT_B && i != EEDATA && i != EEADR && i != STATUS && i != INTCON && i != 0x83 && i != 0x8b) {
-                data[i] = 0;
-            }
-        }
-
         //setting values for specific registers
         setData(STATUS, data[STATUS] & 7);
         setData(INTCON, data[INTCON] & 1);
         setData(OPTION, 255);
+        setData(TRIS_A, 255);
+        setData(TRIS_B, 255);
+        setData(PCL, 0);
+        setData(PCLATH, 0);
+        setData(EECON_1, 0);
+        eeprom.cleanUp();
     }
 
     public void cleanUp() {

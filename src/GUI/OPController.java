@@ -62,7 +62,7 @@ public class OPController extends Controller {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 try {
-                    if (simGUI.getSim().isPause()) {
+                    if (simGUI.getSim().isFlagPause()) {
                         //setting/resetting the breakpoint
                         try {
                             //getting the line number from the cell

@@ -14,6 +14,7 @@ public class ProgramCounter extends Element {
     private static int countedValue;
     private Operations operation;
     private Stack<Integer> stack;
+    private static boolean flagChangePCL;
 
     public ProgramCounter(Bus[] busesIn, int countedValue) {
         super(null, busesIn);
@@ -40,30 +41,29 @@ public class ProgramCounter extends Element {
     }
 
     private void assemblePCLATHGOTO(int literal, int pclath) {
-        int pca = pclath, laa = literal;
-
         //mask first 5 bits and move 8 positions left
         pclath = (pclath & 0x18) << 8;
         //mask first 11 bits
         literal = literal & 0x7ff;
         //assemble them
         countedValue = pclath | literal;
-
-        if (countedValue > 2000) {
-            pca = (pca & 0x18) << 8;
-            //mask first 11 bits
-            laa = laa & 0x7ff;
-            //assemble them
-            int test = pclath | literal;
-        }
-        System.out.println("new countedValue " + countedValue);
+        System.out.println("GOTO : new countedValue " + countedValue);
     }
 
     public static void assemblePCLATHPCLChange(int pcl, int pclath) {
         pcl = pcl & 0xff;
         pclath = (pclath & 0x1f) << 8;
         countedValue = pcl | pclath;
-        System.out.println("new countedValue " + countedValue);
+
+        flagChangePCL = true;
+
+        System.out.println("Change PCL : new countedValue " + countedValue);
+    }
+
+    public static boolean isFlagChangePCL() {
+        boolean temp = flagChangePCL;
+        flagChangePCL = false;
+        return temp;
     }
 
     public void inc() {
@@ -107,5 +107,8 @@ public class ProgramCounter extends Element {
 
     public void reset() {
         countedValue = 0;
+        while (!stack.isEmpty()) {
+            stack.pop();
+        }
     }
 }

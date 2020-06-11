@@ -110,7 +110,7 @@ public class SMController extends Controller {
                 count++;
             }
         } else {
-            System.err.println("SIMULATION : STACK OVERFLOW");
+            System.out.println("Stack Overflow");
         }
     }
 

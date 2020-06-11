@@ -2,20 +2,21 @@ package Helpers;
 
 import Elements.RAM;
 
-import java.util.concurrent.TimeUnit;
-
 public class Watchdog {
 
+    private static long minTime = 18_000_000L;
     private static Prescaler prescaler;
     private static long timeStart;
     //min time to wait is 18 millis
     private static long timeWait;
+    private long wdtRunTime;
     private boolean overflow;
 
     private static RuntimeCounter runtimeCounter;
 
     public Watchdog(Prescaler prescaler, RuntimeCounter runtimeCounter) {
-        timeWait = 18;
+        //18 ms in nano
+        timeWait = minTime;
         overflow = false;
         Watchdog.prescaler = prescaler;
         Watchdog.runtimeCounter = runtimeCounter;
@@ -25,20 +26,24 @@ public class Watchdog {
         timeStart = runtimeCounter.getRuntime();
     }
 
-    public static void renewTimeWaitingTime() {
+    public static void renewWaitingTime() {
         if (RAM.getSpecificBit(RAM.OPTION, 3) == 1) {
-            timeWait = 18 * prescaler.getWDTScale();
+            timeWait = minTime * prescaler.getWDTScale();
         } else {
-            timeWait = 18;
+            timeWait = minTime;
         }
     }
 
     public void update() {
-        overflow = (TimeUnit.MILLISECONDS.convert(runtimeCounter.getRuntime(), TimeUnit.NANOSECONDS)) - timeStart >= timeWait;
+        wdtRunTime = runtimeCounter.getRuntime() - timeStart;
+        overflow = wdtRunTime >= timeWait;
+        if (overflow) {
+            wdtRunTime = 0;
+        }
     }
 
     public long getCountedTime() {
-        return runtimeCounter.getRuntime() - timeStart;
+        return wdtRunTime;
     }
 
     public static long getTimeWait() {

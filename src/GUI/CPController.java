@@ -15,6 +15,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
+import java.util.concurrent.TimeUnit;
+
 public class CPController extends Controller {
 
     @FXML
@@ -104,8 +106,8 @@ public class CPController extends Controller {
 
         String status;
 
-        if (!simGUI.getSim().isPause()) {
-            status = (simGUI.getSim().isStandby()) ? "Standby" : "Running";
+        if (!simGUI.getSim().isFlagPause()) {
+            status = (simGUI.getSim().isFlagStandby()) ? "Standby" : "Running";
         } else {
             status = "Pause";
         }
@@ -184,7 +186,12 @@ public class CPController extends Controller {
         lbl_pc.setText("PC:\t" + pc.getCountedValue());
         lbl_prescaler.setText("Prescaler: 1 : " + ((RAM.getSpecificBit(RAM.OPTION, 4) == 1) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
         lbl_wReg.setText("W-Reg: 0x" + Integer.toHexString(wReg.getStoredValue()));
-        lbl_watchdogTime.setText("WDT: " + ((chk_watchdog.isSelected()) ? watchdog.getCountedTime() : 0) + " / " + Watchdog.getTimeWait());
+
+        long wdtMaxNano = Watchdog.getTimeWait();
+        long wdtCurrNano = watchdog.getCountedTime();
+
+        lbl_watchdogTime.setText("WDT: " + ((chk_watchdog.isSelected()) ? TimeUnit.MILLISECONDS.convert(wdtCurrNano, TimeUnit.NANOSECONDS) : 0) +
+                "ms / " + TimeUnit.MILLISECONDS.convert(wdtMaxNano, TimeUnit.NANOSECONDS) + "ms");
     }
 
     @Override
@@ -192,7 +199,7 @@ public class CPController extends Controller {
         simGUI.getSim().setWatchdog(chk_watchdog.isSelected());
         setStatus();
         renewData();
-        if (simGUI.getSim().isPause()) {
+        if (simGUI.getSim().isFlagPause()) {
             disableButtonsOnStop();
         }
     }

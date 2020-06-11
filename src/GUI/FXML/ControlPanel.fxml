@@ -83,11 +83,7 @@
                          <Font size="20.0" />
                      </font>
                  </Label>
-                <Label fx:id="lbl_runtime" prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Label>
+                <Label fx:id="lbl_runtime" prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms" />
                 <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="149.0" spacing="5.0">
                     <Label prefHeight="35.0" prefWidth="52.0" text="Quarz: ">
                         <font>
@@ -106,7 +102,7 @@
                 </CheckBox>
                 <Label fx:id="lbl_watchdogTime" prefHeight="35.0" prefWidth="148.0" text="WDT: xxx / xxx">
                     <font>
-                        <Font size="15.0" />
+                        <Font size="13.0" />
                     </font>
                 </Label>
             </VBox>

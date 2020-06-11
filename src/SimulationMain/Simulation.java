@@ -16,11 +16,11 @@ public class Simulation implements Runnable {
     public static final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_8BUS = 4, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8,
             ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13;
     //flags
-    private boolean isRunning;
-    private boolean standby;
+    private boolean flagRunning;
+    private boolean flagStandby;
     private boolean flagWatchdog;
-    private boolean pause;
-    private boolean breakPointTrigger;
+    private boolean flagPause;
+    private boolean flagBreakPoint;
 
     private long hzRate;
 
@@ -40,12 +40,12 @@ public class Simulation implements Runnable {
         this.centralController = centralController;
 
         //this true, to make it run forever
-        isRunning = true;
+        flagRunning = true;
+        flagPause = true;
 
         flagWatchdog = false;
-        standby = false;
-        pause = true;
-        breakPointTrigger = false;
+        flagStandby = false;
+        flagBreakPoint = false;
 
         //how many buses are there
         Bus[] buses = new Bus[6];
@@ -105,7 +105,7 @@ public class Simulation implements Runnable {
 
     public void setBreakpointLine(int bp) {
         breakpointLine = bp;
-        breakPointTrigger = false;
+        flagBreakPoint = false;
     }
 
     public String getRunTime() {
@@ -130,22 +130,23 @@ public class Simulation implements Runnable {
     }
 
     /**
-     * @implNote simulation pauses, won't respond to anything
+     * @implNote simulation pauses, won't respond to anything, TMR0 and WDT non functional here
      */
     public void pauseSimulation(boolean pause) {
-        this.pause = pause;
+        this.flagPause = pause;
+        updateGUI();
     }
 
-    public boolean isPause() {
-        return pause;
+    public boolean isFlagPause() {
+        return flagPause;
     }
 
     public void enableStandBy(boolean standby) {
-        this.standby = standby;
+        this.flagStandby = standby;
     }
 
-    public boolean isStandby() {
-        return standby;
+    public boolean isFlagStandby() {
+        return flagStandby;
     }
 
     public void changeHz(long newHz) {
@@ -224,22 +225,22 @@ public class Simulation implements Runnable {
             //Call subroutine, it's on the fourth place in the ROM
             execute(CommandAtlas.getCommand(0x2004));
             //waking up the controller
-            if (standby) standby = false;
+            enableStandBy(false);
         }
     }
 
     @Override
     public void run() {
 
-        while (isRunning) {
-            if (!pause) {
+        while (flagRunning) {
+            if (!flagPause) {
                 updateGUI();
 
                 if (flagWatchdog) {
                     watchdog.update();
                 }
 
-                if (!standby) {
+                if (!flagStandby) {
                     step();
                 } else {
                     //step the timer
@@ -248,18 +249,19 @@ public class Simulation implements Runnable {
                     }
                     //on standby
                     interruptCheck();
-
-                    if (flagWatchdog) {
-                        standby = !watchdog.isOverflow();
-                        softReset();
-                    }
                 }
+
+                //WDT check
+                if (watchdog.isOverflow() && flagWatchdog) {
+                    softReset();
+                }
+
                 //breakpoint check
                 // -1 is the offset, so that the break point is on the next command
-                if (breakpointLine != -1 && !breakPointTrigger) {
+                if (breakpointLine != -1 && !flagBreakPoint) {
                     if ((((ProgramCounter) elements[PC]).getCountedValue() - 1) == breakpointLine) {
                         pauseSimulation(true);
-                        breakPointTrigger = true;
+                        flagBreakPoint = true;
                         updateGUI();
                     }
                 }
@@ -283,7 +285,7 @@ public class Simulation implements Runnable {
     }
 
     public void killThread() {
-        isRunning = false;
+        flagRunning = false;
     }
 
 

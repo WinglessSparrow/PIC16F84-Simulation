@@ -23,6 +23,8 @@ public class HPController extends Controller {
         eprDisplay = new HeapDisplay(ram.getEeprom().getData(), 8, 54, 30);
         scr_paneEeprom.setContent(eprDisplay);
 
+        update();
+
     }
 
     @Override

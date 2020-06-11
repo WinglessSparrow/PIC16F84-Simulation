@@ -21,7 +21,6 @@ public class Simulation_GUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        System.out.println("Hello");
     }
 
 
@@ -89,32 +88,9 @@ public class Simulation_GUI extends Application {
         }
 
         sim = new Simulation(path, (StartingWController) centralController);
-        sim.updateGUI();
         Thread simThread = new Thread(sim);
+        sim.updateGUI();
         simThread.start();
-
-
-        //worst case scenario, this here works, but not very good
-//        Thread th = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    Platform.runLater(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            centralController.update();
-//                        }
-//                    });
-//
-//                    try {
-//                        Thread.sleep(100);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-//        th.start();
 
     }
 
