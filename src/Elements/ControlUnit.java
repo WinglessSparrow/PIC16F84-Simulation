@@ -14,7 +14,6 @@ public class ControlUnit extends Element {
 
     public ControlUnit(Element[] elements) {
         super(null, null);
-        active = true;
         decoder = (InstructionDecoder) elements[Simulation.I_DECODER];
         pc = (ProgramCounter) elements[Simulation.PC];
     }

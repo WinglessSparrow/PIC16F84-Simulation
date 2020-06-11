@@ -13,7 +13,6 @@ public class ProgramMem extends Element {
         super(busOut, null);
         this.data = data;
         this.counter = counter;
-        active = true;
     }
 
 

@@ -10,7 +10,6 @@ public class WRegister extends Element {
 
     public WRegister(Bus busOut, Bus[] busesIn) {
         super(busOut, busesIn);
-        active = false;
     }
 
     public void setPutOnFileBus(boolean putOnFileBus) {

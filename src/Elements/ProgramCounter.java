@@ -18,7 +18,6 @@ public class ProgramCounter extends Element {
     public ProgramCounter(Bus[] busesIn, int countedValue) {
         super(null, busesIn);
         ProgramCounter.countedValue = countedValue;
-        active = true;
         stack = new Stack<>();
     }
 

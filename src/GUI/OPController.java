@@ -15,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 public class OPController extends Controller {
     @FXML
     private TableView<OPCodeLine> tw_table;
-    //TODO Breakpoint visualization, thou dunno how yet
     @FXML
     private TableColumn<Object, Object> tc_BreakPoint;
     @FXML
@@ -28,7 +27,6 @@ public class OPController extends Controller {
     private ObservableList<OPCodeLine> list;
 
     //Integers are Boxed, so that we could change them without actively moving data
-    //TODO make sure this will end up in the simulation, so that we don't need constantly move this pointer
     private Integer breakPointLine = -1;
 
     private int pc = 0;

@@ -2,6 +2,8 @@ package Helpers;
 
 import Elements.RAM;
 
+import java.util.concurrent.TimeUnit;
+
 public class Watchdog {
 
     private static Prescaler prescaler;
@@ -32,7 +34,7 @@ public class Watchdog {
     }
 
     public void update() {
-        overflow = runtimeCounter.getRuntime() - timeStart >= timeWait;
+        overflow = (TimeUnit.MILLISECONDS.convert(runtimeCounter.getRuntime(), TimeUnit.NANOSECONDS)) - timeStart >= timeWait;
     }
 
     public long getCountedTime() {

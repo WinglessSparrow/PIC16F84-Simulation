@@ -9,7 +9,6 @@ public class InstructionRegister extends Element {
 
     public InstructionRegister(Bus busOut, Bus[] busesIn) {
         super(busOut, busesIn);
-        active = true;
     }
 
     public void clear() {

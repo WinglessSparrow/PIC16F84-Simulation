@@ -46,11 +46,7 @@ public class SMController extends Controller {
         labels[6] = lbl_stack7;
         labels[7] = lbl_stack8;
 
-        //TODO DUMMY DATA
         Stack<Integer> stack = new Stack<>();
-        //stack.push(21);
-        //stack.push(4);
-        //stack.push(42);
         updateStack(stack);
     }
 

@@ -306,7 +306,6 @@ public class Simulation implements Runnable {
         ((ProgramCounter) elements[PC]).reset();
         ((InstructionRegister) elements[I_REG]).clear();
 
-        //TODO ask if soft reset the internal timer resetted
         runtimeCounter.reset();
 
         Watchdog.clear();

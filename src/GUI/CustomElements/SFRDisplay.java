@@ -160,7 +160,7 @@ class Register extends HBox {
     }
 
     public void update(int value) {
-        String valStr = value + "";
+        String valStr = "0x" + Integer.toHexString(value) + "";
         if (lbl_value.getText().equals(valStr)) {
             lbl_value.setStyle("-fx-background-color: #E1E5F2");
         } else {

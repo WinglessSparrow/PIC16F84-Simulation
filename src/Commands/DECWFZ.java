@@ -6,10 +6,16 @@ import Helpers.Element;
 import SimulationMain.Simulation;
 
 public class DECWFZ extends DECF {
+
+    @Override
+    public void setFlags(Element[] elements) {
+        super.setFlags(elements);
+    }
+
     @Override
     public void cleanUpInstructions(Element[] elements) {
         super.cleanUpInstructions(elements);
-        if (RAM.getSpecificBit(RAM.STATUS, RAM.STATUS) == 1) {
+        if (((RAM) elements[Simulation.RAM_MEM]).isFileZero()) {
             ((InstructionRegister) elements[Simulation.I_REG]).clear();
         }
     }

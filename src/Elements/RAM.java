@@ -12,6 +12,7 @@ public class RAM extends Element {
     private static int[] data = new int[256];
     private int[] sfrData = new int[15];
     private boolean bitSet;
+    private boolean fileZero;
     private int bitIdxFromOP = 0;
 
     private Ringbuffer<Integer> eecon2Buffer;
@@ -56,9 +57,11 @@ public class RAM extends Element {
                     break;
                 case INCREASE:
                     temp = increase(getRegisterData(idx));
+                    fileZero = temp == 0;
                     break;
                 case DECREASE:
                     temp = decrease(getRegisterData(idx));
+                    fileZero = temp == 0;
                     break;
                 case ROTATE_LEFT:
                     temp = rotateLeft(getRegisterData(idx));
@@ -152,6 +155,9 @@ public class RAM extends Element {
         return idx | mask;
     }
 
+    public boolean isFileZero() {
+        return fileZero;
+    }
 
     public int getLastRegisterInUse() {
         return getRegisterData(setOffsetIdx(multiplexer.getStoredValue()));
@@ -245,16 +251,31 @@ public class RAM extends Element {
         }
     }
 
+    /**
+     * @param high        true - set, false clr
+     * @param register    register in the RAM  (if they are duplicated, then setData must be called to ensure both registers are set)
+     * @param specificBit the bit to set from 0  to 7
+     */
     public static void setSpecificBits(boolean high, int register, int specificBit) {
-        if (high) {
-            data[register] = BitManipulator.setBit(specificBit, data[register]) & 255;
-        } else {
-            data[register] = BitManipulator.clearBit(specificBit, data[register]) & 255;
+        //does not allows to clr EECON_1 bits WD and RD Bits, because, well it's how the PIC is build
+        if (!((register == EECON_1 && (specificBit == 0 || specificBit == 1)) && !high)) {
+            //accounting for the indirect addressing
+            int idx = (register == 0) ? data[FSR] : register;
+
+            if (high) {
+                data[idx] = BitManipulator.setBit(specificBit, data[idx]) & 255;
+            } else {
+                data[idx] = BitManipulator.clearBit(specificBit, data[idx]) & 255;
+            }
         }
     }
 
     public static int getSpecificBit(int register, int idx) {
-        return BitManipulator.getBit(idx, data[register]);
+
+        //accounting for the indirect addressing
+        int registerIdx = (register == 0) ? data[FSR] : register;
+
+        return BitManipulator.getBit(idx, data[registerIdx]);
     }
 
     private void printChanges(int changedIdx) {
@@ -277,17 +298,6 @@ public class RAM extends Element {
         if (temp <= value) {
             setSpecificBits(true, RAM.STATUS, RAM.CARRY_BIT);
         }
-    }
-
-    private int rotateLeft(int value) {
-        //getting the carry bit and putting it as the ninth bit
-        int temp = value | (getSpecificBit(STATUS, CARRY_BIT) << 8);
-        //rotate with !9! bits (because with carry)
-        temp = (temp << 1) | (temp >> 8);
-        //setting the carry bit, by looking what the ninth bit is up to
-        setSpecificBits(((temp >> 8) & 1) == 1, STATUS, CARRY_BIT);
-        //masking the value back to 8 bits
-        return temp & 255;
     }
 
     private EepromStatus checkEeprom() {
@@ -316,6 +326,17 @@ public class RAM extends Element {
         return false;
     }
 
+    private int rotateLeft(int value) {
+        //getting the carry bit and putting it as the ninth bit
+        int temp = value | (getSpecificBit(STATUS, CARRY_BIT) << 8);
+        //rotate with !9! bits (because with carry)
+        temp = (temp << 1) | (temp >> 8);
+        //setting the carry bit, by looking what the ninth bit is up to
+        setSpecificBits(((temp >> 8) & 1) == 1, STATUS, CARRY_BIT);
+        //masking the value back to 8 bits
+        return temp & 255;
+    }
+
     private int rotateRight(int value) {
         //see rotateLeft()
         int temp = value | (getSpecificBit(STATUS, CARRY_BIT) << 8);
@@ -326,11 +347,13 @@ public class RAM extends Element {
 
     private int swap(int value) {
         //swapping the nibbles
-        return ((value & 0x0f) << 4 | (value & 0xf0) >> 4);
+        return ((value & 0x0f) << 4 | (value & 0xf0) >> 4) & 255;
     }
 
     private int increase(int value) {
         value++;
+        //masking
+        value &= 255;
         setZeroBit(value);
 
         return value;
@@ -338,12 +361,14 @@ public class RAM extends Element {
 
     private int decrease(int value) {
         value--;
+        //masking
+        value &= 255;
         setZeroBit(value);
         return value;
     }
 
     private int complement(int value) {
-        value = ~value & 0xff;
+        value = ~value & 255;
         System.out.println(Integer.toBinaryString(value));
         setZeroBit(value);
         return value;

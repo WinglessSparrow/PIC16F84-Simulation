@@ -20,8 +20,6 @@ public class ALU extends Element {
 
         this.accumulator = accumulator;
         this.multiplexer = multiplexer;
-
-        active = false;
     }
 
     public void setAction(Actions action) {

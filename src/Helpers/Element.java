@@ -4,22 +4,12 @@ import Elements.Bus;
 
 public abstract class Element {
 
-    protected boolean active;
     protected Bus[] busesIn;
     protected Bus busOut;
 
     public Element(Bus busOut, Bus[] busesIn) {
-        active = false;
         this.busOut = busOut;
         this.busesIn = busesIn;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     protected void putOnBus(int value) {
