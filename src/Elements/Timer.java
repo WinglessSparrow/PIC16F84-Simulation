@@ -6,6 +6,8 @@ import Helpers.Prescaler;
 public class Timer extends Element {
 
     private int count;
+    private boolean RA4Trigger;
+
     private Prescaler prescaler;
     private RAM ram;
 
@@ -18,9 +20,11 @@ public class Timer extends Element {
     public void step() {
         //Bit T0CS set - count with RA4
         if (ram.getSpecificBit(RAM.OPTION, 5) == 1) {
-            //TODO rising/falling pin trigger
-            System.out.println("'please code me Senpai' - (c) TMR0");
-
+            if (RA4Trigger) {
+                ram.increaseTMR0();
+                //resetting the state
+                RA4Trigger = false;
+            }
         } else {
             //check for prescaler
             if (ram.getSpecificBit(RAM.OPTION, 3) == 1) {
@@ -34,6 +38,10 @@ public class Timer extends Element {
                 }
             }
         }
+    }
+
+    public void setRA4Trigger(boolean RA4Trigger) {
+        this.RA4Trigger = RA4Trigger;
     }
 
     public void setRam(RAM ram) {
