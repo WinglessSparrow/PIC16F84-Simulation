@@ -1,5 +1,6 @@
 package GUI;
 
+import Elements.Port;
 import Helpers.BitManipulator;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,6 +14,8 @@ public class PPController extends Controller {
     public enum Ports {
         PORT_A, PORT_B;
     }
+
+    private Port portA, portB;
 
     @FXML
     private VBox vbox_trisA;
@@ -49,14 +52,13 @@ public class PPController extends Controller {
     }
 
     /**
-     * @param trisA byte
-     * @param trisB byte
-     * @param portA byte
-     * @param portB byte
+     * @param portA Object of Port A
+     * @param portB Object of Port B
      */
-    public void setData(int trisA, int trisB, int portA, int portB) {
-        updateBoxes(trisA, portA, checkBoxesTrisA, checkBoxesPortA);
-        updateBoxes(trisB, portB, checkBoxesTrisB, checkBoxesPortB);
+    public void setData(Port portA, Port portB) {
+        this.portA = portA;
+        this.portB = portB;
+        update();
     }
 
     /**
@@ -111,6 +113,7 @@ public class PPController extends Controller {
 
     @Override
     public void update() {
-
+        updateBoxes(portA.getTrisVal(), portA.getOutput(), checkBoxesTrisA, checkBoxesPortA);
+        updateBoxes(portB.getTrisVal(), portB.getOutput(), checkBoxesTrisB, checkBoxesPortB);
     }
 }

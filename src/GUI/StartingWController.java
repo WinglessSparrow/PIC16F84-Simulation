@@ -1,12 +1,9 @@
 package GUI;
 
-import Elements.ProgramCounter;
-import Elements.RAM;
-import Elements.WRegister;
+import Elements.*;
 import Helpers.Element;
 import Helpers.Prescaler;
 import Helpers.ProgramCodeParser;
-import Elements.Watchdog;
 import SimulationMain.Simulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -115,7 +112,9 @@ public class StartingWController extends Controller {
 
         //Init timing view
 
-        //Ports not ready now
+        //Ports
+        ((PPController) controllers.get(PP_CONTR)).setData((Port) elements[Simulation.PORT_A], (Port) elements[Simulation.PORT_B]);
+
         //Init Control panel
         ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler, watchdog, ((WRegister) elements[Simulation.W_REGISTER]), (RAM) elements[Simulation.RAM_MEM]);
     }

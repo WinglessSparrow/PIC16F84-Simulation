@@ -179,7 +179,7 @@ public class RAM extends Element {
         this.rOperation = rOperation;
     }
 
-    private int getRegisterData(int idx) {
+    public int getRegisterData(int idx) {
         //just remember* = &indirect addressing
         if (idx == 0 || idx == 0x80) {
             return data[getRegisterData(FSR)];
