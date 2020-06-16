@@ -78,7 +78,6 @@ public class SMController extends Controller {
     }
 
     public void help() {
-        //TODO proper HELP window
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Help");
         alert.setHeaderText("Keep it strong fam");
@@ -88,8 +87,12 @@ public class SMController extends Controller {
     }
 
     public void clearEEPROM() {
-        ram.clearEEPROM();
-        simGUI.getSim().updateGUI();
+        try {
+            ram.clearEEPROM();
+            simGUI.getSim().updateGUI();
+        } catch (NullPointerException e) {
+            System.out.println("No Simulation");
+        }
     }
 
     public void exit() {

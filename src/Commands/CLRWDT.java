@@ -7,8 +7,6 @@ import SimulationMain.Simulation;
 
 public class CLRWDT extends CommandBase {
 
-    //TODO test
-
     public CLRWDT() {
         super(null);
     }

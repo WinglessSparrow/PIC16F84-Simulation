@@ -165,13 +165,10 @@ public class Simulation implements Runnable {
         execute(command);
 
         //step timer if necessary
-        //TODO stepping with the GUI T0CS
-        //TODO check for low or high in GUI T0SE
         if (((RAM) elements[RAM_MEM]).getSpecificBit(RAM.OPTION, 5) == 0) {
             elements[TIMER].step();
         }
 
-        //TODO check for low or high in GUI INTEDG
         interruptCheck();
 
         if (((ProgramCounter) elements[PC]).isFlagChangePCL()) {
@@ -298,7 +295,6 @@ public class Simulation implements Runnable {
 
 
     private void initGuiSettings() {
-        //TODO setAll Data
         //INIT sequence
         /*ProgramCodeParser parser, Element[] elements, Prescaler prescaler, Watchdog watchdog
         Program View

@@ -8,8 +8,6 @@ import Helpers.Destinations;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-//TODO Test
-
 public abstract class CommandBitSkipBase extends CommandBase {
 
     protected boolean skip = false;

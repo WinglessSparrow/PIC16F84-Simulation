@@ -34,6 +34,5 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="javafx-swt" level="application" />
-    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

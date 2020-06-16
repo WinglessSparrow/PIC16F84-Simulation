@@ -4,8 +4,10 @@ import Elements.RAM;
 import Helpers.BitManipulator;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class SFRDisplay extends VBox {
 
@@ -115,7 +117,17 @@ class Register extends HBox {
 
         temp.setStyle("-fx-background-color: #BFDBF7");
 
+        String tempTooltipStr = DataVault.getData(name, 0);
+
+        if (!(tempTooltipStr.equals(""))) {
+            Tooltip tooltip = new Tooltip(tempTooltipStr);
+            tooltip.setShowDelay(Duration.seconds(0));
+            temp.setTooltip(tooltip);
+        }
+
         getChildren().add(temp);
+
+        int count = 1;
 
         //setting bits in reverse order
         for (int i = 7; i > -1; i--) {
@@ -126,6 +138,15 @@ class Register extends HBox {
             lbls_bin[i].setAlignment(Pos.CENTER);
             lbls_bin[i].setPrefWidth(minWidth);
             lbls_bin[i].setPrefHeight(25);
+
+            tempTooltipStr = DataVault.getData(name, count);
+            count++;
+
+            if (!(tempTooltipStr.equals(""))) {
+                Tooltip tooltip = new Tooltip(tempTooltipStr);
+                tooltip.setShowDelay(Duration.seconds(0));
+                lbls_bin[i].setTooltip(tooltip);
+            }
 
             getChildren().add(lbls_bin[i]);
         }
@@ -169,4 +190,90 @@ class Register extends HBox {
         }
         setBinary(value);
     }
+}
+
+class DataVault {
+
+    private static String[][] mainData = {
+            {"Pos: 0x01h"},
+            {"Pos: 0x02h / 0x82h"},
+            {"Pos: 0x02h / 0x83h", "IRP", "RP1", "RP0", "!TO", "!PD", "Zero", "DigitCarry", "Carry"},
+            {"Pos: 0x04h / 0x084h"},
+            {"Pos: 0x05h"},
+            {"Pos: 0x06h"},
+            {"Pos: 0x08h"},
+            {"Pos: 0x09h"},
+            {"Pos: 0x0Ah / 0x08Ah"},
+            {"Pos: 0x0Bh / 0x8Bh"},
+            {"Pos: 0x81h"},
+            {"Pos: 0x85h"},
+            {"Pos: 0x86h"},
+            {"Pos: 0x88h"},
+    };
+
+    public static String getData(String name, int idx) {
+        String entry = "";
+        String[] data;
+
+        switch (name) {
+            case "TMR0":
+                data = mainData[0];
+                break;
+            case "PCL":
+                data = mainData[1];
+                break;
+            case "STATUS":
+                data = mainData[2];
+                break;
+            case "FSR":
+                data = mainData[3];
+                break;
+            case "PORT-A":
+                data = mainData[4];
+                break;
+            case "PORT-B":
+                data = mainData[5];
+                break;
+            case "EEDATA":
+                data = mainData[6];
+                break;
+            case "EEADR":
+                data = mainData[7];
+                break;
+            case "PCLATH":
+                data = mainData[8];
+                break;
+            case "INTCON":
+                data = mainData[9];
+                break;
+            case "OPTION":
+                data = mainData[10];
+                break;
+            case "TRISA":
+                data = mainData[11];
+                break;
+            case "TRISB":
+                data = mainData[12];
+                break;
+            case "EECON1":
+                data = mainData[13];
+                break;
+            default:
+                data = null;
+                break;
+        }
+
+        if (data != null) {
+            try {
+                entry = data[idx];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                entry = "";
+            }
+        } else {
+            entry = "";
+        }
+
+        return entry;
+    }
+
 }

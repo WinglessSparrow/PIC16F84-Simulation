@@ -98,9 +98,9 @@ public class ProgramCodeParser {
             retData[i] = Integer.parseInt(data.get(i), 16);
         }
 
-        for (int i = 0; i < retData.length; i++) {
-            System.out.println(i + " : " + retData[i]);
-        }
+//        for (int i = 0; i < retData.length; i++) {
+//            System.out.println(i + " : " + retData[i]);
+//        }
 
         return retData;
     }

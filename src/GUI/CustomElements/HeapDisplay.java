@@ -115,38 +115,40 @@ class Cell extends Label {
                 if (mouseEvent.getClickCount() == 2) {
                     Optional<String> result = dialog.showAndWait();
                     if (result.isPresent()) {
-                        String enterd = result.get();
-                        int parsedValue = 0;
-                        boolean wrongValue = false;
+                        var enteredString = result.get();
+                        var parsedValue = 0;
+                        var wrongValue = false;
 
                         //determining if teh value is HEX, BIN or DEC
                         //and if it's even parsable
-                        if (enterd.matches("^0x[a-zA-Z0-9]+")) {
+                        if (enteredString.matches("^0x[a-zA-Z0-9]+")) {
                             try {
-                                parsedValue = Integer.decode(enterd);
+                                parsedValue = Integer.decode(enteredString);
                             } catch (NumberFormatException e) {
                                 wrongValue = true;
                             }
-                        } else if (enterd.matches("^0b[01]+")) {
+                        } else if (enteredString.matches("^0b[01]+")) {
                             try {
-                                parsedValue = Integer.parseInt(enterd, 2);
+                                parsedValue = Integer.parseInt(enteredString.split("b")[1], 2);
                             } catch (NumberFormatException e) {
                                 wrongValue = true;
                             }
                         } else {
                             try {
-                                parsedValue = Integer.parseInt(enterd);
+                                parsedValue = Integer.parseInt(enteredString);
                             } catch (NumberFormatException e) {
                                 wrongValue = true;
                             }
                         }
 
                         if (wrongValue) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            var alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Cannot recognise a HEX, BIN or DEC number in a given String.");
                             alert.setContentText("Format: \n HEX: \t '0xXX' \n BIN: \t '0bXX' \n DEC: \t 'XX'");
                             alert.showAndWait();
                         } else {
+                            //TODO change duplicated values
+                            //TODO no writes to 0 (and duplicate)
                             //mask the value;
                             valueHeld = parsedValue & 255;
                             flagHeldValueChanged = true;

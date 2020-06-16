@@ -134,8 +134,6 @@ public class RAM extends Element {
             printChanges(idx);
         }
 
-        //TODO test
-        //TODO WD RD CLEAR ONLY IN HARDWARE!!<<
         switch (checkEeprom()) {
             case WRITE:
                 eeprom.setData(getRegisterData(EEADR), getRegisterData(EEDATA));
@@ -146,6 +144,7 @@ public class RAM extends Element {
                 break;
             case READ:
                 setData(EEDATA, eeprom.getSpecificData(getRegisterData(EEADR)));
+                //resetting, not with getSpecificBit, since I made impossible
                 setData(EECON_1, getRegisterData(EECON_1) & 0b11111110);
                 break;
         }
@@ -222,9 +221,7 @@ public class RAM extends Element {
             pc.assemblePCLATHPCLChange(data[PCL], data[PCLATH]);
         } else if (idx == STATUS || idx == 0x83) {
             data[STATUS] = value;
-            System.out.println(data[STATUS] + " STA 1");
             data[0x83] = value;
-            System.out.println(data[0x83] + " STA 2");
         } else if (idx == PCLATH || idx == 0x8a) {
             //0x1f mask first 5 bits
             data[PCLATH] = value & 0x1f;
@@ -387,8 +384,8 @@ public class RAM extends Element {
 
         //idx 7 is Global Enable
         if (getSpecificBit(INTCON, GIE) == 1) {
-            //EEIF = bit nr 4 & EEIE = 0x88
-            if (getSpecificBit(INTCON, 6) == 1 && getSpecificBit(INTCON, 4) == 1) {
+            //EEIE bit 6
+            if (getSpecificBit(INTCON, 6) == 1) {
                 return true;
             }
             /*
@@ -396,7 +393,7 @@ public class RAM extends Element {
             if the masked value equals to the mask the bits are both set and the interrupt triggers
             if not it shifts the mask and compares again
             because enable bit and trigger bits are offsetted by the same value
-            except for the EEIE nad EEIF, which are in different registers
+            except for the EEIE, which are in different registers
             the mask is in binary here to make it more readable
              */
             int mask = 0b00100100;

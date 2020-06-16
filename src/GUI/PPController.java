@@ -88,7 +88,7 @@ public class PPController extends Controller {
         int temp = 0;
         //going through variable and setting all the bits which are selected in ports
         for (int i = 0; i < ports.length; i++) {
-            if (ports[i].isSelected()) BitManipulator.setBit(i, temp);
+            if (ports[i].isSelected()) temp = BitManipulator.setBit(i, temp);
         }
 
         return temp;

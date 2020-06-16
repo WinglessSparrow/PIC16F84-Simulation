@@ -1,4 +1,4 @@
-module PIC16F84.Simulation {
+module PIC16F84S.Simulation {
     requires javafx.fxml;
     requires javafx.controls;
     requires java.desktop;

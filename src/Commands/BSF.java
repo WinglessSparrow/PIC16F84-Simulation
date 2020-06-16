@@ -5,8 +5,6 @@ import Elements.RAM;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-//TODO test
-
 public class BSF extends CommandBitSkipBase {
     @Override
     public void setFlags(Element[] elements) {

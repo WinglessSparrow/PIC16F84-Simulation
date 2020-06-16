@@ -5,8 +5,6 @@ import Elements.RAM;
 import Helpers.Element;
 import SimulationMain.Simulation;
 
-//TODO test
-
 public class RETFIE extends CommandReturnBase {
     public RETFIE() {
         super(new int[]{
