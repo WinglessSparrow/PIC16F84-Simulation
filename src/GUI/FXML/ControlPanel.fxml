@@ -19,53 +19,46 @@
                 </font>
             </Label>
             <VBox id="lbl-status" alignment="CENTER">
-                <children>
-                    <Label fx:id="lbl_pc" prefHeight="30.0" prefWidth="150.0" text="PC: XX">
-                        <font>
-                            <Font size="20.0" />
-                        </font>
-                    </Label>
-                    <Label fx:id="lbl_wReg" prefHeight="30.0" prefWidth="150.0" text="W-Reg: xxx">
-                        <font>
-                            <Font size="20.0" />
-                        </font>
-                    </Label>
-                   <Label fx:id="lbl_timer" prefHeight="35.0" prefWidth="148.0" text="TMR0: xx">
-                       <font>
-                           <Font size="20.0" />
-                       </font>
-                   </Label>
-                </children>
+                <Label fx:id="lbl_pc" prefHeight="30.0" prefWidth="150.0" text="PC: XX">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lbl_wReg" prefHeight="30.0" prefWidth="150.0" text="W-Reg: xxx">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
+                <CheckBox fx:id="chk_stepFull" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" style="-fx-font-size: 17px" text="Step full Cycle">
+                </CheckBox>
             </VBox>
             <VBox alignment="CENTER" spacing="5.0">
-                <children>
-                    <Button fx:id="btn_run" mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Run">
-                        <font>
-                            <Font size="13.0" />
-                        </font>
-                    </Button>
-                    <Button fx:id="btn_stop" mnemonicParsing="false" onAction="#stop" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Stop">
-                        <font>
-                            <Font size="13.0" />
-                        </font>
-                    </Button>
-                    <Button fx:id="btn_step" mnemonicParsing="false" onAction="#step" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Step">
-                        <font>
-                            <Font size="13.0" />
-                        </font>
-                    </Button>
-                    <Button fx:id="btn_reset" mnemonicParsing="false" onAction="#reset" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Reset">
-                        <font>
-                            <Font size="13.0" />
-                        </font>
-                    </Button>
-                </children>
                 <VBox.margin>
                     <Insets />
                 </VBox.margin>
                 <padding>
                     <Insets top="10.0" />
                 </padding>
+                <Button fx:id="btn_run" mnemonicParsing="false" onAction="#run" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Run">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btn_stop" mnemonicParsing="false" onAction="#stop" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Stop">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btn_step" mnemonicParsing="false" onAction="#step" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Step">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btn_reset" mnemonicParsing="false" onAction="#reset" prefHeight="45.0" prefWidth="155.0" style="-fx-font-size: 20px" text="Reset">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
             </VBox>
             <HBox.margin>
                 <Insets />
@@ -78,11 +71,11 @@
                 </font>
             </Label>
             <VBox id="timing-panel" prefHeight="300.0" prefWidth="160.0" spacing="15.0">
-                 <Label fx:id="lbl_status" prefHeight="30.0" prefWidth="150.0" text="Status: Standby">
-                     <font>
-                         <Font size="20.0" />
-                     </font>
-                 </Label>
+                <Label fx:id="lbl_status" prefHeight="30.0" prefWidth="150.0" text="Status: Standby">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
                 <Label fx:id="lbl_runtime" prefHeight="35.0" prefWidth="148.0" text="Runtime: xx ms" />
                 <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="149.0" spacing="5.0">
                     <Label prefHeight="35.0" prefWidth="52.0" text="Quarz: ">

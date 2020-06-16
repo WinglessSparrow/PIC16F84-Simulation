@@ -136,6 +136,12 @@
     -fx-padding: 5;
 }
 
+.tooltip {
+    -fx-background-color: CIAN_C;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
 .scroll-pane {
     -fx-border-width: 1;
     -fx-border-color: CIAN_C;
@@ -176,4 +182,70 @@
 
 .button:pressed {
     -fx-background-color: #1fb6c8;
+}
+
+.tab-pane:top *.tab-header-area {
+    /*-fx-background-insets: 0, 0 0 10;*/
+    -fx-padding: 1 0 0 0;
+    -fx-alignment: center;
+
+    -fx-background-color: transparent;
+}
+
+.tab-down-button {
+    -fx-padding: 0;
+}
+
+.tab-down-button .arrow {
+    -fx-padding: 0;
+}
+
+.tab .tab-label {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+.tab:focused {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}
+
+.tab {
+    -fx-background-color: CIAN_BACK;
+    -fx-max-width: 3em;
+    -fx-min-width: 3em;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 5;
+}
+
+.tab:selected {
+    -fx-background-color: CIAN_MIDDLE;
+    -fx-max-width: 3em;
+    -fx-min-width: 3em;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 5;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: CIAN_BACK;
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 1 1 0 1;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.tab:selected .focus-indicator {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: CIAN_BACK;
 }

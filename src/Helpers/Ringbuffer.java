@@ -1,12 +1,12 @@
 package Helpers;
 
-public class Ringbuffer<T> {
+public class Ringbuffer {
 
     enum State {
         FULL, EMPTY, OK
     }
 
-    private int data[];
+    private int[] data;
     private int readPointer;
     private int writePointer;
     private int ammElements;
@@ -34,10 +34,6 @@ public class Ringbuffer<T> {
         }
     }
 
-    public int[] getData() {
-        return data;
-    }
-
     public int pop() {
         State status = checkStatus();
         int temp = 0;
@@ -53,6 +49,10 @@ public class Ringbuffer<T> {
         }
 
         return temp;
+    }
+
+    public int[] getData() {
+        return data;
     }
 
     private State checkStatus() {

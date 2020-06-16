@@ -123,10 +123,6 @@ public class Simulation implements Runnable {
         }
     }
 
-    public void stepRuntime() {
-        runtimeCounter.update(hzRate);
-    }
-
     public void setWatchdog(boolean enable) {
         flagWatchdog = enable;
         if (!flagWatchdog) {
@@ -238,51 +234,53 @@ public class Simulation implements Runnable {
         }
     }
 
+    public void runOnce() {
+        updateGUI();
+
+        if (flagWatchdog) {
+            ((Watchdog) elements[WATCHDOG]).update();
+        }
+
+        //step the timer
+        if (((RAM) elements[RAM_MEM]).getSpecificBit(RAM.INTCON, 5) == 0) {
+            elements[TIMER].step();
+        }
+
+        if (!flagStandby) {
+            step();
+        } else {
+            //on standby
+            interruptCheck();
+        }
+
+        //WDT check
+        if (((Watchdog) elements[WATCHDOG]).isOverflow() && flagWatchdog) {
+            softReset();
+        }
+
+        //breakpoint check
+        // -1 is the offset, so that the break point is on the next command
+        if (breakpointLine != -1 && !flagBreakPoint) {
+            if ((((ProgramCounter) elements[PC]).getCountedValue() - 1) == breakpointLine) {
+                pauseSimulation(true);
+                flagBreakPoint = true;
+                updateGUI();
+            }
+        }
+
+        //runtime always updated, unless pause
+        runtimeCounter.update(hzRate);
+    }
+
     @Override
     public void run() {
-
         while (flagRunning) {
             if (!flagPause) {
-                updateGUI();
-
-                if (flagWatchdog) {
-                    ((Watchdog) elements[WATCHDOG]).update();
-                }
-
-                //step the timer
-                if (((RAM) elements[RAM_MEM]).getSpecificBit(RAM.INTCON, 5) == 0) {
-                    elements[TIMER].step();
-                }
-
-                if (!flagStandby) {
-                    step();
-                } else {
-                    //on standby
-                    interruptCheck();
-                }
-
-                //WDT check
-                if (((Watchdog) elements[WATCHDOG]).isOverflow() && flagWatchdog) {
-                    softReset();
-                }
-
-                //breakpoint check
-                // -1 is the offset, so that the break point is on the next command
-                if (breakpointLine != -1 && !flagBreakPoint) {
-                    if ((((ProgramCounter) elements[PC]).getCountedValue() - 1) == breakpointLine) {
-                        pauseSimulation(true);
-                        flagBreakPoint = true;
-                        updateGUI();
-                    }
-                }
-
-                //runtime always updated, unless pause
-                runtimeCounter.update(hzRate);
+                runOnce();
             }
 
-            //slowing down
             try {
-                Thread.sleep(1);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
