@@ -47,7 +47,6 @@ public class PPController extends Controller {
         //getting checkboxes B
         //ports
         fillArrayCheckBoxes(checkBoxesPortB, vbox_portB);
-        //tris
         fillArrayCheckBoxes(checkBoxesTrisB, vbox_trisB);
     }
 

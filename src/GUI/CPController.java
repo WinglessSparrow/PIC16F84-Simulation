@@ -3,24 +3,21 @@ package GUI;
 import Elements.ProgramCounter;
 import Elements.RAM;
 import Elements.WRegister;
-import Helpers.Prescaler;
 import Elements.Watchdog;
+import Helpers.Prescaler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 
 import java.util.concurrent.TimeUnit;
 
 public class CPController extends Controller {
 
     @FXML
-    private Label lbl_timer;
+    private CheckBox chk_stepFull;
     @FXML
     private Label lbl_watchdogTime;
     @FXML
@@ -93,6 +90,9 @@ public class CPController extends Controller {
             }
         });
 
+        chk_stepFull.setSelected(true);
+        chk_stepFull.setTooltip(new Tooltip("If set: Watchdog, TMR0 and runtime \nare accounted for while using Step"));
+
         //should be off at teh beginning
         btn_run.setDisable(true);
         btn_reset.setDisable(true);
@@ -148,8 +148,12 @@ public class CPController extends Controller {
 
     @FXML
     private void step() {
-        simGUI.getSim().step();
-        simGUI.getSim().stepRuntime();
+        if (chk_stepFull.isSelected()) {
+            simGUI.getSim().runOnce();
+        } else {
+            simGUI.getSim().step();
+        }
+
         simGUI.getSim().updateGUI();
     }
 

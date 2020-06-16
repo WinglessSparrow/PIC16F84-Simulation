@@ -1,6 +1,7 @@
 package GUI;
 
 import Elements.ProgramCounter;
+import Elements.RAM;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -32,6 +33,7 @@ public class SMController extends Controller {
 
     private Simulation_GUI simGUI;
     private Stack<Integer> stack;
+    private RAM ram;
 
     public void initialize() {
         //javaFX forces me to do war crimes
@@ -85,6 +87,11 @@ public class SMController extends Controller {
         alert.showAndWait();
     }
 
+    public void clearEEPROM() {
+        ram.clearEEPROM();
+        simGUI.getSim().updateGUI();
+    }
+
     public void exit() {
         Platform.exit();
         try {
@@ -119,8 +126,9 @@ public class SMController extends Controller {
         updateStack(stack);
     }
 
-    public void setData(ProgramCounter programCounter) {
+    public void setData(ProgramCounter programCounter, RAM ram) {
         stack = programCounter.handItOverThatThingYourStack();
+        this.ram = ram;
     }
 
     public void setSimGUI(Simulation_GUI simGUI) {

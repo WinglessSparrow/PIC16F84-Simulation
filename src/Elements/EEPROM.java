@@ -1,6 +1,7 @@
 package Elements;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class EEPROM {
 
@@ -39,6 +40,17 @@ public class EEPROM {
 
     public void setData(int idx, int value) {
         data[idx] = value;
+
+        try {
+            serialize();
+        } catch (IOException e) {
+            System.out.println("well, shit. (Serialization says no)");
+            e.printStackTrace();
+        }
+    }
+
+    public void clear() {
+        Arrays.fill(data, 0);
 
         try {
             serialize();

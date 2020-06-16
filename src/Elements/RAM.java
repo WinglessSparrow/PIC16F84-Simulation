@@ -17,7 +17,7 @@ public class RAM extends Element {
 
     private int bitIdxFromOP = 0;
 
-    private Ringbuffer<Integer> eecon2Buffer;
+    private Ringbuffer eecon2Buffer;
     private EEPROM eeprom;
 
     private Prescaler prescaler;
@@ -44,7 +44,7 @@ public class RAM extends Element {
         this.pc = pc;
 
         eeprom = new EEPROM();
-        eecon2Buffer = new Ringbuffer<>(2);
+        eecon2Buffer = new Ringbuffer(2);
 
         init();
     }
@@ -257,6 +257,10 @@ public class RAM extends Element {
             data[TMR0] = 0;
             setSpecificBits(true, RAM.INTCON, RAM.TMR0);
         }
+    }
+
+    public void clearEEPROM() {
+        eeprom.clear();
     }
 
     /**

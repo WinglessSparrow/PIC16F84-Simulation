@@ -1,6 +1,9 @@
 package GUI;
 
-import Elements.*;
+import Elements.ProgramCounter;
+import Elements.RAM;
+import Elements.WRegister;
+import Elements.Watchdog;
 import Helpers.Element;
 import Helpers.Prescaler;
 import Helpers.ProgramCodeParser;
@@ -102,7 +105,7 @@ public class StartingWController extends Controller {
         ((OPController) controllers.get(OP_CONTR)).setData(parser, (ProgramCounter) elements[Simulation.PC]);
 
         //Init stack view
-        ((SMController) controllers.get(SP_CONTR)).setData((ProgramCounter) elements[Simulation.PC]);
+        ((SMController) controllers.get(SP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], (RAM) elements[Simulation.RAM_MEM]);
 
         //Init the RAM view
         ((HPController) controllers.get(HP_CONTR)).setData((RAM) elements[Simulation.RAM_MEM]);
