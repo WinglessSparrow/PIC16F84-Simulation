@@ -1,7 +1,11 @@
 package GUI;
 
 import Elements.Port;
+import Elements.RAM;
+import Elements.Timer;
 import Helpers.BitManipulator;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -15,7 +19,9 @@ public class PPController extends Controller {
         PORT_A, PORT_B;
     }
 
-    private Port portA, portB;
+    private Port ports;
+    private RAM ram;
+    Timer timer;
 
     @FXML
     private VBox vbox_trisA;
@@ -48,15 +54,18 @@ public class PPController extends Controller {
         //ports
         fillArrayCheckBoxes(checkBoxesPortB, vbox_portB);
         fillArrayCheckBoxes(checkBoxesTrisB, vbox_trisB);
+
+        initActionListeners();
+
     }
 
     /**
-     * @param portA Object of Port A
-     * @param portB Object of Port B
+     * @param ports Object of Port
      */
-    public void setData(Port portA, Port portB) {
-        this.portA = portA;
-        this.portB = portB;
+    public void setData(Port ports, RAM ram, Timer timer) {
+        this.ports = ports;
+        this.ram = ram;
+        this.timer = timer;
         update();
     }
 
@@ -90,7 +99,7 @@ public class PPController extends Controller {
         int temp = 0;
         //going through variable and setting all the bits which are selected in ports
         for (int i = 0; i < ports.length; i++) {
-            if (ports[i].isSelected()) BitManipulator.setBit(i, temp);
+            if (ports[i].isSelected()) temp = BitManipulator.setBit(i, temp);
         }
 
         return temp;
@@ -112,7 +121,66 @@ public class PPController extends Controller {
 
     @Override
     public void update() {
-        updateBoxes(portA.getTrisVal(), portA.getOutput(), checkBoxesTrisA, checkBoxesPortA);
-        updateBoxes(portB.getTrisVal(), portB.getOutput(), checkBoxesTrisB, checkBoxesPortB);
+        updateBoxes(ports.getTrisPortA(), ports.getPortA(), checkBoxesTrisA, checkBoxesPortA);
+        updateBoxes(ports.getTrisPortB(), ports.getPortB(), checkBoxesTrisB, checkBoxesPortB);
+    }
+
+    //Is triggered when a input port is pressed
+    private void portOnAction(Ports port, int bit) {
+        if (port == Ports.PORT_A) {
+            setInterruptBits(Ports.PORT_A,bit);
+            ram.setSpecificBits(checkBoxesPortA[bit].isSelected(), RAM.PORT_A, bit);
+        } else if (port == Ports.PORT_B) {
+            setInterruptBits(Ports.PORT_B,bit);
+            ram.setSpecificBits(checkBoxesPortB[bit].isSelected(), RAM.PORT_B, bit);
+        }
+
+        //Update GUI to see the changes in RAM and SFR
+        simGUI.update();
+    }
+
+    private void setInterruptBits(Ports port, int bit) {
+        if (port == Ports.PORT_A) {
+
+            //Port RA4
+            if (bit == 4) {
+                //1: trigger on rising edge, 0 trigger on falling edge
+                int t0se = ram.getSpecificBit(RAM.OPTION,4);
+                if ((t0se == 1) && (checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
+                else if ((t0se == 0) && (!checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
+            }
+        } else if (port == Ports.PORT_B) {
+            if (bit == 0) {
+                //Sets INTF bits when edge is matching
+                int intedg = ram.getSpecificBit(RAM.OPTION, 6);
+                if ((intedg == 1) && (checkBoxesPortB[bit].isSelected())){ram.setSpecificBits(true, RAM.INTCON, 1);}
+                else if ((intedg == 0) && (!checkBoxesPortB[bit].isSelected())){ram.setSpecificBits(true, RAM.INTCON, 1);}
+            }
+            else if((bit >= 4) && (bit <= 7)) {
+                ram.setSpecificBits(true, RAM.INTCON, 0);
+            }
+        }
+
+
+    }
+
+    private void initActionListeners() {
+
+        for (int i = 0; i < checkBoxesPortA.length; i++) {
+            checkBoxesPortA[i].setDisable(true);
+        }
+        for (int i = 0; i < checkBoxesPortB.length; i++) {
+            checkBoxesPortB[i].setDisable(true);
+        }
+
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            checkBoxesPortA[finalI].setOnAction(actionEvent -> portOnAction(Ports.PORT_A, finalI));
+        }
+
+        for (int i = 0; i < 8; i++) {
+            int finalI = i;
+            checkBoxesPortB[finalI].setOnAction(actionEvent -> portOnAction(Ports.PORT_B, finalI));
+        }
     }
 }

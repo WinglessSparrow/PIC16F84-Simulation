@@ -14,7 +14,7 @@ public class Simulation implements Runnable {
     //here idxes off all buses and elements
     public static final int BUS_I_REG = 0, BUS_LITERAL = 1, BUS_INTERN_FILE = 2, BUS_DIR_ADDR = 3, BUS_PROM = 4, BUS_JUMPS = 5;
     public static final int PROM = 0, I_REG = 1, I_DECODER = 2, PC = 3, GATE_8BUS = 4, GATE_7BUS = 5, GATE_11BUS = 6, W_REGISTER = 7, ALU_MULTIPLEXER = 8,
-            ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13, WATCHDOG = 14, PORT_A = 15, PORT_B = 16;
+            ALU = 9, RAM_MULTIPLEXER = 10, RAM_MEM = 11, CU = 12, TIMER = 13, WATCHDOG = 14, PORTS = 15;
     //flags
     private boolean flagRunning;
     private boolean flagStandby;
@@ -53,7 +53,7 @@ public class Simulation implements Runnable {
         }
 
         //this array must be field by hand
-        elements = new Element[17];
+        elements = new Element[16];
 
         //create a bunch of dummy data
         int[] programData;
@@ -92,14 +92,12 @@ public class Simulation implements Runnable {
                 ((Watchdog) elements[WATCHDOG]), prescaler, ((ProgramCounter) elements[PC]));
 
         //Ports
-        elements[PORT_A] = new Port("A");
-        elements[PORT_B] = new Port("B");
+        elements[PORTS] = new Port();
 
         ((ALU) elements[ALU]).setRam((RAM) elements[RAM_MEM]);
         ((Timer) elements[TIMER]).setRam((RAM) elements[RAM_MEM]);
         ((ProgramCounter) elements[PC]).setRam((RAM) elements[RAM_MEM]);
-        ((Port) elements[PORT_A]).setRam((RAM) elements[RAM_MEM]);
-        ((Port) elements[PORT_B]).setRam((RAM) elements[RAM_MEM]);
+        ((Port) elements[PORTS]).setRam((RAM) elements[RAM_MEM]);
 
         elements[CU] = new ControlUnit(elements);
 

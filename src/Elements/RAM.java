@@ -387,8 +387,8 @@ public class RAM extends Element {
 
         //idx 7 is Global Enable
         if (getSpecificBit(INTCON, GIE) == 1) {
-            //EEIF = bit nr 4 & EEIE = 0x88
-            if (getSpecificBit(INTCON, 6) == 1 && getSpecificBit(INTCON, 4) == 1) {
+            //EEIE = 0x88
+            if (getSpecificBit(INTCON, 6) == 1) {
                 return true;
             }
             /*
