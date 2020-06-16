@@ -134,6 +134,7 @@ public class RAM extends Element {
             printChanges(idx);
         }
 
+
         switch (checkEeprom()) {
             case WRITE:
                 eeprom.setData(getRegisterData(EEADR), getRegisterData(EEDATA));
@@ -178,7 +179,7 @@ public class RAM extends Element {
         this.rOperation = rOperation;
     }
 
-    private int getRegisterData(int idx) {
+    public int getRegisterData(int idx) {
         //just remember* = &indirect addressing
         if (idx == 0 || idx == 0x80) {
             return data[getRegisterData(FSR)];

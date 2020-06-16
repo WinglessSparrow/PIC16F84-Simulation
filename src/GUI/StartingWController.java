@@ -1,9 +1,6 @@
 package GUI;
 
-import Elements.ProgramCounter;
-import Elements.RAM;
-import Elements.WRegister;
-import Elements.Watchdog;
+import Elements.*;
 import Helpers.Element;
 import Helpers.Prescaler;
 import Helpers.ProgramCodeParser;
@@ -78,7 +75,9 @@ public class StartingWController extends Controller {
 
         //Init timing view
 
-        //Ports not ready now
+        //Ports
+        ((PPController) controllers.get(PP_CONTR)).setData((Port) elements[Simulation.PORTS], (RAM) elements[Simulation.RAM_MEM], (Timer) elements[Simulation.TIMER]);
+
         //Init Control panel
         ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler, watchdog, ((WRegister) elements[Simulation.W_REGISTER]), (RAM) elements[Simulation.RAM_MEM]);
     }
