@@ -150,12 +150,14 @@ public class PPController extends Controller {
                 else if ((t0se == 0) && (!checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
             }
         } else if (port == Ports.PORT_B) {
+            //Port RB0
             if (bit == 0) {
                 //Sets INTF bits when edge is matching
                 int intedg = ram.getSpecificBit(RAM.OPTION, 6);
                 if ((intedg == 1) && (checkBoxesPortB[bit].isSelected())){ram.setSpecificBits(true, RAM.INTCON, 1);}
                 else if ((intedg == 0) && (!checkBoxesPortB[bit].isSelected())){ram.setSpecificBits(true, RAM.INTCON, 1);}
             }
+            //Port RB4 to RB7
             else if((bit >= 4) && (bit <= 7)) {
                 ram.setSpecificBits(true, RAM.INTCON, 0);
             }
