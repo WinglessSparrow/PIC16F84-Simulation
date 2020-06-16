@@ -146,8 +146,8 @@ public class PPController extends Controller {
             if (bit == 4) {
                 //1: trigger on rising edge, 0 trigger on falling edge
                 int t0se = ram.getSpecificBit(RAM.OPTION,4);
-                if ((t0se == 1) && (checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
-                else if ((t0se == 0) && (!checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
+                if ((t0se == 1) && (!checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
+                else if ((t0se == 0) && (checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
             }
         } else if (port == Ports.PORT_B) {
             //Port RB0
