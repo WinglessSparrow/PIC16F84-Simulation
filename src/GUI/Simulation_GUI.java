@@ -73,6 +73,7 @@ public class Simulation_GUI extends Application {
 
     /**
      * Loads a file and restarts the backend
+     *
      * @param path, absolute path to LST file
      */
     public void loadFile(String path) {
