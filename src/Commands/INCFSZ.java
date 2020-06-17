@@ -14,7 +14,7 @@ public class INCFSZ extends INCF {
     @Override
     public void cleanUpInstructions(Element[] elements) {
         super.cleanUpInstructions(elements);
-        if (((RAM) elements[Simulation.RAM_MEM]).isFileZero()) {
+        if (((RAM) elements[Simulation.RAM_MEM]).isFlagFileZero()) {
             ((InstructionRegister) elements[Simulation.I_REG]).clear();
         }
     }

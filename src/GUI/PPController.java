@@ -4,8 +4,6 @@ import Elements.Port;
 import Elements.RAM;
 import Elements.Timer;
 import Helpers.BitManipulator;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -21,7 +19,7 @@ public class PPController extends Controller {
 
     private Port ports;
     private RAM ram;
-    Timer timer;
+    private Timer timer;
 
     @FXML
     private VBox vbox_trisA;
@@ -69,18 +67,6 @@ public class PPController extends Controller {
         update();
     }
 
-    /**
-     * @return array of 2 values, first is portA second is portB
-     */
-    public int[] getData() {
-        int[] array = new int[2];
-        //getting the values
-        array[0] = getPortValue(checkBoxesPortA);
-        array[1] = getPortValue(checkBoxesPortB);
-
-        return array;
-    }
-
     //not using global variables, so that I can reuse this method
     private void updateBoxes(int valueTris, int valuePorts, CheckBox[] tris, CheckBox[] ports) {
         for (int i = 0; i < tris.length; i++) {
@@ -90,7 +76,7 @@ public class PPController extends Controller {
             //depending on tris
             ports[i].setDisable(!tris[i].isSelected());
             //setting values on ports
-            ports[i].setSelected(BitManipulator.getBit(i, valuePorts) == 1);
+            ports[i].setSelected(BitManipulator.getBit(i, valuePorts) == 1 && !tris[i].isSelected());
         }
     }
 
@@ -110,10 +96,10 @@ public class PPController extends Controller {
         List<Node> list = fromElement.getChildren();
         int count = 0;
 
-        for (int i = 0; i < list.size(); i++) {
+        for (Node node : list) {
             //finding check boxes, and making sure not going out of bound
-            if (list.get(i) instanceof CheckBox && count < arrayToFill.length) {
-                arrayToFill[count] = (CheckBox) list.get(i);
+            if (node instanceof CheckBox && count < arrayToFill.length) {
+                arrayToFill[count] = (CheckBox) node;
                 count++;
             }
         }
@@ -128,10 +114,10 @@ public class PPController extends Controller {
     //Is triggered when a input port is pressed
     private void portOnAction(Ports port, int bit) {
         if (port == Ports.PORT_A) {
-            setInterruptBits(Ports.PORT_A,bit);
+            setInterruptBits(Ports.PORT_A, bit);
             ram.setSpecificBits(checkBoxesPortA[bit].isSelected(), RAM.PORT_A, bit);
         } else if (port == Ports.PORT_B) {
-            setInterruptBits(Ports.PORT_B,bit);
+            setInterruptBits(Ports.PORT_B, bit);
             ram.setSpecificBits(checkBoxesPortB[bit].isSelected(), RAM.PORT_B, bit);
         }
 
@@ -145,20 +131,26 @@ public class PPController extends Controller {
             //Port RA4
             if (bit == 4) {
                 //1: trigger on rising edge, 0 trigger on falling edge
-                int t0se = ram.getSpecificBit(RAM.OPTION,4);
-                if ((t0se == 1) && (checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
-                else if ((t0se == 0) && (!checkBoxesPortA[bit].isSelected())) {timer.setRA4Trigger(true);}
+                int t0se = ram.getSpecificBit(RAM.OPTION, 4);
+                if ((t0se == 1) && (checkBoxesPortA[bit].isSelected())) {
+                    timer.setRA4Trigger(true);
+                } else if ((t0se == 0) && (!checkBoxesPortA[bit].isSelected())) {
+                    timer.setRA4Trigger(true);
+                }
             }
         } else if (port == Ports.PORT_B) {
             //Port RB0
             if (bit == 0) {
                 //Sets INTF bits when edge is matching
                 int intedg = ram.getSpecificBit(RAM.OPTION, 6);
-                if ((intedg == 1) && (checkBoxesPortB[bit].isSelected())){ram.setSpecificBits(true, RAM.INTCON, 1);}
-                else if ((intedg == 0) && (!checkBoxesPortB[bit].isSelected())){ram.setSpecificBits(true, RAM.INTCON, 1);}
+                if ((intedg == 1) && (checkBoxesPortB[bit].isSelected())) {
+                    ram.setSpecificBits(true, RAM.INTCON, 1);
+                } else if ((intedg == 0) && (!checkBoxesPortB[bit].isSelected())) {
+                    ram.setSpecificBits(true, RAM.INTCON, 1);
+                }
             }
             //Port RB4 to RB7
-            else if((bit >= 4) && (bit <= 7)) {
+            else if ((bit >= 4) && (bit <= 7)) {
                 ram.setSpecificBits(true, RAM.INTCON, 0);
             }
         }
@@ -168,11 +160,11 @@ public class PPController extends Controller {
 
     private void initActionListeners() {
 
-        for (int i = 0; i < checkBoxesPortA.length; i++) {
-            checkBoxesPortA[i].setDisable(true);
+        for (CheckBox checkBox : checkBoxesPortA) {
+            checkBox.setDisable(true);
         }
-        for (int i = 0; i < checkBoxesPortB.length; i++) {
-            checkBoxesPortB[i].setDisable(true);
+        for (CheckBox checkBox : checkBoxesPortB) {
+            checkBox.setDisable(true);
         }
 
         for (int i = 0; i < 5; i++) {

@@ -12,8 +12,8 @@ public class RAM extends Element {
     private int[] data = new int[256];
     private int[] sfrData = new int[15];
 
-    private boolean bitSet;
-    private boolean fileZero;
+    private boolean flagBitSet;
+    private boolean flagFileZero;
 
     private int bitIdxFromOP = 0;
 
@@ -65,11 +65,11 @@ public class RAM extends Element {
                     break;
                 case INCREASE:
                     temp = increase(getRegisterData(idx));
-                    fileZero = temp == 0;
+                    flagFileZero = temp == 0;
                     break;
                 case DECREASE:
                     temp = decrease(getRegisterData(idx));
-                    fileZero = temp == 0;
+                    flagFileZero = temp == 0;
                     break;
                 case ROTATE_LEFT:
                     temp = rotateLeft(getRegisterData(idx));
@@ -92,11 +92,11 @@ public class RAM extends Element {
                     temp = getRegisterData(idx);
                     break;
                 case BIT_TEST_SET:
-                    bitSet = (getSpecificBit(idx, bitIdxFromOP) == 1);
+                    flagBitSet = (getSpecificBit(idx, bitIdxFromOP) == 1);
                     temp = getRegisterData(idx);
                     break;
                 case BIT_TEST_CLR:
-                    bitSet = (getSpecificBit(idx, bitIdxFromOP) == 0);
+                    flagBitSet = (getSpecificBit(idx, bitIdxFromOP) == 0);
                     temp = getRegisterData(idx);
                     break;
                 case CLR:
@@ -163,8 +163,8 @@ public class RAM extends Element {
         return idx | mask;
     }
 
-    public boolean isFileZero() {
-        return fileZero;
+    public boolean isFlagFileZero() {
+        return flagFileZero;
     }
 
     public int getLastRegisterInUse() {
@@ -193,7 +193,7 @@ public class RAM extends Element {
         }
     }
 
-    private void setData(int idx, int value) {
+    public void setData(int idx, int value) {
 
         //mask first bits, so that the could be no artifacts
         if (idx == 0x0a || idx == 0x05 || idx == 0x85 || idx == 0x88 || idx == 0x8a) {
@@ -250,10 +250,9 @@ public class RAM extends Element {
     }
 
     public void increaseTMR0() {
-        data[TMR0]++;
-        if (data[TMR0] > 255) {
-            data[TMR0] = 0;
-            setSpecificBits(true, RAM.INTCON, RAM.TMR0);
+        setData(TMR0, (getRegisterData(TMR0) + 1));
+        if (data[TMR0] == 0) {
+            setSpecificBits(true, INTCON, 2);
         }
     }
 
@@ -385,8 +384,8 @@ public class RAM extends Element {
 
         //idx 7 is Global Enable
         if (getSpecificBit(INTCON, GIE) == 1) {
-            //EEIE bit 6
-            if (getSpecificBit(INTCON, 6) == 1) {
+            //EEPROM read interrupt EEIE and EEIF
+            if (getSpecificBit(INTCON, 6) == 1 && getSpecificBit(EECON_1, 4) == 1) {
                 return true;
             }
             /*
@@ -406,6 +405,7 @@ public class RAM extends Element {
                         //except for the timer
                         setSpecificBits(false, INTCON, mask & 3);
                     }
+
                     return true;
                 }
                 //shift mask
@@ -443,8 +443,8 @@ public class RAM extends Element {
         this.bitIdxFromOP = bitIdxFromOP;
     }
 
-    public boolean isBitSet() {
-        return bitSet;
+    public boolean isFlagBitSet() {
+        return flagBitSet;
     }
 
     public EEPROM getEeprom() {

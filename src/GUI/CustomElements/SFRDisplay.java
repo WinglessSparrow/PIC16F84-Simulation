@@ -204,11 +204,11 @@ class DataVault {
             {"Pos: 0x08h"},
             {"Pos: 0x09h"},
             {"Pos: 0x0Ah / 0x08Ah"},
-            {"Pos: 0x0Bh / 0x8Bh"},
-            {"Pos: 0x81h"},
+            {"Pos: 0x0Bh / 0x8Bh", "GIE", "EEIE", "T0IE", "INTE", "RBIE", "T0IF", "INTF", "RBIF"},
+            {"Pos: 0x81h", "!RBPU", "INTEDG", "T0CS", "T0SE", "PSA", "PS2", "PS1", "PS0"},
             {"Pos: 0x85h"},
             {"Pos: 0x86h"},
-            {"Pos: 0x88h"},
+            {"Pos: 0x88h", "", "", "", "EEIF", "WRERR", "WREN", "WR", "RD"}
     };
 
     public static String getData(String name, int idx) {

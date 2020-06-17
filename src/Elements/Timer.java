@@ -41,7 +41,12 @@ public class Timer extends Element {
     }
 
     public void setRA4Trigger(boolean RA4Trigger) {
-        this.RA4Trigger = RA4Trigger;
+        if (RA4Trigger) {
+            count++;
+            if (count % prescaler.getTimerScale() == 0) {
+                this.RA4Trigger = true;
+            }
+        }
     }
 
     public void setRam(RAM ram) {

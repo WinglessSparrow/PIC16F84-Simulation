@@ -1,5 +1,6 @@
 package GUI.CustomElements;
 
+import Elements.RAM;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -15,10 +16,14 @@ public class HeapDisplay extends GridPane {
     private int maxWidth, minWidth;
     private int[] data;
 
-    public HeapDisplay(int[] data, int width, int maxWidth, int minWidth) {
+    private RAM ram;
+
+    public HeapDisplay(int[] data, RAM ram, int width, int maxWidth, int minWidth) {
         this.data = data;
         this.maxWidth = maxWidth;
         this.minWidth = minWidth;
+        this.ram = ram;
+
         int count = 0, row = 0;
 
         createFirstRow(width);
@@ -66,15 +71,15 @@ public class HeapDisplay extends GridPane {
             Cell temp = (Cell) getChildren().get(count);
             if (temp.isChangeable()) {
                 //check if the value within the Cell was changed from the cell, if so then we need to retrieve the value, not change it
-                if (temp.isChanged()) {
-                    data[idx] = temp.getValueHeld();
-                }
-
                 temp.update(data[idx]);
                 idx++;
             }
             count++;
         }
+    }
+
+    public RAM getRam() {
+        return ram;
     }
 }
 
@@ -84,7 +89,6 @@ class Cell extends Label {
      */
     private String prefix;
     private boolean flagChange;
-    private boolean flagHeldValueChanged;
     private int valueHeld;
     private String currStyle;
 
@@ -147,11 +151,9 @@ class Cell extends Label {
                             alert.setContentText("Format: \n HEX: \t '0xXX' \n BIN: \t '0bXX' \n DEC: \t 'XX'");
                             alert.showAndWait();
                         } else {
-                            //TODO change duplicated values
-                            //TODO no writes to 0 (and duplicate)
                             //mask the value;
                             valueHeld = parsedValue & 255;
-                            flagHeldValueChanged = true;
+                            hp.getRam().setData(nr, valueHeld);
                             hp.update();
                         }
                     }
@@ -173,14 +175,6 @@ class Cell extends Label {
         return flagChange;
     }
 
-    public boolean isChanged() {
-        return flagHeldValueChanged;
-    }
-
-    public int getValueHeld() {
-        return valueHeld;
-    }
-
     public void update(int value) {
         //the boolean flag is here because everything is a Cell, and it should't update describing cells
         if (flagChange) {
@@ -197,6 +191,6 @@ class Cell extends Label {
             setStyle(currStyle);
         }
 
-        flagHeldValueChanged = false;
+//        flagHeldValueChanged = false;
     }
 }

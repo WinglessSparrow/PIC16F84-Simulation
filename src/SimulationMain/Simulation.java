@@ -31,6 +31,7 @@ public class Simulation implements Runnable {
 
     private Integer breakpointLine = -1;
     private Element[] elements;
+    private Bus[] buses;
     private Prescaler prescaler;
 
     private ProgramCodeParser parser;
@@ -47,7 +48,7 @@ public class Simulation implements Runnable {
         flagBreakPoint = false;
 
         //how many buses are there
-        Bus[] buses = new Bus[6];
+        buses = new Bus[6];
         for (int i = 0; i < buses.length; i++) {
             buses[i] = new Bus();
         }
@@ -129,14 +130,12 @@ public class Simulation implements Runnable {
 
     public void setWatchdog(boolean enable) {
         flagWatchdog = enable;
+
         if (!flagWatchdog) {
             ((Watchdog) elements[WATCHDOG]).clear();
         }
     }
 
-    /**
-     * @implNote simulation pauses, won't respond to anything, TMR0 and WDT non functional here
-     */
     public void pauseSimulation(boolean pause) {
         this.flagPause = pause;
         updateGUI();
@@ -214,7 +213,6 @@ public class Simulation implements Runnable {
                 }
                 //actions after the sequence
                 command.cleanUpInstructions(elements);
-                System.out.println("carry: " + ((RAM) elements[RAM_MEM]).getSpecificBit(RAM.STATUS, RAM.CARRY_BIT));
             } else {
                 enableStandBy(true);
             }
@@ -229,7 +227,13 @@ public class Simulation implements Runnable {
             //disabling global interrupts, for the time of execution
             ((RAM) elements[RAM_MEM]).setSpecificBits(false, RAM.INTCON, RAM.GIE);
             //Call subroutine, it's on the fourth place in the ROM
-            execute(CommandAtlas.getCommand(0x2004));
+            //putting the jumping address on the pipeline
+            buses[BUS_I_REG].setHeldValue(0x4);
+            execute(CommandAtlas.getCommand(0x2000));
+
+            ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(false, RAM.STATUS, 4);
+            ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(false, RAM.STATUS, 3);
+
             //waking up the controller
             enableStandBy(false);
         }
@@ -257,6 +261,7 @@ public class Simulation implements Runnable {
         //WDT check
         if (((Watchdog) elements[WATCHDOG]).isOverflow() && flagWatchdog) {
             softReset();
+            ((RAM) elements[RAM_MEM]).setSpecificBits(false, RAM.STATUS, 4);
         }
 
         //breakpoint check
@@ -281,7 +286,7 @@ public class Simulation implements Runnable {
             }
 
             try {
-                Thread.sleep(5);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

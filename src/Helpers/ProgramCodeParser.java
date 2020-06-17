@@ -98,10 +98,6 @@ public class ProgramCodeParser {
             retData[i] = Integer.parseInt(data.get(i), 16);
         }
 
-//        for (int i = 0; i < retData.length; i++) {
-//            System.out.println(i + " : " + retData[i]);
-//        }
-
         return retData;
     }
 
@@ -126,32 +122,35 @@ public class ProgramCodeParser {
 
     private void cutUseless(String[] lines) {
         for (int i = 0; i < lines.length; i++) {
-            int count = 0;
-            //search for the begin of the important part
-            try {
-                //goes through string until it encounters lower case character (ASCII from 97 to 122) or ';'
-                //!WARNING! only works good with lst given by our Prof
-                while (!((lines[i].charAt(count) >= 97 && lines[i].charAt(count) <= 122) || (lines[i].charAt(count) == ';'))) {
-                    count++;
-                }
+//            int count = 0;
+//            //search for the begin of the important part
+//            try {
+//                //goes through string until it encounters lower case character (ASCII from 97 to 122) or ';'
+//                //!WARNING! only works good with lst given by our Prof
+//                while (!((lines[i].charAt(count) >= 97 && lines[i].charAt(count) <= 122) || (lines[i].charAt(count) == ';'))) {
+//                    count++;
+//                }
+//
+//                //using the count index to get the needed String
+//                lines[i] = lines[i].substring(count);
+//
+//                //inserts a TAB if it not a jump point
+//                boolean insertTab = !(lines[i].contains("loop") || lines[i].contains("start") || lines[i].contains("ende")
+//                        || lines[i].contains("tabelle") || lines[i].contains("links") || lines[i].contains("rechts")
+//                        || lines[i].contains("screien") || lines[i].contains("lesen") || lines[i].contains("warte")
+//                        && !(lines[i].contains("goto") || lines[i].contains("call")));
+//
+//                //tabs on places where it matters
+//                if (insertTab) {
+//                    lines[i] = "\t" + lines[i];
+//                }
+//            } catch (StringIndexOutOfBoundsException ignored) {
+//                //has no information
+//                lines[i] = "";
+//            }
 
-                //using the count index to get the needed String
-                lines[i] = lines[i].substring(count);
-
-                //inserts a TAB if it not a jump point
-                boolean insertTab = !(lines[i].contains("loop") || lines[i].contains("start") || lines[i].contains("ende")
-                        || lines[i].contains("tabelle") || lines[i].contains("links") || lines[i].contains("rechts")
-                        || lines[i].contains("screien") || lines[i].contains("lesen") || lines[i].contains("warte")
-                        && !(lines[i].contains("goto") || lines[i].contains("call")));
-
-                //tabs on places where it matters
-                if (insertTab) {
-                    lines[i] = "\t" + lines[i];
-                }
-            } catch (StringIndexOutOfBoundsException ignored) {
-                //has no information
-                lines[i] = "";
-            }
+            //hope everyone starts at 23
+            lines[i] = lines[i].substring(23);
         }
     }
 

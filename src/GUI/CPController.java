@@ -152,9 +152,8 @@ public class CPController extends Controller {
             simGUI.getSim().runOnce();
         } else {
             simGUI.getSim().step();
+            simGUI.getSim().updateGUI();
         }
-
-        simGUI.getSim().updateGUI();
     }
 
     @FXML
@@ -190,7 +189,7 @@ public class CPController extends Controller {
     private void renewData() {
         lbl_runtime.setText("Runtime: " + simGUI.getSim().getRunTime());
         lbl_pc.setText("PC:\t" + pc.getCountedValue());
-        lbl_prescaler.setText("Prescaler: 1 : " + ((ram.getSpecificBit(RAM.OPTION, 4) == 1) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
+        lbl_prescaler.setText("Prescaler: 1 : " + ((ram.getSpecificBit(RAM.OPTION, 3) == 1) ? prescaler.getWDTScale() : prescaler.getTimerScale()));
         lbl_wReg.setText("W-Reg: 0x" + Integer.toHexString(wReg.getStoredValue()));
 
         long wdtMaxNano = watchdog.getTimeWait();

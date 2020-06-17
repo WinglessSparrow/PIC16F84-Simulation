@@ -26,6 +26,7 @@ public class CommandAtlas {
             put(0x2000, new CALL());
             put(0x0008, new RETURN());
             put(0x3400, new RETLW());
+            put((0x009), new RETFIE());
             put(0x1800, new BTFSC());
             put(0x1C00, new BTFSS());
             put(0x0064, new CLRWDT());

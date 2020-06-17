@@ -98,7 +98,7 @@ public class ProgramCounter extends Element {
                     getFromStack();
                     break;
             }
-            //resseting the operation
+            //resetting the operation
             operation = null;
         }
 

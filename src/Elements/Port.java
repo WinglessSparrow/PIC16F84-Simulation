@@ -4,18 +4,19 @@ import Helpers.Element;
 
 public class Port extends Element {
 
-    RAM ram;
-    int mask = 0xFF;
+    private RAM ram;
+    private int mask = 0xFF;
 
     /**
      * {@link #setRam(RAM)} method is required to be called once for every port
      */
     public Port() {
-        super(null,null);
+        super(null, null);
     }
 
     @Override
-    public void step() {}
+    public void step() {
+    }
 
     private int getOutput(int portReg) {
         return ram.getRegisterData(portReg);

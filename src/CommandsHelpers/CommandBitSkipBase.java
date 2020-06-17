@@ -27,7 +27,7 @@ public abstract class CommandBitSkipBase extends CommandBase {
 
     @Override
     public void cleanUpInstructions(Element[] elements) {
-        if (((RAM) elements[Simulation.RAM_MEM]).isBitSet() && skip) {
+        if (((RAM) elements[Simulation.RAM_MEM]).isFlagBitSet() && skip) {
             ((InstructionRegister) elements[Simulation.I_REG]).clear();
         }
     }

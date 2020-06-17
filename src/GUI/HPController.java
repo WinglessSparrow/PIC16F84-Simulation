@@ -30,14 +30,13 @@ public class HPController extends Controller {
 
     public void setData(RAM ram) {
         //init start here, so that we could work with the direct reference of the data array
-        hpDisplay = new HeapDisplay(ram.getRegisterData(), 8, 54, 30);
+        hpDisplay = new HeapDisplay(ram.getRegisterData(), ram, 8, 54, 30);
         scr_paneRam.setContent(hpDisplay);
 
-        eprDisplay = new HeapDisplay(ram.getEeprom().getData(), 8, 56, 28);
+        eprDisplay = new HeapDisplay(ram.getEeprom().getData(), ram, 8, 56, 28);
         scr_paneEeprom.setContent(eprDisplay);
 
         update();
-
     }
 
     @Override

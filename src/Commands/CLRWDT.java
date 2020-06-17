@@ -1,8 +1,9 @@
 package Commands;
 
 import CommandsHelpers.CommandBase;
-import Helpers.Element;
+import Elements.RAM;
 import Elements.Watchdog;
+import Helpers.Element;
 import SimulationMain.Simulation;
 
 public class CLRWDT extends CommandBase {
@@ -18,5 +19,7 @@ public class CLRWDT extends CommandBase {
 
     @Override
     public void cleanUpInstructions(Element[] elements) {
+        ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(true, RAM.STATUS, 4);
+        ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(true, RAM.STATUS, 3);
     }
 }

@@ -2,7 +2,7 @@
                     00002           ;Programm zum Test des 16F84-Simulators.
                     00003           ;Es werden die Interrupts für TMR0, RB0 (INT) und RB4-7 geprüft
                     00004           ;(c) St. Lehmann  
-                    00005           ;19.04.2014 
+                    00005           ;19.05.2020 
                     00006           
                     00007           list c=132          ;Zeilenlänge im LST auf 132 Zeichen setzen
                     00008             
@@ -108,7 +108,7 @@
                     00108           ;wenn alles richtig, dann
                     00109           ;in 20h steht 54H
                     00110           ;in 21H ein 49H
-                    00111           ;in 22H ein 53H
+                    00111           ;in 22H ein 52H
                     00112           
                     00113  ende     
 003C 283C           00114           goto ende           ;Endlosschleife, verhindert Nirwana
