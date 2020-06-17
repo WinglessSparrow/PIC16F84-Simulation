@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 import java.util.Optional;
 
@@ -113,7 +114,10 @@ class Cell extends Label {
             dialog.setTitle("Change value of a cell 0x" + (Integer.toHexString(nr)) + "; old value " + (prefix + Integer.toHexString(valueHeld)));
             dialog.setHeaderText("Format: \n HEX: \t '0xXX' \n BIN: \t '0bXX' \n DEC: \t 'XX' \n all values will be masked to 8 bit length");
 
-            setTooltip(new Tooltip("Nr: 0x" + Integer.toHexString(nr)));
+            var tooltip = new Tooltip("Nr: 0x" + Integer.toHexString(nr));
+            tooltip.setShowDelay(Duration.seconds(0.5));
+
+            setTooltip(tooltip);
 
             setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getClickCount() == 2) {

@@ -5,6 +5,7 @@ import Elements.RAM;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 
@@ -34,6 +35,8 @@ public class SMController extends Controller {
     private Simulation_GUI simGUI;
     private Stack<Integer> stack;
     private RAM ram;
+
+    private boolean flag = true;
 
     public void initialize() {
         //javaFX forces me to do war crimes
@@ -74,6 +77,7 @@ public class SMController extends Controller {
     }
 
     public void powerReset() {
+        flag = true;
         simGUI.powerReset();
     }
 
@@ -106,7 +110,6 @@ public class SMController extends Controller {
     }
 
     private void updateStack(Stack<Integer> stack) {
-
         Stack<?> stackTemp = (Stack<?>) stack.clone();
 
         if (stack.size() <= labels.length) {
@@ -119,8 +122,18 @@ public class SMController extends Controller {
                 }
                 count++;
             }
-        } else {
-            System.out.println("Stack Overflow");
+        } else if (flag) {
+            simGUI.getSim().pauseSimulation(true);
+
+            flag = false;
+
+            var alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Stack Overflow joins the Party");
+            alert.setContentText("Power reset required \n Reset now?");
+            var flagPR = alert.showAndWait();
+            if (flagPR.get() == ButtonType.OK) {
+                powerReset();
+            }
         }
     }
 

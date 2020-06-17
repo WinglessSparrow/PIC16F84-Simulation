@@ -114,8 +114,8 @@ public class PPController extends Controller {
             if (!flag && ports[i].isDisable()) ports[i].setSelected(false);
 
             //setting values on ports
-            if (!ports[i].isSelected()) {
-                ports[i].setSelected(BitManipulator.getBit(i, valuePorts) == 1 && !tris[i].isSelected());
+            if (!tris[i].isSelected()) {
+                ports[i].setSelected(BitManipulator.getBit(i, valuePorts) == 1);
             }
         }
     }
