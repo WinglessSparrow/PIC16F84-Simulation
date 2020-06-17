@@ -1,4 +1,4 @@
-package SimulationMain;
+package Simulation;
 
 import Commands.SLEEP;
 import CommandsHelpers.CommandBase;
@@ -179,6 +179,7 @@ public class Simulation implements Runnable {
 
         interruptCheck();
 
+        //correct the pipeline for the pcl
         if (((ProgramCounter) elements[PC]).isFlagChangePCL()) {
             fetch();
         }
@@ -235,6 +236,8 @@ public class Simulation implements Runnable {
             //putting the jumping address on the pipeline
             buses[BUS_I_REG].setHeldValue(0x4);
             execute(CommandAtlas.getCommand(0x2000));
+
+            runtimeCounter.update(hzRate);
 
             ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(false, RAM.STATUS, 4);
             ((RAM) elements[Simulation.RAM_MEM]).setSpecificBits(false, RAM.STATUS, 3);

@@ -1,7 +1,5 @@
 package GUI;
 
-import SimulationMain.Simulation;
-
 public abstract class Controller {
     Simulation_GUI simGUI;
     abstract public void update();

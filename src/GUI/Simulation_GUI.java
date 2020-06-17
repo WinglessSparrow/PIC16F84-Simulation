@@ -1,6 +1,6 @@
 package GUI;
 
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;

@@ -1,7 +1,7 @@
 package Elements;
 
 import Helpers.*;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class RAM extends Element {
 
@@ -112,9 +112,6 @@ public class RAM extends Element {
             if (mode == Destinations.RAM) {
                 //if the data is coming after the operation within the RAM
                 if (rOperation != RegisterOperation.NONE) {
-                    if (idx == 0x83 || idx == STATUS) {
-                        System.out.println(":as");
-                    }
                     setData(idx, temp);
                 } else {
                     setData(idx, getFromBus(Simulation.BUS_INTERN_FILE));

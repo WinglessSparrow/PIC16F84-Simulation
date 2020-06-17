@@ -5,7 +5,7 @@ import Elements.Multiplexer;
 import Elements.RAM;
 import Helpers.Destinations;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class CLRF extends CommandBase {
     public CLRF() {

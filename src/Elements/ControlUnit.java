@@ -3,7 +3,7 @@ package Elements;
 import CommandsHelpers.CommandBase;
 import Helpers.CommandAtlas;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class ControlUnit extends Element {
 

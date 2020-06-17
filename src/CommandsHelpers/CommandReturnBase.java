@@ -3,7 +3,7 @@ package CommandsHelpers;
 import Elements.InstructionRegister;
 import Elements.ProgramCounter;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 abstract public class CommandReturnBase extends CommandBase {
 

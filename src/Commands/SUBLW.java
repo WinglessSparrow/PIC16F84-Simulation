@@ -4,7 +4,7 @@ package Commands;
 import CommandsHelpers.CommandALUBase;
 import Elements.ALU;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class SUBLW extends CommandALUBase {
     @Override

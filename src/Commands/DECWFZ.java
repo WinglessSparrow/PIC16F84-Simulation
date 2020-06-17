@@ -3,7 +3,7 @@ package Commands;
 import Elements.InstructionRegister;
 import Elements.RAM;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class DECWFZ extends DECF {
 

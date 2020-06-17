@@ -4,7 +4,7 @@ import Elements.*;
 import Helpers.Element;
 import Helpers.Prescaler;
 import Helpers.ProgramCodeParser;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

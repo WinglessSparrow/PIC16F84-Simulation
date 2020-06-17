@@ -3,7 +3,7 @@ package Commands;
 import CommandsHelpers.CommandReturnBase;
 import Elements.RAM;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class RETFIE extends CommandReturnBase {
     public RETFIE() {

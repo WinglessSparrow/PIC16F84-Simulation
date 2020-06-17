@@ -1,7 +1,7 @@
 package Elements;
 
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class WRegister extends Element {
 

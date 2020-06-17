@@ -4,7 +4,7 @@ import Elements.InstructionRegister;
 import Elements.RAM;
 import Helpers.Destinations;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public abstract class CommandJumpingBase extends CommandBase {
     public CommandJumpingBase() {

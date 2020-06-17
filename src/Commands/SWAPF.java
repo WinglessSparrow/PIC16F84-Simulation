@@ -3,7 +3,7 @@ package Commands;
 import CommandsHelpers.CommandRAMBase;
 import Elements.RAM;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class SWAPF extends CommandRAMBase {
     @Override

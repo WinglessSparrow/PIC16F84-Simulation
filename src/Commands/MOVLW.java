@@ -2,7 +2,7 @@ package Commands;
 
 import CommandsHelpers.CommandBase;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class MOVLW extends CommandBase {
 

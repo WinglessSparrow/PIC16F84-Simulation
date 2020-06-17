@@ -3,7 +3,7 @@ package Commands;
 import CommandsHelpers.CommandBitSkipBase;
 import Elements.RAM;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class BTFSS extends CommandBitSkipBase {
 

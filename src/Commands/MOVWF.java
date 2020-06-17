@@ -6,7 +6,7 @@ import Elements.RAM;
 import Elements.WRegister;
 import Helpers.Destinations;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class MOVWF extends CommandBase {
 

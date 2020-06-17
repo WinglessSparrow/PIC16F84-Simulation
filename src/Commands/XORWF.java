@@ -3,7 +3,7 @@ package Commands;
 import CommandsHelpers.CommandALU_RAMBase;
 import Elements.ALU;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class XORWF extends CommandALU_RAMBase {
     @Override

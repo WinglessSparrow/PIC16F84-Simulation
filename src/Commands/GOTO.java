@@ -3,7 +3,7 @@ package Commands;
 import CommandsHelpers.CommandJumpingBase;
 import Elements.ProgramCounter;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class GOTO extends CommandJumpingBase {
     @Override

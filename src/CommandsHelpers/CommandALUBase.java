@@ -5,7 +5,7 @@ import Elements.Multiplexer;
 import Elements.WRegister;
 import Helpers.Destinations;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public abstract class CommandALUBase extends CommandBase {
 

@@ -1,7 +1,7 @@
 package Elements;
 
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public class InstructionDecoder extends Element {
 
@@ -112,10 +112,6 @@ public class InstructionDecoder extends Element {
 
     public int getDecodedCommand() {
         return decodedCommand;
-    }
-
-    public int getInputCommand() {
-        return inputCommand;
     }
 
     public int getBitChoose() {

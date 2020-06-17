@@ -6,7 +6,7 @@ import Elements.Multiplexer;
 import Elements.RAM;
 import Helpers.Destinations;
 import Helpers.Element;
-import SimulationMain.Simulation;
+import Simulation.Simulation;
 
 public abstract class CommandALU_RAMBase extends CommandBase {
 
