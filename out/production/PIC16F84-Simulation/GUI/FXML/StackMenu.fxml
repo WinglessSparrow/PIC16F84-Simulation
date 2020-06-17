@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane id="stack-panel" prefHeight="375.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SMController">
+    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <VBox id="stack-pane" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0" spacing="2.0">
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="320.0" text="Stack">
+                <font>
+                    <Font size="25.0"/>
+                </font>
+            </Label>
+            <VBox id="stack-table" alignment="TOP_CENTER" prefWidth="210.0">
+                <Label id="underline-bottom" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0"
+                       prefWidth="159.0" text="Level : Value">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack1" prefHeight="30.0" prefWidth="150.0" text="1 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack2" prefHeight="30.0" prefWidth="150.0" text="2 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack3" prefHeight="30.0" prefWidth="150.0" text="3 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack4" prefHeight="30.0" prefWidth="150.0" text="4 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack5" prefHeight="30.0" prefWidth="150.0" text="5 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack6" prefHeight="30.0" prefWidth="150.0" text="6 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack7" prefHeight="30.0" prefWidth="150.0" text="7 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="lbl_stack8" prefHeight="30.0" prefWidth="150.0" text="8 : xx">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+            </VBox>
+            <padding>
+                <Insets left="5.0" right="5.0"/>
+            </padding>
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </VBox>
+        <VBox id="main-menu-pane" alignment="TOP_CENTER" prefHeight="326.0" prefWidth="275.0" spacing="15.0">
+            <Label alignment="CENTER" prefHeight="45.0" prefWidth="160.0" text="Main Menu">
+                <font>
+                    <Font size="26.0"/>
+                </font>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#load" prefHeight="45.0" prefWidth="160.0"
+                    style="-fx-font-size: 18px" text="Load program">
+            </Button>
+            <Button mnemonicParsing="false" onAction="#powerReset" prefHeight="45.0" prefWidth="160.0"
+                    style="-fx-font-size: 20px" text="Power reset">
+            </Button>
+            <Button mnemonicParsing="false" onAction="#clearEEPROM" prefHeight="45.0" prefWidth="160.0"
+                    style="-fx-font-size: 18px" text="Clear EEPROM">
+            </Button>
+            <Button mnemonicParsing="false" onAction="#help" prefHeight="45.0" prefWidth="160.0"
+                    style="-fx-font-size: 18px" text="Help">
+            </Button>
+            <Button mnemonicParsing="false" onAction="#exit" prefHeight="45.0" prefWidth="160.0"
+                    style="-fx-font-size: 20px" text="Exit">
+            </Button>
+        </VBox>
+    </HBox>
+</AnchorPane>

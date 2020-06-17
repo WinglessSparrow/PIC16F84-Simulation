@@ -1,0 +1,251 @@
+@font-face {
+    src: url('Quicksand-Regular.ttf');
+}
+
+.root {
+    /*color pallets*/
+    /*CIAN*/
+    /*https://coolors.co/022b3a-1f7a8c-bfdbf7-e1e5f2-ffffff */
+
+    CIAN_C: #1f7a8c;
+    CIAN_BACK: rgba(31, 122, 140, 0.35);
+    CIAN_MIDDLE: #BFDBF7;
+}
+
+* {
+    -fx-font-smoothing-type: gray;
+    -fx-font-family: "Quicksand Regular";
+}
+
+
+#stack-pane {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 0 0 3 0;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#stack-table {
+    -fx-background-color: CIAN_MIDDLE;
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 1;
+}
+
+#sfr-pane {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 0 0 3 3;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#heap-pane {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 0 0 0 3;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#op-code-table {
+    -fx-border-color: CIAN_C;
+    -fx-background-color: CIAN_BACK;
+
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+#op-code-pane {
+    -fx-background-color: CIAN_BACK;
+    -fx-padding: 5 0 5 0;
+}
+
+#underline-bottom {
+    -fx-border-color: grey;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 3;
+}
+
+#line-left {
+    -fx-border-color: grey;
+    -fx-border-width: 0 0 0 2;
+}
+
+#memory-lbl {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 3 0 0 3;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#debug-lbl {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 3 0 0 0;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#interaction-lbl {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 3 3 0 0;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#main-menu-pane {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 0 0 3 0;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#ports-pane {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 0 3 0 0;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#control-pane {
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 0 3 3 0;
+    -fx-padding: 3 0 0 0;
+
+    -fx-background-color: CIAN_BACK;
+}
+
+#port-panel {
+    -fx-border-color: CIAN_C;
+    -fx-background-color: CIAN_BACK;
+
+    -fx-border-width: 1;
+    -fx-padding: 5 3 10 3;
+}
+
+#timing-panel {
+    -fx-border-color: CIAN_C;
+    -fx-background-color: CIAN_BACK;
+
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+#lbl-status {
+    -fx-border-color: CIAN_C;
+    -fx-background-color: CIAN_BACK;
+
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+.tooltip {
+    -fx-background-color: CIAN_C;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+.scroll-pane {
+    -fx-border-width: 1;
+    -fx-border-color: CIAN_C;
+}
+
+/*making table view not change itself*/
+.table-view:focused {
+    -fx-border-color: #bebebe;
+    -fx-border-width: 1;
+    -fx-padding: 0;
+    -fx-background-color: white;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background: -fx-control-inner-background;
+    -fx-background-color: rgba(42, 66, 165, 0.1);
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-table-cell-border-color: derive(-fx-color, 5%);
+}
+
+.table-row-cell:odd:filled:selected {
+    -fx-background: -fx-control-inner-background-alt;
+}
+
+.button {
+    -fx-background-color: CIAN_BACK;
+    -fx-border-color: CIAN_C;
+
+    -fx-border-width: 2 0 2 0;
+}
+
+.button:hover {
+    -fx-background-color: rgba(31, 122, 140, 0.65);
+    -fx-border-color: CIAN_C;
+
+    -fx-border-width: 2 1 2 1;
+}
+
+.button:pressed {
+    -fx-background-color: #1fb6c8;
+}
+
+.tab-pane:top *.tab-header-area {
+    /*-fx-background-insets: 0, 0 0 10;*/
+    -fx-padding: 1 0 0 0;
+    -fx-alignment: center;
+
+    -fx-background-color: transparent;
+}
+
+.tab-down-button {
+    -fx-padding: 0;
+}
+
+.tab-down-button .arrow {
+    -fx-padding: 0;
+}
+
+.tab .tab-label {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+.tab:focused {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}
+
+.tab {
+    -fx-background-color: CIAN_BACK;
+    -fx-max-width: 3em;
+    -fx-min-width: 3em;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 5;
+}
+
+.tab:selected {
+    -fx-background-color: CIAN_MIDDLE;
+    -fx-max-width: 3em;
+    -fx-min-width: 3em;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 5;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: CIAN_BACK;
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 1 1 0 1;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.tab:selected .focus-indicator {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: CIAN_BACK;
+}
