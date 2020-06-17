@@ -7,6 +7,8 @@ import Helpers.BitManipulator;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -21,6 +23,10 @@ public class PPController extends Controller {
     private RAM ram;
     private Timer timer;
 
+    @FXML
+    private Label lbl_runSpeed;
+    @FXML
+    private Slider sld_runTime;
     @FXML
     private VBox vbox_trisA;
     @FXML
@@ -55,6 +61,18 @@ public class PPController extends Controller {
 
         initActionListeners();
 
+        sld_runTime.valueProperty().addListener((observableValue, number, t1) -> {
+            var runTime = (int) sld_runTime.getValue();
+
+            try {
+                simGUI.getSim().adjustSpeed(runTime);
+            } catch (NullPointerException e) {
+                System.out.println("no Simulation");
+            }
+
+            lbl_runSpeed.setText("Run Speed: " + runTime + "ms");
+        });
+
     }
 
     /**
@@ -64,7 +82,19 @@ public class PPController extends Controller {
         this.ports = ports;
         this.ram = ram;
         this.timer = timer;
+
+        reset();
+
         update();
+    }
+
+    public void reset() {
+        //due to the spaghetti written in this method, we need this sequence to properly reset the ports
+        updateBoxes(255, 0, checkBoxesTrisA, checkBoxesPortA);
+        updateBoxes(255, 0, checkBoxesTrisB, checkBoxesPortB);
+
+        updateBoxes(0, 0, checkBoxesTrisA, checkBoxesPortA);
+        updateBoxes(0, 0, checkBoxesTrisB, checkBoxesPortB);
     }
 
     //not using global variables, so that I can reuse this method
@@ -72,11 +102,21 @@ public class PPController extends Controller {
         for (int i = 0; i < tris.length; i++) {
             //setting state of the set CheckBox
             tris[i].setSelected(BitManipulator.getBit(i, valueTris) == 1);
+
+            //remember prev state
+            boolean flag = ports[i].isDisable();
+
             //setting the availability of the port
             //depending on tris
             ports[i].setDisable(!tris[i].isSelected());
+
+            //if port was on before -> setting to zero
+            if (!flag && ports[i].isDisable()) ports[i].setSelected(false);
+
             //setting values on ports
-            ports[i].setSelected(BitManipulator.getBit(i, valuePorts) == 1 && !tris[i].isSelected());
+            if (!ports[i].isSelected()) {
+                ports[i].setSelected(BitManipulator.getBit(i, valuePorts) == 1 && !tris[i].isSelected());
+            }
         }
     }
 
@@ -103,12 +143,6 @@ public class PPController extends Controller {
                 count++;
             }
         }
-    }
-
-    @Override
-    public void update() {
-        updateBoxes(ports.getTrisPortA(), ports.getPortA(), checkBoxesTrisA, checkBoxesPortA);
-        updateBoxes(ports.getTrisPortB(), ports.getPortB(), checkBoxesTrisB, checkBoxesPortB);
     }
 
     //Is triggered when a input port is pressed
@@ -177,4 +211,11 @@ public class PPController extends Controller {
             checkBoxesPortB[finalI].setOnAction(actionEvent -> portOnAction(Ports.PORT_B, finalI));
         }
     }
+
+    @Override
+    public void update() {
+        updateBoxes(ports.getTrisPortA(), ports.getPortA(), checkBoxesTrisA, checkBoxesPortA);
+        updateBoxes(ports.getTrisPortB(), ports.getPortB(), checkBoxesTrisB, checkBoxesPortB);
+    }
+
 }

@@ -23,6 +23,7 @@ public class Simulation implements Runnable {
     private boolean flagBreakPoint;
 
     private long hzRate;
+    private int speed = 1;
 
     private StartingWController centralController;
 
@@ -111,6 +112,10 @@ public class Simulation implements Runnable {
 
         //parser, elements, prescaler, watchdog
         System.out.println("Boot up and ready to go");
+    }
+
+    public void adjustSpeed(int speed) {
+        this.speed = speed;
     }
 
     public void setBreakpointLine(int bp) {
@@ -286,7 +291,7 @@ public class Simulation implements Runnable {
             }
 
             try {
-                Thread.sleep(1);
+                Thread.sleep(speed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -249,3 +249,7 @@
 .scroll-pane {
     -fx-background-color: CIAN_BACK;
 }
+
+.slider .track {
+    -fx-background-color: CIAN_C;
+}
