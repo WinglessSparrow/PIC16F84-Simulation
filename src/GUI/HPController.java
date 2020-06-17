@@ -28,6 +28,9 @@ public class HPController extends Controller {
 
     }
 
+    /**
+     * References must be set
+     */
     public void setData(RAM ram) {
         //init start here, so that we could work with the direct reference of the data array
         hpDisplay = new HeapDisplay(ram.getRegisterData(), ram, 8, 54, 30);

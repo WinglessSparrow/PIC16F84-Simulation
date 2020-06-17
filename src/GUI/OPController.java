@@ -133,6 +133,9 @@ public class OPController extends Controller {
         return -1;
     }
 
+    /**
+     * References must be set
+     */
     public void setData(ProgramCodeParser parser, ProgramCounter programCounter) {
         pc = 0;
 

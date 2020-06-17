@@ -17,9 +17,7 @@ public class SFRController extends Controller {
     }
 
     /**
-     * //* @param data must be presorted
-     *
-     * @see SFRDisplay for the rigth sequence
+     * References must be set
      */
     public void setData(RAM ram) {
         display.setData(ram);

@@ -12,6 +12,12 @@ public class InstructionDecoder extends Element {
         super(null, busesIn);
     }
 
+
+    /**
+     * Method to decode the original "Hex" commands from the LST file
+     * @param command Full "Hex" command with all attributes
+     * @return the decoded command, all attribute bits are set to 0
+     */
     private int decode(int command) {
         inputCommand = command;
 
@@ -106,7 +112,7 @@ public class InstructionDecoder extends Element {
         }
 
 
-        System.out.println("decoded: 0x" + Integer.toHexString(decodedCommand));
+        System.out.println("Decoded Command: 0x" + Integer.toHexString(decodedCommand));
         return decodedCommand;
     }
 

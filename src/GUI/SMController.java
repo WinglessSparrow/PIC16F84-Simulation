@@ -137,14 +137,17 @@ public class SMController extends Controller {
         }
     }
 
-    @Override
-    public void update() {
-        updateStack(stack);
-    }
-
+    /**
+     * References must be set
+     */
     public void setData(ProgramCounter programCounter, RAM ram) {
         stack = programCounter.handItOverThatThingYourStack();
         this.ram = ram;
+    }
+
+    @Override
+    public void update() {
+        updateStack(stack);
     }
 
     public void setSimGUI(Simulation_GUI simGUI) {

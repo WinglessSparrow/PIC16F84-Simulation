@@ -174,6 +174,9 @@ public class CPController extends Controller {
         btn_stop.setDisable(true);
     }
 
+    /**
+     * References must be set
+     */
     public void setData(ProgramCounter pc, Prescaler prescaler, Watchdog watchdog, WRegister wReg, RAM ram) {
         this.pc = pc;
         this.prescaler = prescaler;
@@ -184,6 +187,16 @@ public class CPController extends Controller {
         disableButtonsOnStop();
 
         drpd_hz.getSelectionModel().select(0);
+    }
+
+    @Override
+    public void update() {
+        simGUI.getSim().setWatchdog(chk_watchdog.isSelected());
+        setStatus();
+        renewData();
+        if (simGUI.getSim().isFlagPause()) {
+            disableButtonsOnStop();
+        }
     }
 
     private void renewData() {
@@ -197,15 +210,5 @@ public class CPController extends Controller {
 
         lbl_watchdogTime.setText("WDT: " + ((chk_watchdog.isSelected()) ? TimeUnit.MILLISECONDS.convert(wdtCurrNano, TimeUnit.NANOSECONDS) : 0) +
                 "ms / " + TimeUnit.MILLISECONDS.convert(wdtMaxNano, TimeUnit.NANOSECONDS) + "ms");
-    }
-
-    @Override
-    public void update() {
-        simGUI.getSim().setWatchdog(chk_watchdog.isSelected());
-        setStatus();
-        renewData();
-        if (simGUI.getSim().isFlagPause()) {
-            disableButtonsOnStop();
-        }
     }
 }

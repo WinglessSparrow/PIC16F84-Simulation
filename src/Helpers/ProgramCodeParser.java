@@ -48,7 +48,6 @@ public class ProgramCodeParser {
 
 
     private void parseFile() {
-        boolean offsetFound = false;
         String instructions, code, tmpOrg;
 
         //Instructions: Lines and Code,Code: Code without lines

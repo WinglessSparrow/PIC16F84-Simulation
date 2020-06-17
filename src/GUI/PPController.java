@@ -16,7 +16,7 @@ import java.util.List;
 public class PPController extends Controller {
 
     public enum Ports {
-        PORT_A, PORT_B;
+        PORT_A, PORT_B
     }
 
     private Port ports;
@@ -76,7 +76,7 @@ public class PPController extends Controller {
     }
 
     /**
-     * @param ports Object of Port
+     * References must be set
      */
     public void setData(Port ports, RAM ram, Timer timer) {
         this.ports = ports;
@@ -120,6 +120,7 @@ public class PPController extends Controller {
         }
     }
 
+    /*
     private int getPortValue(CheckBox[] ports) {
         //defining temp with 0, to make sure that it is being correctly filled
         int temp = 0;
@@ -130,6 +131,7 @@ public class PPController extends Controller {
 
         return temp;
     }
+    */
 
     private void fillArrayCheckBoxes(CheckBox[] arrayToFill, VBox fromElement) {
 
@@ -150,7 +152,8 @@ public class PPController extends Controller {
         if (port == Ports.PORT_A) {
             setInterruptBits(Ports.PORT_A, bit);
             ram.setSpecificBits(checkBoxesPortA[bit].isSelected(), RAM.PORT_A, bit);
-        } else if (port == Ports.PORT_B) {
+        }
+        else if (port == Ports.PORT_B) {
             setInterruptBits(Ports.PORT_B, bit);
             ram.setSpecificBits(checkBoxesPortB[bit].isSelected(), RAM.PORT_B, bit);
         }
@@ -201,6 +204,12 @@ public class PPController extends Controller {
             checkBox.setDisable(true);
         }
 
+        /*
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            checkBoxesPortA[finalI].setOnAction(actionEvent -> portOnAction(Ports.PORT_A, finalI));
+        }
+        */
         for (int i = 0; i < 5; i++) {
             int finalI = i;
             checkBoxesPortA[finalI].setOnAction(actionEvent -> portOnAction(Ports.PORT_A, finalI));

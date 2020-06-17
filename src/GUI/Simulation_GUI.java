@@ -3,12 +3,10 @@ package GUI;
 import Simulation.Simulation;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -25,12 +23,12 @@ public class Simulation_GUI extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("PIC 16F84 Simulator");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/StartingWindow.fxml"));
 
-        AnchorPane root = null;
+        AnchorPane root;
 
         try {
             root = loader.load();
@@ -47,40 +45,44 @@ public class Simulation_GUI extends Application {
 
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
-        initControllerSim(loader);
+        initControllerSim();
 
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                //Closes the JavaFX application and all the Other running threads
-                //second one should be sufficient, but to make sure first kill FX thread
-                Platform.exit();
-                try {
-                    sim.cleanUp();
-                } catch (NullPointerException ignored) {
-                }
-                System.out.println("see you space cowboy");
-                System.exit(0);
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            //Closes the JavaFX application and all the Other running threads
+            //second one should be sufficient, but to make sure first kill FX thread
+            Platform.exit();
+            try {
+                sim.cleanUp();
+            } catch (NullPointerException ignored) {
             }
+            System.out.println("see you space cowboy");
+            System.exit(0);
         });
 
         primaryStage.show();
     }
 
 
-    //Gives  simGUI to all controllers
-    private void initControllerSim(FXMLLoader loader) {
+    /**
+     * Gives  simGUI to all controllers
+     */
+    private void initControllerSim() {
         //StartingWController controller  = loader.getController();
         centralController.setSimGUI(this);
     }
 
-    //Loads a file and restarts the backend
+    /**
+     * Loads a file and restarts the backend
+     * @param path, absolute path to LST file
+     */
     public void loadFile(String path) {
         this.path = path;
         powerReset();
     }
 
-    //restarts the backend
+    /**
+     * Restart the backend (autoCall every time when new LST file is loaded)
+     */
     public void powerReset() {
         //garbage collection is cool and all, but I don't trust it enough
         if (sim != null) {
@@ -94,6 +96,9 @@ public class Simulation_GUI extends Application {
 
     }
 
+    /**
+     * Updates the GUI
+     */
     public void update() {
         centralController.update();
     }

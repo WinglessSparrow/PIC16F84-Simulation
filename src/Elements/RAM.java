@@ -36,6 +36,7 @@ public class RAM extends Element {
         WRITE, READ, NONE
     }
 
+
     public RAM(Bus busOut, Bus[] busesIn, Multiplexer multiplexer, Watchdog watchdog, Prescaler prescaler, ProgramCounter pc) {
         super(busOut, busesIn);
         this.multiplexer = multiplexer;
@@ -148,34 +149,6 @@ public class RAM extends Element {
         }
     }
 
-    private int setOffsetIdx(int idx) {
-        //getting the 5th bit, because it's the offset of the banks, and shift it 7 positions to the left
-        //so we could get the offset, to offset the input idx
-        //so the bx1 will be bx10000000
-        // 48 is the ASCII   offset for decimal numbers
-//        int RP0 = BitManipulator.toNLongBinaryString(8, data[STATUS]).charAt(4) - 48;
-        int RP0 = getSpecificBit(STATUS, 5);
-        int mask = (RP0 == 0) ? 0 : RP0 << 7;
-
-        return idx | mask;
-    }
-
-    public boolean isFlagFileZero() {
-        return flagFileZero;
-    }
-
-    public int getLastRegisterInUse() {
-        return getRegisterData(setOffsetIdx(multiplexer.getStoredValue()));
-    }
-
-    public void setMode(Destinations mode) {
-        this.mode = mode;
-    }
-
-    public void setROperation(RegisterOperation rOperation) {
-        this.rOperation = rOperation;
-    }
-
     public int getRegisterData(int idx) {
         //just remember* = &indirect addressing
         if (idx == 0 || idx == 0x80) {
@@ -190,6 +163,11 @@ public class RAM extends Element {
         }
     }
 
+    /**
+     * For setting data in RAM
+     * @param idx, Register index (ex. RAM.INTCON)
+     * @param value, value you want to set (masked with 8 bits)
+     */
     public void setData(int idx, int value) {
 
         //mask first bits, so that the could be no artifacts
@@ -239,6 +217,44 @@ public class RAM extends Element {
                 watchdog.renewWaitingTime(getSpecificBit(OPTION, 3) == 1);
             }
         }
+    }
+
+    /**
+     * @return true, if any interrupt(RA4, RB0, RB4-7) is triggered
+     */
+    public boolean isInterruptTriggered() {
+
+        //idx 7 is Global Enable
+        if (getSpecificBit(INTCON, GIE) == 1) {
+            //EEPROM read interrupt EEIE and EEIF
+            if (getSpecificBit(INTCON, 6) == 1 && getSpecificBit(EECON_1, 4) == 1) {
+                return true;
+            }
+            /*
+            the mask isolates 2 bits, the enable and the trigger bits
+            if the masked value equals to the mask the bits are both set and the interrupt triggers
+            if not it shifts the mask and compares again
+            because enable bit and trigger bits are offsetted by the same value
+            except for the EEIE, which are in different registers
+            the mask is in binary here to make it more readable
+             */
+            int mask = 0b00100100;
+            for (int i = 0; i < 3; i++) {
+                //mask the register and compare
+                if ((getRegisterData(INTCON) & mask) == mask) {
+                    if (i != 0) {
+                        //resetting the interrupt bits
+                        //except for the timer
+                        setSpecificBits(false, INTCON, mask & 3);
+                    }
+
+                    return true;
+                }
+                //shift mask
+                mask = mask >> 1;
+            }
+        }
+        return false;
     }
 
     public void renewPCL(int value) {
@@ -297,11 +313,37 @@ public class RAM extends Element {
         }
     }
 
+
     public void setCarry(int value, int temp) {
         if (temp <= value) {
             setSpecificBits(true, RAM.STATUS, RAM.CARRY_BIT);
         }
     }
+
+    public boolean isFlagFileZero() {
+        return flagFileZero;
+    }
+
+    public int getLastRegisterInUse() {
+        return getRegisterData(setOffsetIdx(multiplexer.getStoredValue()));
+    }
+
+    public void setMode(Destinations mode) {
+        this.mode = mode;
+    }
+
+    public void setROperation(RegisterOperation rOperation) {
+        this.rOperation = rOperation;
+    }
+
+    public void cleanUp() {
+        eeprom.cleanUp();
+    }
+
+    public void setBitIdxFromOP(int bitIdxFromOP) {
+        this.bitIdxFromOP = bitIdxFromOP;
+    }
+
 
     private EepromStatus checkEeprom() {
         EepromStatus status = EepromStatus.NONE;
@@ -327,6 +369,18 @@ public class RAM extends Element {
             return temp[1] == 0xAA;
         }
         return false;
+    }
+
+    private int setOffsetIdx(int idx) {
+        //getting the 5th bit, because it's the offset of the banks, and shift it 7 positions to the left
+        //so we could get the offset, to offset the input idx
+        //so the bx1 will be bx10000000
+        // 48 is the ASCII   offset for decimal numbers
+//        int RP0 = BitManipulator.toNLongBinaryString(8, data[STATUS]).charAt(4) - 48;
+        int RP0 = getSpecificBit(STATUS, 5);
+        int mask = (RP0 == 0) ? 0 : RP0 << 7;
+
+        return idx | mask;
     }
 
     private int rotateLeft(int value) {
@@ -377,41 +431,6 @@ public class RAM extends Element {
         return value;
     }
 
-    public boolean isInterruptTriggered() {
-
-        //idx 7 is Global Enable
-        if (getSpecificBit(INTCON, GIE) == 1) {
-            //EEPROM read interrupt EEIE and EEIF
-            if (getSpecificBit(INTCON, 6) == 1 && getSpecificBit(EECON_1, 4) == 1) {
-                return true;
-            }
-            /*
-            the mask isolates 2 bits, the enable and the trigger bits
-            if the masked value equals to the mask the bits are both set and the interrupt triggers
-            if not it shifts the mask and compares again
-            because enable bit and trigger bits are offsetted by the same value
-            except for the EEIE, which are in different registers
-            the mask is in binary here to make it more readable
-             */
-            int mask = 0b00100100;
-            for (int i = 0; i < 3; i++) {
-                //mask the register and compare
-                if ((getRegisterData(INTCON) & mask) == mask) {
-                    if (i != 0) {
-                        //resetting the interrupt bits
-                        //except for the timer
-                        setSpecificBits(false, INTCON, mask & 3);
-                    }
-
-                    return true;
-                }
-                //shift mask
-                mask = mask >> 1;
-            }
-        }
-        return false;
-    }
-
     private void init() {
         setData(STATUS, 0b11000);
         setData(OPTION, 255);
@@ -432,26 +451,6 @@ public class RAM extends Element {
         eeprom.cleanUp();
     }
 
-    public void cleanUp() {
-        eeprom.cleanUp();
-    }
-
-    public void setBitIdxFromOP(int bitIdxFromOP) {
-        this.bitIdxFromOP = bitIdxFromOP;
-    }
-
-    public boolean isFlagBitSet() {
-        return flagBitSet;
-    }
-
-    public EEPROM getEeprom() {
-        return eeprom;
-    }
-
-    public int[] getRegisterData() {
-        return data;
-    }
-
     public int[] getSfrData() {
 
         sfrData[0] = data[TMR0];
@@ -470,6 +469,18 @@ public class RAM extends Element {
         sfrData[13] = data[EECON_1];
 
         return sfrData;
+    }
+
+    public boolean isFlagBitSet() {
+        return flagBitSet;
+    }
+
+    public EEPROM getEeprom() {
+        return eeprom;
+    }
+
+    public int[] getRegisterData() {
+        return data;
     }
 
 }

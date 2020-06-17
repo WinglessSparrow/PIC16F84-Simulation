@@ -5,7 +5,6 @@ import Helpers.Element;
 public class Port extends Element {
 
     private RAM ram;
-    private int mask = 0xFF;
 
     /**
      * {@link #setRam(RAM)} method is required to be called once for every port
@@ -16,10 +15,6 @@ public class Port extends Element {
 
     @Override
     public void step() {
-    }
-
-    private int getOutput(int portReg) {
-        return ram.getRegisterData(portReg);
     }
 
     public int getPortA() {
@@ -40,6 +35,10 @@ public class Port extends Element {
 
     public int getTrisPortB() {
         return ram.getRegisterData(RAM.TRIS_B);
+    }
+
+    private int getOutput(int portReg) {
+        return ram.getRegisterData(portReg);
     }
 }
 
