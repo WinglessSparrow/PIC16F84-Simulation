@@ -20,7 +20,9 @@ public class OverlayController extends Controller {
 
     public void initialize() {
 
-        String[] texts = {"boy"};
+        String[] texts = {"","","","1. Hover over name to see the corresponding HexValue in DATA MEMORY\n2. Hover over Bits to see the names of the Bits (not all are supported)",
+                "Stack shows the current used Stack with the addresses\n\n1. Load Program: Load LST File\n2. Power reset: Hard Reset\n3. Clear EEPROM: Clear the EEPROM under DATA MEMORY\n",
+                "1. PC: Current value of ProgramCounter\n2.W-Reg: Current value of w-Register\n3. Reset: Soft Reset (without clearing DATA MEMORY)\n4. Quarz: Time that passes by with one step"};
         int count = 0;
 
         for (Node node : grid.getChildren()) {
