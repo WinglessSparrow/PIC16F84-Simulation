@@ -10,6 +10,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * @author Pavel Smirnoc
+ * @author Steffan Hennenberger
+ * @see "TODO Documentation incoming"
+ */
+
 public class Simulation_GUI extends Application {
 
     private Simulation sim;
