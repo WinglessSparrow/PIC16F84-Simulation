@@ -35,6 +35,7 @@ public class StartingWController extends Controller {
         controllers.add(addNode("/GUI/FXML/SFRPanel.fxml", grid, 0, 2));
         controllers.add(addNode("/GUI/FXML/StackMenu.fxml", grid, 1, 2));
 
+        //getting the overlay
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXML/HelpOverlay.fxml"));
 
         try {
@@ -43,9 +44,6 @@ public class StartingWController extends Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        System.out.println(stack_pane.getChildren());
     }
 
     public Controller addNode(String FXMLUrl, GridPane grid, int xPos, int yPos) {
