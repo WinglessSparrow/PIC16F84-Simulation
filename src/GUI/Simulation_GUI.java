@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * @author Pavel Smirnoc
- * @author Steffan Hennenberger
+ * @author Pavel Smirnov
+ * @author Stefan Henneberger
  * @see "TODO Documentation incoming"
  */
 
