@@ -2,7 +2,6 @@ package GUI;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -14,17 +13,16 @@ public class OverlayController extends Controller {
     private GridPane grid;
     @FXML
     private AnchorPane anch_back;
-    @FXML
-    private Button btn_X;
-
 
     public void initialize() {
 
-        String[] texts = {"boy"};
+        String[] texts = {"1. You can toggle Between EEPROM and RAM\n2. If double click on a cell, you can change the value manually",
+                "1. The highlight shows you the next command in the Pipeline\n2. You can set a breakpoint (only on PC lines)",
+                "1. Runtime Speed decides the realtime execution speed\n2. Ports-B 1 is edge INT\n3. Port-B 4-7 is INT on change\n4. Port-A 1 is Timer CLOCK"};
         int count = 0;
 
         for (Node node : grid.getChildren()) {
-            if (node instanceof Pane) {
+            if (node instanceof Pane && !(node instanceof AnchorPane)) {
                 node.setStyle("-fx-background-color: transparent");
 
                 node.hoverProperty().addListener((observableValue, aBoolean, t1) -> {
