@@ -64,7 +64,7 @@ public class CPController extends Controller {
             String temp;
             //setting correct values
             if (hz[i] > 999999) {
-                temp = hz[i] / 1000000 + " mHz";
+                temp = hz[i] / 1000000 + " MHz";
             } else if (hz[i] > 999) {
                 temp = hz[i] / 1000 + " kHz";
             } else {
