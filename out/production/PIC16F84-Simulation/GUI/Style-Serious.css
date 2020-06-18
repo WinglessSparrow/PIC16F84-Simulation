@@ -136,6 +136,12 @@
     -fx-padding: 5;
 }
 
+#help-lbl {
+    -fx-background-color: CIAN_MIDDLE;
+    -fx-border-color: CIAN_C;
+    -fx-border-width: 3;
+}
+
 .tooltip {
     -fx-background-color: CIAN_C;
     -fx-background-radius: 0;

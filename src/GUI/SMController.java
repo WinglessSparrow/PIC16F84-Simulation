@@ -82,12 +82,15 @@ public class SMController extends Controller {
     }
 
     public void help() {
+        ((StartingWController) simGUI.getCentralController()).toggleHelp();
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Help");
-        alert.setHeaderText("Keep it strong fam");
-        alert.setContentText("We believe in you");
+        alert.setHeaderText("Help Overlay On");
+        alert.setContentText("Hover over the area you need help with");
 
         alert.showAndWait();
+
     }
 
     public void clearEEPROM() {

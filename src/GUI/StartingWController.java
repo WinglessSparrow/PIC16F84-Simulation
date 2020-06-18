@@ -9,16 +9,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class StartingWController extends Controller {
     @FXML
-    public GridPane grid;
+    private GridPane grid;
+    @FXML
+    private StackPane stack_pane;
 
     private ArrayList<Controller> controllers;
-    private static final int CP_CONTR = 0, PP_CONTR = 1, OP_CONTR = 2, HP_CONTR = 3, SFR_CONTR = 4, SP_CONTR = 5;
+    private static final int CP_CONTR = 0, PP_CONTR = 1, OP_CONTR = 2, HP_CONTR = 3, SFR_CONTR = 4, SP_CONTR = 5, OVERLAY_CONTR = 6;
 
     public StartingWController() {
         controllers = new ArrayList<>();
@@ -31,6 +34,18 @@ public class StartingWController extends Controller {
         controllers.add(addNode("/GUI/FXML/HeapPanel.fxml", grid, 0, 1));
         controllers.add(addNode("/GUI/FXML/SFRPanel.fxml", grid, 0, 2));
         controllers.add(addNode("/GUI/FXML/StackMenu.fxml", grid, 1, 2));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXML/HelpOverlay.fxml"));
+
+        try {
+            stack_pane.getChildren().add(loader.load());
+            controllers.add(loader.getController());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println(stack_pane.getChildren());
     }
 
     public Controller addNode(String FXMLUrl, GridPane grid, int xPos, int yPos) {
@@ -79,6 +94,10 @@ public class StartingWController extends Controller {
 
         //Init Control panel
         ((CPController) controllers.get(CP_CONTR)).setData((ProgramCounter) elements[Simulation.PC], prescaler, watchdog, ((WRegister) elements[Simulation.W_REGISTER]), (RAM) elements[Simulation.RAM_MEM]);
+    }
+
+    public void toggleHelp() {
+        ((OverlayController) controllers.get(OVERLAY_CONTR)).toggle();
     }
 
     @Override

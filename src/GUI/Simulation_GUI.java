@@ -68,6 +68,9 @@ public class Simulation_GUI extends Application {
         primaryStage.show();
     }
 
+    public Controller getCentralController() {
+        return centralController;
+    }
 
     /**
      * Gives  simGUI to all controllers
