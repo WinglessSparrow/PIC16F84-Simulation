@@ -32,7 +32,7 @@
                   <!--            <Button layoutX="334.0" layoutY="15.0" mnemonicParsing="false" onAction="#debugStep" text="DebugStepButton"/>-->
               </AnchorPane>
               <AnchorPane id="debug-lbl" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                  <Label id="label-name" alignment="CENTER" contentDisplay="CENTER" prefWidth="443.0" text="Debug and Programm flow" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label id="label-name" alignment="CENTER" contentDisplay="CENTER" prefWidth="443.0" text="Debug and Program flow" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                       <font>
                           <Font size="25.0" />
                       </font>
