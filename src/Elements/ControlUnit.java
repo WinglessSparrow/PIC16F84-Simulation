@@ -1,6 +1,6 @@
 package Elements;
 
-import CommandsHelpers.CommandBase;
+import CommandsBase.CommandBase;
 import Helpers.CommandAtlas;
 import Helpers.Element;
 import Simulation.Simulation;
@@ -26,14 +26,15 @@ public class ControlUnit extends Element {
     public void getCommandCode(int code) {
         if (code != 0) {
             //getting the command
-            command = CommandAtlas.getCommand(code);
             try {
                 System.out.println("Control Unit got: " + command.toString());
             } catch (NullPointerException e) {
                 System.out.println("Command '0x" + Integer.toHexString(code) + "' does not exist");
             }
+            command = CommandAtlas.getCommand(code);
         } else {
             System.out.println("NOP");
+
             command = null;
         }
     }
@@ -42,5 +43,9 @@ public class ControlUnit extends Element {
     public void step() {
         getCommandCode(decoder.getDecodedCommand());
         pc.inc();
+    }
+
+    public void hui() {
+
     }
 }

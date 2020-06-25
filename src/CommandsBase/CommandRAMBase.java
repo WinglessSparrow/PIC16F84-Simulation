@@ -1,4 +1,4 @@
-package CommandsHelpers;
+package CommandsBase;
 
 import Elements.InstructionDecoder;
 import Elements.Multiplexer;
@@ -21,7 +21,6 @@ public abstract class CommandRAMBase extends CommandBase {
     @Override
     public void setFlags(Element[] elements) {
         ((Multiplexer) elements[Simulation.RAM_MULTIPLEXER]).setUsingBusIFile(false);
-
         //getting the destination bit
         if (((InstructionDecoder) elements[Simulation.I_DECODER]).isDestinationBitSet()) {
             temp = Destinations.RAM;

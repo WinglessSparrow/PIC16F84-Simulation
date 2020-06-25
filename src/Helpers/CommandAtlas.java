@@ -1,7 +1,7 @@
 package Helpers;
 
 import Commands.*;
-import CommandsHelpers.CommandBase;
+import CommandsBase.CommandBase;
 
 import java.util.HashMap;
 

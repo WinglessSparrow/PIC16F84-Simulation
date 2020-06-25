@@ -1,6 +1,6 @@
 package Commands;
 
-import CommandsHelpers.CommandBase;
+import CommandsBase.CommandBase;
 import Elements.Multiplexer;
 import Elements.RAM;
 import Helpers.Destinations;

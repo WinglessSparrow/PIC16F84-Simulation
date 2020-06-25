@@ -1,4 +1,4 @@
-package CommandsHelpers;
+package CommandsBase;
 
 import Elements.ALU;
 import Elements.Multiplexer;
@@ -24,6 +24,5 @@ public abstract class CommandALUBase extends CommandBase {
 
     @Override
     public void cleanUpInstructions(Element[] elements) {
-
     }
 }

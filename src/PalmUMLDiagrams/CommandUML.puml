@@ -1,0 +1,33 @@
+@startuml
+scale max 200 width
+scale max 400 height
+
+abstract class CommandBase{
+-int[] executionSequence
+
++CommandBase(int[] executionSequence) <<Constructor>>
++getExecutionSequence() : int[]
++setFlags(Element[] elements) <<abstract>>
++cleanUpInstructions(Element[] elements) <<abstract>>
+}
+
+abstract class CommandALUBase{
+--
+"defines the sequence Array"
++CommandBase\n(int[] executionSequence) <<Constructor>>
+"defines the flags"
++setFlags(Element[] elements)
+"clear body, not used in this Command"
++cleanUpInstructions(Element[] elements)
+}
+
+class SUBLW {
+--
+"calls super.setFlags \n sets one more flag \n specific to this Command"
++setFlags(Element[] elements)
+}
+
+CommandBase <|- CommandALUBase
+CommandALUBase <|- SUBLW
+
+@enduml

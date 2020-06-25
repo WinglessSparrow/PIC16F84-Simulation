@@ -1,0 +1,63 @@
+@startuml
+
+collections elements
+
+Simulation -> Simulation : execute()
+activate Simulation
+
+Simulation -> RETFIE : setFlags(elements)
+note right: Calling super
+activate RETFIE
+
+RETFIE -> CommandReturnBase : setFlags(elements)
+activate CommandReturnBase
+
+CommandReturnBase -> elements : elements[Program Counter Idx]
+activate elements
+CommandReturnBase <- elements : ProgramCounter
+deactivate elements
+
+CommandReturnBase -> ProgramCounter : setOperation(RETURN)
+activate ProgramCounter
+CommandReturnBase <-- ProgramCounter
+deactivate ProgramCounter
+
+RETFIE <-- CommandReturnBase
+deactivate CommandReturnBase
+
+RETFIE -> elements : elements[RAM idx]
+activate elements
+RETFIE <- elements : RAM
+deactivate elements
+
+
+RETFIE -> RAM : setSpecificBit(HIGH, INTCON, GIE)
+activate RAM
+RETFIE <-- RAM
+deactivate RAM
+
+RETFIE --> Simulation
+deactivate RETFIE
+
+note right of Simulation: stepping loop \nthe sequence is:\n1. GATE_8BUS\n2. WRegister\n3. Program Counter
+
+Simulation -> CommandReturnBase : cleanUpInstructions(elements)
+activate CommandReturnBase
+
+CommandReturnBase -> elements : elements[InstructionRegister idx]
+activate elements
+CommandReturnBase <- elements : InstructionRegister
+deactivate elements
+
+CommandReturnBase -> InstructionRegister : clear()
+activate InstructionRegister
+CommandReturnBase <-- InstructionRegister
+deactivate InstructionRegister
+
+Simulation <-- CommandReturnBase
+deactivate CommandReturnBase
+
+Simulation --> Simulation
+deactivate Simulation
+
+@enduml

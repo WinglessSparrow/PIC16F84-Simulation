@@ -1,6 +1,6 @@
 package Commands;
 
-import CommandsHelpers.CommandJumpingBase;
+import CommandsBase.CommandJumpingBase;
 import Elements.ProgramCounter;
 import Helpers.Element;
 import Simulation.Simulation;

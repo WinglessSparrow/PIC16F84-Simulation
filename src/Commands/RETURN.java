@@ -1,6 +1,6 @@
 package Commands;
 
-import CommandsHelpers.CommandReturnBase;
+import CommandsBase.CommandReturnBase;
 import Simulation.Simulation;
 
 public class RETURN extends CommandReturnBase {

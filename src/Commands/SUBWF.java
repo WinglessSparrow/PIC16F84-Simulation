@@ -1,6 +1,6 @@
 package Commands;
 
-import CommandsHelpers.CommandALU_RAMBase;
+import CommandsBase.CommandALU_RAMBase;
 import Elements.ALU;
 import Helpers.Element;
 import Simulation.Simulation;

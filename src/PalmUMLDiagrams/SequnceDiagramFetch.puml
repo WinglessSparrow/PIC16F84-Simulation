@@ -1,0 +1,38 @@
+@startuml
+
+collections elements
+
+Simulation -> Simulation : fetch()
+activate Simulation
+loop idx = 0; idx < 4, idx = idx +1
+Simulation -> elements : elements[idx]
+activate elements
+elements -> Simulation : Element
+deactivate elements
+Simulation -> Element : step()
+activate Element
+Element --> Simulation
+deactivate Element
+end
+
+Simulation -> elements : elements[Control Unit idx]
+activate elements
+elements -> Simulation : Element (Control Unit)
+deactivate elements
+
+Simulation -> ControlUnit : step()
+activate ControlUnit
+ControlUnit -> ControlUnit : <<retrieve and \nsave command>>
+activate ControlUnit
+ControlUnit --> ControlUnit
+deactivate ControlUnit
+
+ControlUnit --> Simulation
+deactivate ControlUnit
+Simulation -> ControlUnit : getCommand()
+activate ControlUnit
+ControlUnit -> Simulation : command\n(CommandBase)
+deactivate ControlUnit
+Simulation -> Simulation : (CommandBase)\ncommand
+deactivate Simulation
+@enduml

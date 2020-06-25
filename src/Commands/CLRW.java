@@ -1,6 +1,6 @@
 package Commands;
 
-import CommandsHelpers.CommandBase;
+import CommandsBase.CommandBase;
 import Elements.RAM;
 import Elements.WRegister;
 import Helpers.Element;

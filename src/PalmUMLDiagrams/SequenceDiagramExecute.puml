@@ -1,0 +1,43 @@
+@startuml
+
+collections elements
+collections executionSequence
+
+Simulation -> Simulation : execute(CommandBase\n command)
+activate Simulation
+
+Simulation -> CommandBase : setFlags(elements)
+activate CommandBase
+Simulation <-- CommandBase
+deactivate CommandBase
+
+Simulation -> CommandBase : getExecutionSequence()
+activate CommandBase
+Simulation <- CommandBase : int[] executionSequence
+deactivate CommandBase
+alt executionSequence is not NULL
+loop idx = 0; idx < length of \nexecutionSequence; idx++
+
+Simulation -> executionSequence : executionSequence[idx]
+activate executionSequence
+executionSequence -> Simulation : int nextIdx
+deactivate executionSequence
+
+Simulation -> elements : elements[nextIdx]
+activate elements
+elements -> Simulation : Element
+deactivate elements
+Simulation -> Element : step()
+activate Element
+Element --> Simulation
+deactivate Element
+end
+end
+Simulation -> CommandBase : cleanUpInstructions(elements)
+activate CommandBase
+Simulation <-- CommandBase
+deactivate CommandBase
+
+Simulation --> Simulation
+deactivate Simulation
+@enduml

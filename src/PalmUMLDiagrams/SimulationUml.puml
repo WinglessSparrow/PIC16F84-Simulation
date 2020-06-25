@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+
+interface Runnable
+
+class Simulation{
+-Element[] elements
+-Bus[] buses
++run()
++step()
++runOnce()
+}
+
+abstract class Element{
+#Bus[] in
+#Bus out
+
++Element(Bus out, Bus[] out) <<Constructor>>
++step() <<abstract>>
+# putOnBus(int value)
+# getFromBus() : int
+}
+
+class Bus {
+-int heldValue
+
++getHeldValue() : int
++setHeldValue(int value)
+}
+
+Simulation --|> Runnable : implements
+Simulation "[16]" *-- Element
+Simulation "[6]" *-- Bus
+
+Element --> "*" Bus
+
+@enduml

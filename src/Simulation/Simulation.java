@@ -1,7 +1,7 @@
 package Simulation;
 
 import Commands.SLEEP;
-import CommandsHelpers.CommandBase;
+import CommandsBase.CommandBase;
 import Elements.*;
 import GUI.StartingWController;
 import Helpers.*;
@@ -198,7 +198,7 @@ public class Simulation implements Runnable {
          */
         elements[CU].step();
 
-        //getting the sequence
+        //retrieving the sequence
         return ((ControlUnit) elements[CU]).getCommand();
     }
 
@@ -315,8 +315,8 @@ public class Simulation implements Runnable {
         //INIT sequence
         /*ProgramCodeParser parser, Element[] elements, Prescaler prescaler, Watchdog watchdog
         Program View
-
         */
+        // not the best way to do it tho
         centralController.setData(parser, elements, prescaler, ((Watchdog) elements[WATCHDOG]));
     }
 

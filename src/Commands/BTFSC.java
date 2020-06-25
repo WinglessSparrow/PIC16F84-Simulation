@@ -1,6 +1,6 @@
 package Commands;
 
-import CommandsHelpers.CommandBitSkipBase;
+import CommandsBase.CommandBitSkipBase;
 import Elements.RAM;
 import Helpers.Element;
 import Simulation.Simulation;
