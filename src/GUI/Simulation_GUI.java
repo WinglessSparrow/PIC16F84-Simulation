@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author Pavel Smirnov
  * @author Stefan Henneberger
- * @see "TODO Documentation incoming"
+ * @see "Documentation for Usage"
  */
 
 public class Simulation_GUI extends Application {
